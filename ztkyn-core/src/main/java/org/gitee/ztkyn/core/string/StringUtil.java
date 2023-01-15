@@ -4,15 +4,12 @@ import java.util.StringJoiner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * @author whty
  * @version 1.0
- * @description
- * @date 2022/10/19 15:09
  */
 public class StringUtil {
 
@@ -22,6 +19,7 @@ public class StringUtil {
 
 	/**
 	 * 驼峰转下划线,最后转为大写
+	 *
 	 * @param str
 	 * @return
 	 */
@@ -37,6 +35,7 @@ public class StringUtil {
 
 	/**
 	 * 字符串拼接
+	 *
 	 * @param args
 	 * @return
 	 */
@@ -50,6 +49,7 @@ public class StringUtil {
 
 	/**
 	 * 去掉字符串中的空格
+	 *
 	 * @param charSequence
 	 * @return
 	 */
@@ -66,6 +66,7 @@ public class StringUtil {
 
 	/**
 	 * 数字拼接成字符串
+	 *
 	 * @param splitChar
 	 * @param args
 	 * @return
@@ -83,11 +84,9 @@ public class StringUtil {
 	 * <p>
 	 * Checks if a CharSequence is not empty (""), not null and not whitespace only.
 	 * </p>
-	 *
 	 * <p>
 	 * Whitespace is defined by {@link Character#isWhitespace(char)}.
 	 * </p>
-	 *
 	 * <pre>
 	 * StringUtils.isNotBlank(null)      = false
 	 * StringUtils.isNotBlank("")        = false
@@ -95,15 +94,52 @@ public class StringUtil {
 	 * StringUtils.isNotBlank("bob")     = true
 	 * StringUtils.isNotBlank("  bob  ") = true
 	 * </pre>
-	 * @param str
+	 *
+	 * @param cs
 	 * @return
 	 */
-	public static boolean isNotBlank(String str) {
-		return StringUtils.isNotBlank(str);
+	public static boolean isNotBlank(final CharSequence cs) {
+		return !isBlank(cs);
 	}
 
-	public static boolean isBlank(String str) {
-		return StringUtils.isBlank(str);
+	/**
+	 * 复制自 org.apache.commons.lang3.StringUtils#isBlank(java.lang.CharSequence)
+	 * <p>Checks if a CharSequence is empty (""), null or whitespace only.</p>
+	 * <p>Whitespace is defined by {@link Character#isWhitespace(char)}.</p>
+	 * <pre>
+	 * StringUtils.isBlank(null)      = true
+	 * StringUtils.isBlank("")        = true
+	 * StringUtils.isBlank(" ")       = true
+	 * StringUtils.isBlank("bob")     = false
+	 * StringUtils.isBlank("  bob  ") = false
+	 * </pre>
+	 *
+	 * @param cs the CharSequence to check, may be null
+	 * @return {@code true} if the CharSequence is null, empty or whitespace only
+	 * @since 2.0
+	 * @since 3.0 Changed signature from isBlank(String) to isBlank(CharSequence)
+	 */
+	public static boolean isBlank(final CharSequence cs) {
+		final int strLen = length(cs);
+		if (strLen == 0) {
+			return true;
+		}
+		for (int i = 0; i < strLen; i++) {
+			if (!Character.isWhitespace(cs.charAt(i))) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * 复制自 org.apache.commons.lang3.StringUtils#length(java.lang.CharSequence)
+	 *
+	 * @param cs
+	 * @return
+	 */
+	public static int length(final CharSequence cs) {
+		return cs == null ? 0 : cs.length();
 	}
 
 }
