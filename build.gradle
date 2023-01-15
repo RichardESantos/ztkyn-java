@@ -1,0 +1,89 @@
+buildscript {
+	repositories {
+		maven {
+			url "https://plugins.gradle.org/m2/"
+		}
+	}
+	dependencies {
+		classpath "io.spring.javaformat:spring-javaformat-gradle-plugin:0.0.27"
+	}
+}
+
+plugins {
+	id 'java'
+}
+
+allprojects {
+	// 指定需要的插件
+	// 指定语言
+	apply plugin: 'java'
+	//指定编辑器
+	apply plugin: 'idea'
+	// 指定代码格式化插件
+	apply plugin: "io.spring.javaformat"
+	group 'org.gitee.ztkyn'
+	version '1.0-SNAPSHOT'
+
+	//指定JDK版本
+	sourceCompatibility = JavaVersion.VERSION_17
+	targetCompatibility = JavaVersion.VERSION_17
+
+	//指定编码格式
+	[compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
+
+	repositories {
+		maven {
+			url 'https://repo.huaweicloud.com/repository/maven/'
+		}
+		maven {
+			url 'https://maven.aliyun.com/repository/public'
+		}
+		maven {
+			url 'https://maven.aliyun.com/repository/jcenter'
+		}
+		maven {
+			url 'https://maven.aliyun.com/repository/spring'
+		}
+		maven {
+			url 'https://maven.aliyun.com/repository/spring-plugin'
+		}
+		maven {
+			url 'https://maven.aliyun.com/repository/gradle-plugin'
+		}
+		maven {
+			url 'https://maven.aliyun.com/repository/google'
+		}
+		maven {
+			url 'https://maven.aliyun.com/repository/grails-core'
+		}
+		maven {
+			url 'https://maven.aliyun.com/repository/apache-snapshots'
+		}
+		mavenCentral()
+	}
+
+	// 配置全局依赖版本信息
+	ext {
+		junitVersion = '5.9.2'
+		lombokVersion = '1.18.24'
+	}
+
+	//配置子模块依赖
+	dependencies {
+
+		compileOnly "org.projectlombok:lombok:${lombokVersion}"
+
+		annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
+
+
+		testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
+		testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+	}
+
+
+}
+
+
+test {
+	useJUnitPlatform()
+}

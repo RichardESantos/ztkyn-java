@@ -1,0 +1,18 @@
+plugins {
+	id 'java'
+}
+
+ext {
+	hutoolVersion = '5.8.11'
+}
+
+dependencies {
+	implementation("cn.hutool:hutool-system:${hutoolVersion}")
+	implementation("cn.hutool:hutool-setting:${hutoolVersion}")
+	implementation("cn.hutool:hutool-script:${hutoolVersion}")
+	implementation("cn.hutool:hutool-crypto:${hutoolVersion}")
+}
+
+test {
+	useJUnitPlatform()
+}

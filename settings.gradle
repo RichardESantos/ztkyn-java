@@ -1,0 +1,9 @@
+rootProject.name = 'ztkyn-java'
+include 'ztkyn-core'
+include 'ztkyn-extra:ztkyn-guava'
+findProject(':ztkyn-extra:ztkyn-guava')?.name = 'ztkyn-guava'
+include 'ztkyn-extra:ztkyn-hutool'
+findProject(':ztkyn-extra:ztkyn-hutool')?.name = 'ztkyn-hutool'
+include 'ztkyn-spring:ztkyn-spring-starter'
+findProject(':ztkyn-spring:ztkyn-spring-starter')?.name = 'ztkyn-spring-starter'
+
