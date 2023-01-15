@@ -16,7 +16,7 @@ plugins {
 allprojects {
 	// 指定需要的插件
 	// 指定语言
-	apply plugin: 'java'
+	apply plugin: 'java-library'
 	//指定编辑器
 	apply plugin: 'idea'
 	// 指定代码格式化插件

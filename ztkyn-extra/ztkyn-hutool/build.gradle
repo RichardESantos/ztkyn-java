@@ -7,10 +7,10 @@ ext {
 }
 
 dependencies {
-	implementation("cn.hutool:hutool-system:${hutoolVersion}")
-	implementation("cn.hutool:hutool-setting:${hutoolVersion}")
-	implementation("cn.hutool:hutool-script:${hutoolVersion}")
-	implementation("cn.hutool:hutool-crypto:${hutoolVersion}")
+	api("cn.hutool:hutool-system:${hutoolVersion}")
+	api("cn.hutool:hutool-setting:${hutoolVersion}")
+	api("cn.hutool:hutool-script:${hutoolVersion}")
+	api("cn.hutool:hutool-crypto:${hutoolVersion}")
 }
 
 test {

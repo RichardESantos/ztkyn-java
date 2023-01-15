@@ -4,9 +4,9 @@ plugins {
 
 
 dependencies {
-	implementation(project(":ztkyn-core"))
-	implementation(project(":ztkyn-extra:ztkyn-guava"))
-	implementation(project(":ztkyn-extra:ztkyn-hutool"))
+	api(project(":ztkyn-core"))
+	api(project(":ztkyn-extra:ztkyn-guava"))
+	api(project(":ztkyn-extra:ztkyn-hutool"))
 }
 
 test {
