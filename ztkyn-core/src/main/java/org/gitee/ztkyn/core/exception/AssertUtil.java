@@ -4,15 +4,15 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 
+import org.gitee.ztkyn.core.colleciton.CollectionUtil;
 import org.gitee.ztkyn.core.function.DataProcessHandler;
+import org.gitee.ztkyn.core.string.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * @author whty
  * @version 1.0
- * @description 数据断言工具类
- * @date 2022/11/7 11:27
  */
 public class AssertUtil {
 
@@ -20,6 +20,7 @@ public class AssertUtil {
 
 	/**
 	 * 判断对象 ！=null
+	 *
 	 * @param obj
 	 * @param errorMsg
 	 */
@@ -29,6 +30,7 @@ public class AssertUtil {
 
 	/**
 	 * 判断对象 == null
+	 *
 	 * @param obj
 	 * @param errorMsg
 	 */
@@ -38,6 +40,7 @@ public class AssertUtil {
 
 	/**
 	 * 判断字符串不能为null ，且内容不能为空
+	 *
 	 * @param str
 	 * @param errorMsg
 	 */
@@ -47,6 +50,7 @@ public class AssertUtil {
 
 	/**
 	 * 判断字符串为null ，或内容为空
+	 *
 	 * @param str
 	 * @param errorMsg
 	 */
@@ -56,6 +60,7 @@ public class AssertUtil {
 
 	/**
 	 * 判断集合不能为null ，且内容不能为空
+	 *
 	 * @param collection
 	 * @param errorMsg
 	 */
@@ -65,6 +70,7 @@ public class AssertUtil {
 
 	/**
 	 * 判断集合为null ，或内容为空
+	 *
 	 * @param collection
 	 * @param errorMsg
 	 * @param <T>
@@ -75,6 +81,7 @@ public class AssertUtil {
 
 	/**
 	 * 判断map不能为null ，且内容不能为空
+	 *
 	 * @param map
 	 * @param errorMsg
 	 */
@@ -84,6 +91,7 @@ public class AssertUtil {
 
 	/**
 	 * 判断集合为null ，或内容为空
+	 *
 	 * @param map
 	 * @param errorMsg
 	 * @param <K>

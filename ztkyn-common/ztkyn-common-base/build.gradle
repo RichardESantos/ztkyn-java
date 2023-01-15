@@ -1,0 +1,14 @@
+plugins {
+	id 'java'
+}
+
+
+dependencies {
+	implementation(project(":ztkyn-core"))
+	implementation(project(":ztkyn-extra:ztkyn-guava"))
+	implementation(project(":ztkyn-extra:ztkyn-hutool"))
+}
+
+test {
+	useJUnitPlatform()
+}
