@@ -16,11 +16,11 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SwaggerConfiguration {
+
 	private static final Logger logger = LoggerFactory.getLogger(SwaggerConfiguration.class);
 
 	/**
 	 * 根据@Tag 上的排序，写入x-order
-	 *
 	 * @return the global open api customizer
 	 */
 	@Bean
@@ -43,14 +43,10 @@ public class SwaggerConfiguration {
 
 	@Bean
 	public OpenAPI customOpenAPI() {
-		return new OpenAPI()
-				.info(new Info()
-						.title("XXX用户系统API")
-						.version("1.0")
+		return new OpenAPI().info(new Info().title("XXX用户系统API").version("1.0")
 
-						.description("Knife4j集成springdoc-openapi示例")
-						.termsOfService("http://doc.xiaominfo.com")
-						.license(new License().name("Apache 2.0")
-								.url("http://doc.xiaominfo.com")));
+				.description("Knife4j集成springdoc-openapi示例").termsOfService("http://doc.xiaominfo.com")
+				.license(new License().name("Apache 2.0").url("http://doc.xiaominfo.com")));
 	}
+
 }

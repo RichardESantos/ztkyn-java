@@ -19,7 +19,6 @@ public class StringUtil {
 
 	/**
 	 * 驼峰转下划线,最后转为大写
-	 *
 	 * @param str
 	 * @return
 	 */
@@ -35,7 +34,6 @@ public class StringUtil {
 
 	/**
 	 * 字符串拼接
-	 *
 	 * @param args
 	 * @return
 	 */
@@ -49,7 +47,6 @@ public class StringUtil {
 
 	/**
 	 * 去掉字符串中的空格
-	 *
 	 * @param charSequence
 	 * @return
 	 */
@@ -66,7 +63,6 @@ public class StringUtil {
 
 	/**
 	 * 数字拼接成字符串
-	 *
 	 * @param splitChar
 	 * @param args
 	 * @return
@@ -94,7 +90,6 @@ public class StringUtil {
 	 * StringUtils.isNotBlank("bob")     = true
 	 * StringUtils.isNotBlank("  bob  ") = true
 	 * </pre>
-	 *
 	 * @param cs
 	 * @return
 	 */
@@ -104,8 +99,12 @@ public class StringUtil {
 
 	/**
 	 * 复制自 org.apache.commons.lang3.StringUtils#isBlank(java.lang.CharSequence)
-	 * <p>Checks if a CharSequence is empty (""), null or whitespace only.</p>
-	 * <p>Whitespace is defined by {@link Character#isWhitespace(char)}.</p>
+	 * <p>
+	 * Checks if a CharSequence is empty (""), null or whitespace only.
+	 * </p>
+	 * <p>
+	 * Whitespace is defined by {@link Character#isWhitespace(char)}.
+	 * </p>
 	 * <pre>
 	 * StringUtils.isBlank(null)      = true
 	 * StringUtils.isBlank("")        = true
@@ -113,7 +112,6 @@ public class StringUtil {
 	 * StringUtils.isBlank("bob")     = false
 	 * StringUtils.isBlank("  bob  ") = false
 	 * </pre>
-	 *
 	 * @param cs the CharSequence to check, may be null
 	 * @return {@code true} if the CharSequence is null, empty or whitespace only
 	 * @since 2.0
@@ -134,7 +132,6 @@ public class StringUtil {
 
 	/**
 	 * 复制自 org.apache.commons.lang3.StringUtils#length(java.lang.CharSequence)
-	 *
 	 * @param cs
 	 * @return
 	 */

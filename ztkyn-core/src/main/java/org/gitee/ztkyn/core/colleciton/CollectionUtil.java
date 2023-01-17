@@ -38,7 +38,6 @@ public class CollectionUtil {
 
 	/**
 	 * 判断集合不能为空
-	 *
 	 * @param collection
 	 * @param <T>
 	 * @return
@@ -49,7 +48,6 @@ public class CollectionUtil {
 
 	/**
 	 * 判断集合是否为空
-	 *
 	 * @param collection
 	 * @param <T>
 	 * @return
@@ -60,7 +58,6 @@ public class CollectionUtil {
 
 	/**
 	 * 判断 map 不能为空
-	 *
 	 * @param map
 	 * @return
 	 */
@@ -70,7 +67,6 @@ public class CollectionUtil {
 
 	/**
 	 * 判断 map 为空
-	 *
 	 * @param map
 	 * @return
 	 */
@@ -80,7 +76,6 @@ public class CollectionUtil {
 
 	/**
 	 * 比较两个 集合 中的元素是否完全一致（数量，内容同时一致），支持两个集合不是同类型
-	 *
 	 * @param first
 	 * @param second
 	 * @param <T>
@@ -97,15 +92,15 @@ public class CollectionUtil {
 		}
 	}
 
-//	/**
-//	 * list 切片
-//	 * @param list
-//	 * @param length
-//	 * @return
-//	 * @param <T>
-//	 */
-//	public static <T> List<List<T>> partition(List<T> list, int length) {
-//		return Lists.partition(list, length);
-//	}
+	// /**
+	// * list 切片
+	// * @param list
+	// * @param length
+	// * @return
+	// * @param <T>
+	// */
+	// public static <T> List<List<T>> partition(List<T> list, int length) {
+	// return Lists.partition(list, length);
+	// }
 
 }

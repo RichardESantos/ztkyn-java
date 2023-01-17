@@ -15,6 +15,8 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-cache")
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-test")
+	implementation("org.springframework.boot:spring-boot-starter-undertow")
+
 
 	implementation("com.github.xiaoymin:knife4j-openapi3-jakarta-spring-boot-starter:4.0.0")
 

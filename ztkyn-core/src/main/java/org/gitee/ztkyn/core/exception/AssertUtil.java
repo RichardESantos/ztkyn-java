@@ -20,7 +20,6 @@ public class AssertUtil {
 
 	/**
 	 * 判断对象 ！=null
-	 *
 	 * @param obj
 	 * @param errorMsg
 	 */
@@ -30,7 +29,6 @@ public class AssertUtil {
 
 	/**
 	 * 判断对象 == null
-	 *
 	 * @param obj
 	 * @param errorMsg
 	 */
@@ -40,7 +38,6 @@ public class AssertUtil {
 
 	/**
 	 * 判断字符串不能为null ，且内容不能为空
-	 *
 	 * @param str
 	 * @param errorMsg
 	 */
@@ -50,7 +47,6 @@ public class AssertUtil {
 
 	/**
 	 * 判断字符串为null ，或内容为空
-	 *
 	 * @param str
 	 * @param errorMsg
 	 */
@@ -60,7 +56,6 @@ public class AssertUtil {
 
 	/**
 	 * 判断集合不能为null ，且内容不能为空
-	 *
 	 * @param collection
 	 * @param errorMsg
 	 */
@@ -70,7 +65,6 @@ public class AssertUtil {
 
 	/**
 	 * 判断集合为null ，或内容为空
-	 *
 	 * @param collection
 	 * @param errorMsg
 	 * @param <T>
@@ -81,7 +75,6 @@ public class AssertUtil {
 
 	/**
 	 * 判断map不能为null ，且内容不能为空
-	 *
 	 * @param map
 	 * @param errorMsg
 	 */
@@ -91,7 +84,6 @@ public class AssertUtil {
 
 	/**
 	 * 判断集合为null ，或内容为空
-	 *
 	 * @param map
 	 * @param errorMsg
 	 * @param <K>

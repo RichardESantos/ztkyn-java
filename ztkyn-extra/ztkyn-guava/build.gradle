@@ -1,12 +1,12 @@
 plugins {
-    id 'java'
+	id 'java'
 }
 
 
 dependencies {
-	implementation("com.google.guava:guava:31.1-jre")
+	api("com.google.guava:guava:31.1-jre")
 }
 
 test {
-    useJUnitPlatform()
+	useJUnitPlatform()
 }
