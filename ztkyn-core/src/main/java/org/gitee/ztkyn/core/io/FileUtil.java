@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @author whty
  * @version 1.0
- * @description
+ * @description 文件工具类
  * @date 2023/1/16 13:15
  */
 public class FileUtil {
@@ -50,6 +50,32 @@ public class FileUtil {
 		return readAllLines(Paths.get(path).toFile(), charset);
 	}
 
+	public static void readUTF8Lines(File file, Consumer<String> consumer) {
+		readLines(file, UTF8, consumer);
+	}
+
+	/**
+	 * 检车文件是否能正常读取
+	 * @param file
+	 * @return
+	 */
+	public static boolean checkFileAccessError(File file) {
+		String path = file.getAbsolutePath();
+		if (!file.exists()) {
+			logger.warn("文件读取失败，【{}】文件不存在", path);
+			return true;
+		}
+		if (!file.isFile()) {
+			logger.warn("文件读取失败，【{}】不是文件", path);
+			return true;
+		}
+		if (!file.canRead()) {
+			logger.warn("文件读取失败，【{}】权限不足", path);
+			return true;
+		}
+		return false;
+	}
+
 	/**
 	 * 以指定的编码格式读取文本内容，编码与文本本身的编码格式不一致也没有问题，
 	 * 不论源码文件是什么格式，同样的字符串，最后得到的unicode字节数组是完全一致的，显示的时候，也是转成GBK来显示（跟OS环境有关）
@@ -58,18 +84,7 @@ public class FileUtil {
 	 * @return
 	 */
 	public static List<String> readAllLines(File file, Charset charset) {
-		if (!file.exists()) {
-			logger.warn("文件读取失败，【{}】文件不存在", file.getAbsolutePath());
-			return new ArrayList<>();
-		}
-		if (!file.isFile()) {
-			logger.warn("文件读取失败，【{}】不是文件", file.getAbsolutePath());
-			return new ArrayList<>();
-		}
-		if (!file.canRead()) {
-			logger.warn("文件读取失败，【{}】权限不足", file.getAbsolutePath());
-			return new ArrayList<>();
-		}
+		if (checkFileAccessError(file)) return new ArrayList<>();
 		try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file, charset))) {
 			List<String> lineList = new ArrayList<>();
 			String line = null;
@@ -93,18 +108,7 @@ public class FileUtil {
 	 * @param consumer
 	 */
 	public static void readLines(File file, Charset charset, Consumer<String> consumer) {
-		if (!file.exists()) {
-			logger.warn("文件读取失败，【{}】文件不存在", file.getAbsolutePath());
-			return;
-		}
-		if (!file.isFile()) {
-			logger.warn("文件读取失败，【{}】不是文件", file.getAbsolutePath());
-			return;
-		}
-		if (!file.canRead()) {
-			logger.warn("文件读取失败，【{}】权限不足", file.getAbsolutePath());
-			return;
-		}
+		if (checkFileAccessError(file)) return;
 		try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file, charset))) {
 			String line = null;
 			while ((line = bufferedReader.readLine()) != null) {
