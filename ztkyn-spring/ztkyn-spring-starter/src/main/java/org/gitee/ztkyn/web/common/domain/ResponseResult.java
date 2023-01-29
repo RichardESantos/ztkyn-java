@@ -36,6 +36,10 @@ public class ResponseResult<T> implements Serializable {
 	 */
 	private T data;
 
+	public static <T> ResponseResult<T> success() {
+		return new ResponseResult<>(ResultEnum.SUCCESS.getCode(), ResultEnum.SUCCESS.getMessage(), null);
+	}
+
 	public static <T> ResponseResult<T> success(T data) {
 		return new ResponseResult<>(ResultEnum.SUCCESS.getCode(), ResultEnum.SUCCESS.getMessage(), data);
 	}
