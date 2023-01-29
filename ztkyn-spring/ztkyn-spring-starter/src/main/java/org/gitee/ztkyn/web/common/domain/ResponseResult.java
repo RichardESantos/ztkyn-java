@@ -18,12 +18,22 @@ import org.slf4j.LoggerFactory;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseResult<T> implements Serializable {
+
 	private static final Logger logger = LoggerFactory.getLogger(ResponseResult.class);
 
+	/**
+	 * 返回编码
+	 */
 	private Integer code;
 
-	private String message;
+	/**
+	 * 编码描述
+	 */
+	private String msg;
 
+	/**
+	 * 业务数据
+	 */
 	private T data;
 
 	public static <T> ResponseResult<T> success(T data) {
@@ -54,21 +64,22 @@ public class ResponseResult<T> implements Serializable {
 		return new ResponseResult<>(code, message, data);
 	}
 
-	//定义返回数据结构
+	// 定义返回数据结构
 	public interface IResult {
+
 		Integer getCode();
 
 		String getMessage();
+
 	}
 
 	/**
 	 * 常用结果的枚举
 	 */
 	public enum ResultEnum implements IResult {
-		SUCCESS(2001, "接口调用成功"),
-		VALIDATE_FAILED(2002, "参数校验失败"),
-		COMMON_FAILED(2003, "接口调用失败"),
-		FORBIDDEN(2004, "没有权限访问资源");
+
+		SUCCESS(2001, "接口调用成功"), VALIDATE_FAILED(2002, "参数校验失败"), COMMON_FAILED(2003, "接口调用失败"), FORBIDDEN(2004,
+				"没有权限访问资源");
 
 		private final Integer code;
 
@@ -88,5 +99,7 @@ public class ResponseResult<T> implements Serializable {
 		public String getMessage() {
 			return message;
 		}
+
 	}
+
 }

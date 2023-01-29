@@ -1,18 +1,20 @@
 package org.gitee.ztkyn.web.common.config;
 
+import java.util.Objects;
+
 import org.gitee.ztkyn.common.base.JacksonUtil;
 import org.gitee.ztkyn.web.common.domain.ResponseResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.core.MethodParameter;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -20,18 +22,19 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 /**
  * @author whty
  * @version 1.0
- * @description controller 统一返回结构
- * @date 2023/1/29 14:07
+ * @description RestController 统一返回结构
+ * @date 2023/1/18 15:07
  */
-@ControllerAdvice(annotations = Controller.class)
-public class ResponseAdvice implements ResponseBodyAdvice<Object> {
+@RestControllerAdvice(annotations = RestController.class)
+public class RestResponseAdvice implements ResponseBodyAdvice<Object> {
 
-	private static final Logger logger = LoggerFactory.getLogger(ResponseAdvice.class);
+	private static final Logger logger = LoggerFactory.getLogger(RestResponseAdvice.class);
 
 	@Override
 	public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
-		// 如果不需要进行封装的，可以添加一些校验手段，比如添加标记排除的注解
-		return returnType.hasMethodAnnotation(ResponseBody.class) && returnType.hasMethodAnnotation(RestResponse.class);
+		// 判断所在controller是否包含指定注解，或者方法包含指定注解
+		RestResponse annotation = AnnotationUtils.findAnnotation(returnType.getDeclaringClass(), RestResponse.class);
+		return returnType.hasMethodAnnotation(RestResponse.class) || Objects.nonNull(annotation);
 	}
 
 	@Override

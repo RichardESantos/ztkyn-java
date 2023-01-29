@@ -7,6 +7,10 @@ dependencies {
 	api(project(":ztkyn-core"))
 	api(project(":ztkyn-extra:ztkyn-guava"))
 	api(project(":ztkyn-extra:ztkyn-hutool"))
+
+	api("com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}")
+	api("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonVersion}")
+
 }
 
 test {

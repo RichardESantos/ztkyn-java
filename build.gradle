@@ -66,6 +66,7 @@ allprojects {
 	ext {
 		junitVersion = '5.9.2'
 		lombokVersion = '1.18.24'
+		jacksonVersion = '2.14.1'
 	}
 
 	//配置子模块依赖

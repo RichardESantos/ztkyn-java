@@ -10,9 +10,11 @@ import org.slf4j.LoggerFactory;
  * @date 2023/1/18 15:22
  */
 public class BusinessException extends RuntimeException {
+
 	private static final Logger logger = LoggerFactory.getLogger(BusinessException.class);
 
 	public BusinessException(String message) {
 		super(message);
 	}
+
 }

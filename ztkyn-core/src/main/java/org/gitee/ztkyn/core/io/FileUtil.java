@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
  * @date 2023/1/16 13:15
  */
 public class FileUtil {
+
 	private static final Logger logger = LoggerFactory.getLogger(FileUtil.class);
 
 	/**
@@ -84,7 +85,8 @@ public class FileUtil {
 	 * @return
 	 */
 	public static List<String> readAllLines(File file, Charset charset) {
-		if (checkFileAccessError(file)) return new ArrayList<>();
+		if (checkFileAccessError(file))
+			return new ArrayList<>();
 		try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file, charset))) {
 			List<String> lineList = new ArrayList<>();
 			String line = null;
@@ -100,15 +102,15 @@ public class FileUtil {
 	}
 
 	/**
-	 * 以指定的编码格式读取文本内容，采用边读取边消费的模式，减少内存占用
-	 * 编码与文本本身的编码格式不一致也没有问题，
+	 * 以指定的编码格式读取文本内容，采用边读取边消费的模式，减少内存占用 编码与文本本身的编码格式不一致也没有问题，
 	 * 不论源码文件是什么格式，同样的字符串，最后得到的unicode字节数组是完全一致的，显示的时候，也是转成GBK来显示（跟OS环境有关）
 	 * @param file
 	 * @param charset
 	 * @param consumer
 	 */
 	public static void readLines(File file, Charset charset, Consumer<String> consumer) {
-		if (checkFileAccessError(file)) return;
+		if (checkFileAccessError(file))
+			return;
 		try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file, charset))) {
 			String line = null;
 			while ((line = bufferedReader.readLine()) != null) {
@@ -130,4 +132,5 @@ public class FileUtil {
 		return new String(str.getBytes(charset), charset);
 
 	}
+
 }

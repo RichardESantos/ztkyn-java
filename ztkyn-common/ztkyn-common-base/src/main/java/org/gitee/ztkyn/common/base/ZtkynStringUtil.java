@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
  * @date 2023/1/16 9:38
  */
 public class ZtkynStringUtil {
+
 	private static final Logger logger = LoggerFactory.getLogger(ZtkynStringUtil.class);
 
 	public static boolean isNotBlank(final CharSequence charSequence) {

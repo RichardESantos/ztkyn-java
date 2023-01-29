@@ -9,10 +9,12 @@ import org.slf4j.LoggerFactory;
  * @description
  * @date 2023/1/18 15:22
  */
-public class ForbiddenException extends RuntimeException{
+public class ForbiddenException extends RuntimeException {
+
 	private static final Logger logger = LoggerFactory.getLogger(ForbiddenException.class);
 
 	public ForbiddenException(String message) {
 		super(message);
 	}
+
 }
