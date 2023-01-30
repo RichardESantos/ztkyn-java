@@ -67,6 +67,7 @@ allprojects {
 		junitVersion = '5.9.2'
 		lombokVersion = '1.18.24'
 		jacksonVersion = '2.14.1'
+		caffeineVersion = '3.1.2'
 	}
 
 	//配置子模块依赖
@@ -79,6 +80,9 @@ allprojects {
 
 		testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
 		testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+	}
+
+	format {
 	}
 
 

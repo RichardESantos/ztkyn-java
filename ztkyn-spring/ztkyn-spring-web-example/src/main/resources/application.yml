@@ -11,3 +11,11 @@ spring:
 springdoc:
   swagger-ui:
     enabled: true
+
+# 自定义配置
+ztkyn:
+  cache:
+    caffeineList:
+      - name: USER
+        maxSize: 100
+        expireDuration: 10
