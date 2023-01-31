@@ -6,6 +6,7 @@ import org.gitee.ztkyn.web.common.domain.ResponseResult;
 import org.gitee.ztkyn.web.common.domain.ResponseResult.ResultEnum;
 import org.gitee.ztkyn.web.common.exception.BusinessException;
 import org.gitee.ztkyn.web.common.exception.ForbiddenException;
+import org.gitee.ztkyn.web.common.exception.RequestLimitException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,15 +15,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
  * @author whty
  * @version 1.0
- * @description
- * @date 2023/1/29 13:59
  */
 @RestControllerAdvice(annotations = { RestController.class, Controller.class })
 public class GlobalExceptionHandler {
@@ -35,6 +33,15 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler({ BusinessException.class })
 	public ResponseResult<?> handleBusinessException(BusinessException ex) {
 		logger.error("业务异常", ex);
+		return ResponseResult.failed(ex.getMessage());
+	}
+
+	/**
+	 * 捕获 {@code RequestLimitException} 异常
+	 */
+	@ExceptionHandler({ RequestLimitException.class })
+	public ResponseResult<?> handleRequestLimitException(RequestLimitException ex) {
+		// logger.warn("触发接口限流逻辑", ex);
 		return ResponseResult.failed(ex.getMessage());
 	}
 

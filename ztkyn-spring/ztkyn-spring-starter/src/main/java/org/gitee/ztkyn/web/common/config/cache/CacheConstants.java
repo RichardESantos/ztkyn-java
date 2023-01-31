@@ -31,4 +31,5 @@ public class CacheConstants {
 	 * 默认缓存名称
 	 */
 	public static final String DEFAULT_CACHE = "DEFAULT:CACHE";
+
 }

@@ -13,11 +13,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 总结
- * 上述一些策略在创建时都可以进行自由组合，一般情况下有两种方法
- * 设置 maxSize、refreshAfterWrite，不设置 expireAfterWrite/expireAfterAccess
- * 设置expireAfterWrite当缓存过期时会同步加锁获取缓存，所以设置expireAfterWrite时性能较好，但是某些时候会取旧数据,适合允许取到旧数据的场景
- * 设置 maxSize、expireAfterWrite/expireAfterAccess，不设置 refreshAfterWrite
+ * 总结 上述一些策略在创建时都可以进行自由组合，一般情况下有两种方法 设置 maxSize、refreshAfterWrite，不设置
+ * expireAfterWrite/expireAfterAccess
+ * 设置expireAfterWrite当缓存过期时会同步加锁获取缓存，所以设置expireAfterWrite时性能较好，但是某些时候会取旧数据,适合允许取到旧数据的场景 设置
+ * maxSize、expireAfterWrite/expireAfterAccess，不设置 refreshAfterWrite
  * 数据一致性好，不会获取到旧数据，但是性能没那么好（对比起来），适合获取数据时不耗时的场景
  *
  * @author whty
@@ -28,11 +27,9 @@ public class CaffeineCreateTest {
 	private static final Logger logger = LoggerFactory.getLogger(CaffeineCreateTest.class);
 
 	/**
-	 * 手动创建
-	 * 最普通的一种缓存，无需指定加载方式，需要手动调用put()进行加载。需要注意的是put()方法对于已存在的key将进行覆盖，
-	 * 这点和Map的表现是一致的。在获取缓存值时，如果想要在缓存值不存在时，原子地将值写入缓存，则可以调用get(key,
-	 * k -> value)方法，该方法将避免写入竞争。调用invalidate()方法，将手动移除缓存。
-	 * 在多线程情况下，当使用get(key, k ->
+	 * 手动创建 最普通的一种缓存，无需指定加载方式，需要手动调用put()进行加载。需要注意的是put()方法对于已存在的key将进行覆盖，
+	 * 这点和Map的表现是一致的。在获取缓存值时，如果想要在缓存值不存在时，原子地将值写入缓存，则可以调用get(key, k ->
+	 * value)方法，该方法将避免写入竞争。调用invalidate()方法，将手动移除缓存。 在多线程情况下，当使用get(key, k ->
 	 * value)时，如果有另一个线程同时调用本方法进行竞争，则后一线程会被阻塞，直到前一线程更新缓存完成；
 	 * 而若另一线程调用getIfPresent()方法，则会立即返回null，不会被阻塞。
 	 */
@@ -80,8 +77,7 @@ public class CaffeineCreateTest {
 	/**
 	 * AsyncCache是Cache的一个变体，其响应结果均为CompletableFuture，通过这种方式，AsyncCache对异步编程模式进行了适配。
 	 * 默认情况下，缓存计算使用ForkJoinPool.commonPool()作为线程池，如果想要指定线程池，则可以覆盖并实现Caffeine.executor(Executor)方法。
-	 * synchronous()提供了阻塞直到异步缓存生成完毕的能力，它将以Cache进行返回。
-	 * 在多线程情况下，当两个线程同时调用get(key, k ->
+	 * synchronous()提供了阻塞直到异步缓存生成完毕的能力，它将以Cache进行返回。 在多线程情况下，当两个线程同时调用get(key, k ->
 	 * value)，则会返回同一个CompletableFuture对象。由于返回结果本身不进行阻塞，可以根据业务设计自行选择阻塞等待或者非阻塞。
 	 */
 	@Test
@@ -108,12 +104,11 @@ public class CaffeineCreateTest {
 
 	@Test
 	public void refreshAfterWriteTest() throws InterruptedException {
-		LoadingCache<Integer, Integer> cache = Caffeine.newBuilder()
-				.refreshAfterWrite(1, TimeUnit.SECONDS)
-				//模拟获取数据，每次获取就自增1
+		LoadingCache<Integer, Integer> cache = Caffeine.newBuilder().refreshAfterWrite(1, TimeUnit.SECONDS)
+				// 模拟获取数据，每次获取就自增1
 				.build(integer -> ++NUM);
 
-		//获取ID=1的值，由于缓存里还没有，所以会自动放入缓存
+		// 获取ID=1的值，由于缓存里还没有，所以会自动放入缓存
 		System.out.println(cache.get(1));// 1
 
 		// 延迟2秒后，理论上自动刷新缓存后取到的值是2
@@ -122,7 +117,7 @@ public class CaffeineCreateTest {
 		Thread.sleep(2000);
 		System.out.println(cache.getIfPresent(1));// 1
 
-		//此时才会刷新缓存，而第一次拿到的还是旧值
+		// 此时才会刷新缓存，而第一次拿到的还是旧值
 		System.out.println(cache.getIfPresent(1));// 2
 	}
 
@@ -131,35 +126,24 @@ public class CaffeineCreateTest {
 	 */
 	public void recordStatsTest() {
 		LoadingCache<String, String> cache = Caffeine.newBuilder()
-				//创建缓存或者最近一次更新缓存后经过指定时间间隔，刷新缓存；refreshAfterWrite仅支持LoadingCache
-				.refreshAfterWrite(1, TimeUnit.SECONDS)
-				.expireAfterWrite(1, TimeUnit.SECONDS)
-				.expireAfterAccess(1, TimeUnit.SECONDS)
-				.maximumSize(10)
-				//开启记录缓存命中率等信息
+				// 创建缓存或者最近一次更新缓存后经过指定时间间隔，刷新缓存；refreshAfterWrite仅支持LoadingCache
+				.refreshAfterWrite(1, TimeUnit.SECONDS).expireAfterWrite(1, TimeUnit.SECONDS)
+				.expireAfterAccess(1, TimeUnit.SECONDS).maximumSize(10)
+				// 开启记录缓存命中率等信息
 				.recordStats()
-				//根据key查询数据库里面的值
+				// 根据key查询数据库里面的值
 				.build(key -> {
 					Thread.sleep(1000);
 					return new Date().toString();
 				});
 
-
 		cache.put("1", "shawn");
 		cache.get("1");
 
 		/*
-		 * hitCount :命中的次数
-		 * missCount:未命中次数
-		 * requestCount:请求次数
-		 * hitRate:命中率
-		 * missRate:丢失率
-		 * loadSuccessCount:成功加载新值的次数
-		 * loadExceptionCount:失败加载新值的次数
-		 * totalLoadCount:总条数
-		 * loadExceptionRate:失败加载新值的比率
-		 * totalLoadTime:全部加载时间
-		 * evictionCount:丢失的条数
+		 * hitCount :命中的次数 missCount:未命中次数 requestCount:请求次数 hitRate:命中率 missRate:丢失率
+		 * loadSuccessCount:成功加载新值的次数 loadExceptionCount:失败加载新值的次数 totalLoadCount:总条数
+		 * loadExceptionRate:失败加载新值的比率 totalLoadTime:全部加载时间 evictionCount:丢失的条数
 		 */
 		System.out.println(cache.stats());
 	}

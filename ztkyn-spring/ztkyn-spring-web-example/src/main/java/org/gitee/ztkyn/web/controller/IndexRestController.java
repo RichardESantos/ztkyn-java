@@ -1,5 +1,7 @@
 package org.gitee.ztkyn.web.controller;
 
+import java.util.concurrent.TimeUnit;
+
 import cn.hutool.core.lang.id.NanoId;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -11,6 +13,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import org.gitee.ztkyn.web.common.config.RestResponse;
+import org.gitee.ztkyn.web.common.config.limit.RequestLimit;
 import org.gitee.ztkyn.web.common.config.validation.Update;
 import org.gitee.ztkyn.web.common.domain.ResponseResult;
 import org.gitee.ztkyn.web.domain.example.UserDTO;
@@ -56,7 +59,6 @@ public class IndexRestController {
 
 	/**
 	 * // @PathVariable 参数校验
-	 *
 	 * @param num
 	 * @return
 	 */
@@ -69,7 +71,6 @@ public class IndexRestController {
 
 	/**
 	 * // @RequestParam 参数校验
-	 *
 	 * @param email
 	 * @return
 	 */
@@ -99,7 +100,6 @@ public class IndexRestController {
 
 	/**
 	 * 分组校验
-	 *
 	 * @param userDTO
 	 * @return
 	 */
@@ -113,13 +113,11 @@ public class IndexRestController {
 	/**
 	 * //@Cacheable：表示该方法支持缓存。当调用被注解的方法时，如果对应的键已经存在缓存，则不再执行方法体，而从缓存中直接返回。
 	 * 当方法返回null时，将不进行缓存操作。cacheNames 对应的缓存必须存在，否则会报异常
-	 * //@CachePut：表示执行该方法后，其值将作为最新结果更新到缓存中，每次都会执行该方法。
-	 * //@CacheEvict：表示执行该方法后，将触发缓存清除操作。
+	 * //@CachePut：表示执行该方法后，其值将作为最新结果更新到缓存中，每次都会执行该方法。 //@CacheEvict：表示执行该方法后，将触发缓存清除操作。
 	 * //@Caching：用于组合前三个注解，例如：
 	 */
 	/**
 	 * 使用缓存
-	 *
 	 * @param requestId
 	 * @return
 	 */
@@ -132,7 +130,6 @@ public class IndexRestController {
 
 	/**
 	 * 测试在非接口层进行缓存操作--使用缓存
-	 *
 	 * @param requestId
 	 * @return
 	 */
@@ -144,7 +141,6 @@ public class IndexRestController {
 
 	/**
 	 * 清除缓存
-	 *
 	 * @param requestId
 	 * @return
 	 */
@@ -157,7 +153,6 @@ public class IndexRestController {
 
 	/**
 	 * 测试在非接口层进行缓存操作--清除缓存
-	 *
 	 * @param requestId
 	 * @return
 	 */
@@ -166,6 +161,29 @@ public class IndexRestController {
 	public ResponseResult<?> removeNumWithService(Integer requestId) {
 		indexService.testCacheEvict(requestId);
 		return ResponseResult.success();
+	}
+
+	/**
+	 * 测试单机限流
+	 * @return
+	 */
+	@GetMapping("/test2")
+	@RequestLimit(key = "limit2", permitsPerSecond = 1, timeout = 500, timeunit = TimeUnit.MILLISECONDS,
+			msg = "当前排队人数较多，请稍后再试！")
+	public String limit2() {
+		logger.info("令牌桶limit2获取令牌成功");
+		return "ok";
+	}
+
+	/**
+	 * 测试单机限流
+	 * @return
+	 */
+	@GetMapping("/test3")
+	@RequestLimit(permitsPerSecond = 2, timeout = 500, timeunit = TimeUnit.MILLISECONDS, msg = "系统繁忙，请稍后再试！")
+	public String limit3() {
+		logger.info("令牌桶limit3获取令牌成功");
+		return "ok";
 	}
 
 }

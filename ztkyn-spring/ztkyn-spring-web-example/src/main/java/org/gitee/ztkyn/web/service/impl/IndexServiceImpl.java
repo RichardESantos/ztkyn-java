@@ -17,6 +17,7 @@ import static org.gitee.ztkyn.web.common.config.cache.CacheConstants.DEFAULT_CAC
  */
 @Service
 public class IndexServiceImpl implements IndexService {
+
 	private static final Logger logger = LoggerFactory.getLogger(IndexServiceImpl.class);
 
 	@Cacheable(DEFAULT_CACHE)
@@ -30,4 +31,5 @@ public class IndexServiceImpl implements IndexService {
 	public void testCacheEvict(Integer requestId) {
 
 	}
+
 }

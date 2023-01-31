@@ -1,6 +1,5 @@
 package org.gitee.ztkyn.common.base;
 
-import com.google.common.base.Strings;
 import org.gitee.ztkyn.core.string.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,12 +7,26 @@ import org.slf4j.LoggerFactory;
 /**
  * @author whty
  * @version 1.0
- * @description 字符串工具类
- * @date 2023/1/16 9:38
  */
 public class ZtkynStringUtil {
 
 	private static final Logger logger = LoggerFactory.getLogger(ZtkynStringUtil.class);
+
+	/**
+	 * 默认文件路径分隔符
+	 */
+	public static final String fileSeparator = StringUtil.fileSeparator;
+
+	/**
+	 * 默认文件路径分隔符（On UNIX systems, this character is ':'; on Microsoft Windows systems it
+	 * is ';'.）
+	 */
+	public static final String pathSeparator = StringUtil.pathSeparator;
+
+	/**
+	 * 常见分隔符 :
+	 */
+	public static final String colonSeparator = StringUtil.colonSeparator;
 
 	public static boolean isNotBlank(final CharSequence charSequence) {
 		return StringUtil.isNotBlank(charSequence);

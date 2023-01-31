@@ -1,5 +1,6 @@
 package org.gitee.ztkyn.core.string;
 
+import java.io.File;
 import java.util.StringJoiner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,6 +17,22 @@ public class StringUtil {
 	private static final Logger logger = LoggerFactory.getLogger(StringUtil.class);
 
 	private static final Pattern humpPattern = Pattern.compile("[A-Z]");
+
+	/**
+	 * 默认文件路径分隔符
+	 */
+	public static final String fileSeparator = File.separator;
+
+	/**
+	 * 默认文件路径分隔符（On UNIX systems, this character is ':'; on Microsoft Windows systems it
+	 * is ';'.）
+	 */
+	public static final String pathSeparator = File.pathSeparator;
+
+	/**
+	 * 常见分隔符 :
+	 */
+	public static final String colonSeparator = ":";
 
 	/**
 	 * 驼峰转下划线,最后转为大写
