@@ -35,6 +35,7 @@ public class RequestLimitAspect {
 	 * 不同的接口，不同的流量控制
 	 */
 	private final Cache<String, RateLimiter> limitMapCache = Caffeine.newBuilder()
+			// 访问后到期（每次访问都会重置时间，也就是说如果一直被访问就不会被淘汰）
 			.expireAfterAccess(5, TimeUnit.SECONDS)
 			// 可以指定调度程序来及时删除过期缓存项，而不是等待Caffeine触发定期维护
 			// 若不设置scheduler，则缓存会在下一次调用get的时候才会被动删除
