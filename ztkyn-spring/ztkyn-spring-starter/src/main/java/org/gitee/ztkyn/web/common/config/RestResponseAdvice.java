@@ -43,7 +43,7 @@ public class RestResponseAdvice implements ResponseBodyAdvice<Object> {
 			ServerHttpResponse response) {
 		response.getHeaders().add("content-type", APPLICATION_JSON_VALUE);
 		// 提供一定的灵活度，如果body已经被包装了，就不进行包装
-		if (body instanceof ResponseResult.IResult) {
+		if (body instanceof ResponseResult) {
 			return body;
 		}
 		else if (body instanceof CharSequence) {

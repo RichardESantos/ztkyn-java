@@ -31,9 +31,4 @@ public class CacheConstants {
 	 * 默认缓存名称
 	 */
 	public static final String DEFAULT_CACHE = "DEFAULT:CACHE";
-
-	public static final String GET_USER = "GET:USER";
-
-	public static final String GET_DYNAMIC = "GET:DYNAMIC";
-
 }

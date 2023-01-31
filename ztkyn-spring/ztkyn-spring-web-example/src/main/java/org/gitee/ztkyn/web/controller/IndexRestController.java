@@ -1,9 +1,11 @@
 package org.gitee.ztkyn.web.controller;
 
+import cn.hutool.core.lang.id.NanoId;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -12,9 +14,12 @@ import org.gitee.ztkyn.web.common.config.RestResponse;
 import org.gitee.ztkyn.web.common.config.validation.Update;
 import org.gitee.ztkyn.web.common.domain.ResponseResult;
 import org.gitee.ztkyn.web.domain.example.UserDTO;
+import org.gitee.ztkyn.web.service.IndexService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,11 +30,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import static org.gitee.ztkyn.web.common.config.cache.CacheConstants.DEFAULT_CACHE;
+
 /**
  * @author whty
  * @version 1.0
- * @description restController 模板
- * @date 2023/1/18 15:29
  */
 @Validated
 @Tag(name = "restController 模板", description = "restController 模板")
@@ -40,6 +45,9 @@ public class IndexRestController {
 
 	private static final Logger logger = LoggerFactory.getLogger(IndexRestController.class);
 
+	@Resource
+	private IndexService indexService;
+
 	/**
 	 * requestParam/PathVariable参数校验 GET请求一般会使用requestParam/PathVariable传参。如果参数比较多 (比如超过 6
 	 * 个)，还是推荐使用DTO对象接收。否则，推荐将一个个参数平铺到方法入参中。在这种情况下，必须在Controller类上标注@Validated注解，并在入参上声明约束注解
@@ -48,6 +56,7 @@ public class IndexRestController {
 
 	/**
 	 * // @PathVariable 参数校验
+	 *
 	 * @param num
 	 * @return
 	 */
@@ -60,6 +69,7 @@ public class IndexRestController {
 
 	/**
 	 * // @RequestParam 参数校验
+	 *
 	 * @param email
 	 * @return
 	 */
@@ -89,6 +99,7 @@ public class IndexRestController {
 
 	/**
 	 * 分组校验
+	 *
 	 * @param userDTO
 	 * @return
 	 */
@@ -96,6 +107,64 @@ public class IndexRestController {
 	@ResponseBody
 	@RestResponse
 	public ResponseResult<?> updateUser(@RequestBody @Validated(Update.class) UserDTO userDTO) {
+		return ResponseResult.success();
+	}
+
+	/**
+	 * //@Cacheable：表示该方法支持缓存。当调用被注解的方法时，如果对应的键已经存在缓存，则不再执行方法体，而从缓存中直接返回。
+	 * 当方法返回null时，将不进行缓存操作。cacheNames 对应的缓存必须存在，否则会报异常
+	 * //@CachePut：表示执行该方法后，其值将作为最新结果更新到缓存中，每次都会执行该方法。
+	 * //@CacheEvict：表示执行该方法后，将触发缓存清除操作。
+	 * //@Caching：用于组合前三个注解，例如：
+	 */
+	/**
+	 * 使用缓存
+	 *
+	 * @param requestId
+	 * @return
+	 */
+	@Cacheable(DEFAULT_CACHE)
+	@GetMapping("/getNum")
+	@ResponseBody
+	public String getNum(Integer requestId) {
+		return NanoId.randomNanoId();
+	}
+
+	/**
+	 * 测试在非接口层进行缓存操作--使用缓存
+	 *
+	 * @param requestId
+	 * @return
+	 */
+	@GetMapping("/getNumWithService")
+	@ResponseBody
+	public String getNumWithService(Integer requestId) {
+		return indexService.testCachePut(requestId);
+	}
+
+	/**
+	 * 清除缓存
+	 *
+	 * @param requestId
+	 * @return
+	 */
+	@CacheEvict(DEFAULT_CACHE)
+	@GetMapping("/removeNum")
+	@ResponseBody
+	public ResponseResult<?> removeNum(Integer requestId) {
+		return ResponseResult.success();
+	}
+
+	/**
+	 * 测试在非接口层进行缓存操作--清除缓存
+	 *
+	 * @param requestId
+	 * @return
+	 */
+	@GetMapping("/removeNumWithService")
+	@ResponseBody
+	public ResponseResult<?> removeNumWithService(Integer requestId) {
+		indexService.testCacheEvict(requestId);
 		return ResponseResult.success();
 	}
 
