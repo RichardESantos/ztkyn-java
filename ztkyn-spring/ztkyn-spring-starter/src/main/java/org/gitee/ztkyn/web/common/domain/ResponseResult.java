@@ -82,8 +82,8 @@ public class ResponseResult<T> implements Serializable {
 	 */
 	public enum ResultEnum implements IResult {
 
-		SUCCESS(2001, "接口调用成功"), VALIDATE_FAILED(2002, "参数校验失败"), COMMON_FAILED(2003, "接口调用失败"), FORBIDDEN(2004,
-				"没有权限访问资源"), REQUEST_LIMIT(2005, "系统繁忙，请稍后再试！"),;
+		SUCCESS(2001, "接口调用成功"), VALIDATE_FAILED(2002, "参数校验失败"), COMMON_FAILED(2003, "接口调用失败"),
+		FORBIDDEN(2004, "没有权限访问资源"), REQUEST_LIMIT(2005, "系统繁忙，请稍后再试！"),;
 
 		private final Integer code;
 
