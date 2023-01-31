@@ -27,7 +27,6 @@ public class CaffeineLoadingCachePostProcessor implements BeanPostProcessor {
 	@Override
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
 		if (bean instanceof ZtkynCacheConfiguration configuration) {
-			System.out.println();
 			List<CaffeineLoadCacheConfig> caffeineLoadCacheList = configuration.getCaffeineLoadCacheList();
 			if (Objects.isNull(caffeineLoadCacheList)) {
 				caffeineLoadCacheList = new ArrayList<>();
