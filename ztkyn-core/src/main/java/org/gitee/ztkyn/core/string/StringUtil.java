@@ -1,7 +1,6 @@
 package org.gitee.ztkyn.core.string;
 
 import java.io.File;
-import java.util.StringJoiner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,9 +29,64 @@ public class StringUtil {
 	public static final String pathSeparator = File.pathSeparator;
 
 	/**
-	 * 常见分隔符 :
+	 * 空字符串
+	 */
+	public static final String emptyStr = "";
+
+	/**
+	 * 空内容字符串
+	 */
+	public static final String emptyContentStr = " ";
+
+	/**
+	 * TAB 制表符
+	 */
+	public static final String tabStr = "	";
+
+	/**
+	 * 冒号（:）：colon
 	 */
 	public static final String colonSeparator = ":";
+
+	/**
+	 * 分号（;）：semicolon
+	 */
+	public static final String semicolonSeparator = ";";
+
+	/**
+	 * 逗号（,）：comma
+	 */
+	public static final String commaSeparator = ",";
+
+	/**
+	 * 句号（.）：full stop/full point/period
+	 */
+	public static final String periodSeparator = ".";
+
+	/**
+	 * 长破折号（—）：dash
+	 */
+	public static final String dashSeparator = "—";
+
+	/**
+	 * 短破折号（-）：hyphen
+	 */
+	public static final String hyphenSeparator = "-";
+
+	/**
+	 * 省略号（…）：ellipsis
+	 */
+	public static final String ellipsisSeparator = "…";
+
+	/**
+	 * 斜线（/）：slash
+	 */
+	public static final String slashSeparator = "/";
+
+	/**
+	 * 下划线（_）：underscore。
+	 */
+	public static final String underscoreSeparator = "_";
 
 	/**
 	 * 驼峰转下划线,最后转为大写
@@ -50,19 +104,6 @@ public class StringUtil {
 	}
 
 	/**
-	 * 字符串拼接
-	 * @param args
-	 * @return
-	 */
-	public static String concat(CharSequence splitChar, String... args) {
-		StringJoiner joiner = new StringJoiner(splitChar);
-		for (String arg : args) {
-			joiner.add(arg);
-		}
-		return joiner.toString();
-	}
-
-	/**
 	 * 去掉字符串中的空格
 	 * @param charSequence
 	 * @return
@@ -76,20 +117,6 @@ public class StringUtil {
 			}
 		}
 		return buffer.toString();
-	}
-
-	/**
-	 * 数字拼接成字符串
-	 * @param splitChar
-	 * @param args
-	 * @return
-	 */
-	public static String concat(CharSequence splitChar, Integer... args) {
-		StringJoiner joiner = new StringJoiner(splitChar);
-		for (Integer arg : args) {
-			joiner.add(String.valueOf(arg));
-		}
-		return joiner.toString();
 	}
 
 	/**

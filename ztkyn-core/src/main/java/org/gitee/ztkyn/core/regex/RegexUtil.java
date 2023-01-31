@@ -1,36 +1,66 @@
-package org.gitee.ztkyn.common.base;
+package org.gitee.ztkyn.core.regex;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.gitee.ztkyn.core.regex.RegexUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * @author whty
  * @version 1.0
- * @description 正则表达式工具类
- * @date 2023/1/16 9:43
+ * @description
+ * @date 2023/1/31 13:48
  */
-public class ZtkynRegexUtil {
+public class RegexUtil {
 
-	private static final Logger logger = LoggerFactory.getLogger(ZtkynRegexUtil.class);
+	private static final Logger logger = LoggerFactory.getLogger(RegexUtil.class);
 
+	/**
+	 * 字符串是否完全匹配
+	 * @param regex
+	 * @param charSequence
+	 * @return
+	 */
 	public static boolean isMatch(String regex, CharSequence charSequence) {
-		return RegexUtil.isMatch(regex, charSequence);
+		return isMatch(Pattern.compile(regex), charSequence);
 	}
 
+	/**
+	 * 字符串是否完全匹配
+	 * @param pattern
+	 * @param charSequence
+	 * @return
+	 */
 	public static boolean isMatch(Pattern pattern, CharSequence charSequence) {
-		return RegexUtil.isMatch(pattern, charSequence);
+		return pattern.matcher(charSequence).matches();
 	}
 
+	/**
+	 * 获取所有匹配到内容
+	 * @param regex
+	 * @param charSequence
+	 * @return
+	 */
 	public static List<String> findAll(String regex, CharSequence charSequence) {
-		return RegexUtil.findAll(regex, charSequence);
+		return findAll(Pattern.compile(regex), charSequence);
 	}
 
+	/**
+	 * 获取所有匹配到内容
+	 * @param pattern
+	 * @param charSequence
+	 * @return
+	 */
 	public static List<String> findAll(Pattern pattern, CharSequence charSequence) {
-		return RegexUtil.findAll(pattern, charSequence);
+		List<String> result = new ArrayList<>();
+		Matcher matcher = pattern.matcher(charSequence);
+		while (matcher.find()) {
+			result.add(matcher.group());
+		}
+		return result;
 	}
 
 	/**
@@ -41,7 +71,7 @@ public class ZtkynRegexUtil {
 	 * @return
 	 */
 	public static String replaceAll(String regex, CharSequence charSequence, String replacement) {
-		return RegexUtil.replaceAll(regex, charSequence, replacement);
+		return replaceAll(Pattern.compile(regex), charSequence, replacement);
 	}
 
 	/**
@@ -52,7 +82,7 @@ public class ZtkynRegexUtil {
 	 * @return
 	 */
 	public static String replaceAll(Pattern pattern, CharSequence charSequence, String replacement) {
-		return RegexUtil.replaceAll(pattern, charSequence, replacement);
+		return pattern.matcher(charSequence).replaceAll(replacement);
 	}
 
 	/**
@@ -63,7 +93,7 @@ public class ZtkynRegexUtil {
 	 * @return
 	 */
 	public static String replaceFirst(String regex, CharSequence charSequence, String replacement) {
-		return RegexUtil.replaceFirst(regex, charSequence, replacement);
+		return replaceFirst(Pattern.compile(regex), charSequence, replacement);
 	}
 
 	/**
@@ -74,7 +104,7 @@ public class ZtkynRegexUtil {
 	 * @return
 	 */
 	public static String replaceFirst(Pattern pattern, CharSequence charSequence, String replacement) {
-		return RegexUtil.replaceFirst(pattern, charSequence, replacement);
+		return pattern.matcher(charSequence).replaceFirst(replacement);
 	}
 
 }
