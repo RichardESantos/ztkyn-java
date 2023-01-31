@@ -65,6 +65,9 @@ public class RegexUtil {
 
 	/**
 	 * 替换全部匹配到的内容
+	 *
+	 * 替换字符串 replacement 中的反斜杠（ \ ）和美元符号（ $ ）可能会导致结果与被视为一般替换字符串时的结果不同; 见Matcher.replaceAll
+	 * 。 如果需要，使用Matcher.quoteReplacement(java.lang.String)来抑制这些字符的特殊含义。
 	 * @param regex
 	 * @param charSequence
 	 * @param replacement
@@ -76,6 +79,9 @@ public class RegexUtil {
 
 	/**
 	 * 替换全部匹配到的内容
+	 *
+	 * 替换字符串 replacement 中的反斜杠（ \ ）和美元符号（ $ ）可能会导致结果与被视为一般替换字符串时的结果不同; 见Matcher.replaceAll
+	 * 。 如果需要，使用Matcher.quoteReplacement(java.lang.String)来抑制这些字符的特殊含义。
 	 * @param pattern
 	 * @param charSequence
 	 * @param replacement
@@ -87,6 +93,9 @@ public class RegexUtil {
 
 	/**
 	 * 替换匹配到的第一个内容
+	 *
+	 * 替换字符串 replacement 中的反斜杠（ \ ）和美元符号（ $ ）可能会导致结果与被视为一般替换字符串时的结果不同; 见Matcher.replaceAll
+	 * 。 如果需要，使用Matcher.quoteReplacement(java.lang.String)来抑制这些字符的特殊含义。
 	 * @param regex
 	 * @param charSequence
 	 * @param replacement
@@ -98,6 +107,9 @@ public class RegexUtil {
 
 	/**
 	 * 替换匹配到的第一个内容
+	 *
+	 * 替换字符串 replacement 中的反斜杠（ \ ）和美元符号（ $ ）可能会导致结果与被视为一般替换字符串时的结果不同; 见Matcher.replaceAll
+	 * 。 如果需要，使用Matcher.quoteReplacement(java.lang.String)来抑制这些字符的特殊含义。
 	 * @param pattern
 	 * @param charSequence
 	 * @param replacement

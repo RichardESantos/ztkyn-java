@@ -3,10 +3,13 @@ package org.gitee.ztkyn.web.common.domain;
 import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
+import org.gitee.ztkyn.web.common.config.ComConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 /**
  * @author whty
@@ -15,11 +18,17 @@ import org.slf4j.LoggerFactory;
  * @date 2023/1/18 15:02
  */
 @Data
-@AllArgsConstructor
+@Accessors(chain = true)
+@NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseResult<T> implements Serializable {
 
 	private static final Logger logger = LoggerFactory.getLogger(ResponseResult.class);
+
+	/**
+	 * 请求编码
+	 */
+	private String requestId;
 
 	/**
 	 * 返回编码
@@ -35,6 +44,13 @@ public class ResponseResult<T> implements Serializable {
 	 * 业务数据
 	 */
 	private T data;
+
+	public ResponseResult(Integer code, String msg, T data) {
+		this.code = code;
+		this.msg = msg;
+		this.data = data;
+		this.requestId = MDC.get(ComConstant.REQUEST_ID);
+	}
 
 	public static <T> ResponseResult<T> success() {
 		return new ResponseResult<>(ResultEnum.SUCCESS.getCode(), ResultEnum.SUCCESS.getMessage(), null);

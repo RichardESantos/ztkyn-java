@@ -41,7 +41,7 @@ public class GlobalExceptionHandler {
 	 */
 	@ExceptionHandler({ RequestLimitException.class })
 	public ResponseResult<?> handleRequestLimitException(RequestLimitException ex) {
-		// logger.warn("触发接口限流逻辑", ex);
+		logger.warn("触发接口限流逻辑", ex);
 		return ResponseResult.failed(ex.getMessage());
 	}
 

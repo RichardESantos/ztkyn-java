@@ -1,5 +1,6 @@
 package org.gitee.ztkyn.web.domain.example;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.gitee.ztkyn.web.common.config.validation.Update;
@@ -15,6 +16,7 @@ import org.hibernate.validator.constraints.Length;
 public class UserDTO {
 
 	@NotNull(message = "用户ID不能为空", groups = Update.class)
+	@Min(value = 1, groups = Update.class)
 	private Long userId;
 
 	@NotNull
