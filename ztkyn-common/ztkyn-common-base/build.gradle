@@ -13,6 +13,8 @@ dependencies {
 
 	api("com.github.ben-manes.caffeine:caffeine:${caffeineVersion}")
 
+	api("com.alibaba:transmittable-thread-local:2.14.2")
+
 
 }
 

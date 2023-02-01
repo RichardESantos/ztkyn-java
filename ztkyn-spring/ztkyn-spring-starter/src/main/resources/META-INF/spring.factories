@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  org.gitee.ztkyn.web.common.config.ttl.TtlAsyncAutoConfiguration, \
+  org.gitee.ztkyn.web.common.config.ttl.TtlThreadPoolAutoConfiguration
