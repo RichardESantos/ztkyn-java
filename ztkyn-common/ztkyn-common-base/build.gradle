@@ -16,6 +16,9 @@ dependencies {
 	// InheritableThreadLocal 替代品，解决在线程池失效的问题
 	api("com.alibaba:transmittable-thread-local:2.14.2")
 
+	// 日期解析库
+	implementation("com.github.sisyphsu:dateparser:1.0.11")
+
 }
 
 test {
