@@ -93,4 +93,17 @@ public class AssertUtil {
 		DataProcessHandler.of(map, CollectionUtil::isBlank).ifFalseThrow(new RuntimeException(errorMsg));
 	}
 
+	/**
+	 * 判断传进来的值是否是期望的值
+	 * @param value
+	 * @param expectValue
+	 * @param errorMsg
+	 * @param <T>
+	 */
+	public static <T> void expect(T value, T expectValue, String errorMsg) {
+		if (!Objects.equals(value, expectValue)) {
+			throw new RuntimeException(errorMsg);
+		}
+	}
+
 }
