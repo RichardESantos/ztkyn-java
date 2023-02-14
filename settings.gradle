@@ -10,4 +10,6 @@ include 'ztkyn-common:ztkyn-common-base'
 findProject(':ztkyn-common:ztkyn-common-base')?.name = 'ztkyn-common-base'
 include 'ztkyn-spring:ztkyn-spring-web-example'
 findProject(':ztkyn-spring:ztkyn-spring-web-example')?.name = 'ztkyn-spring-web-example'
+include 'ztkyn-extra:ztkyn-jgrapht'
+findProject(':ztkyn-extra:ztkyn-jgrapht')?.name = 'ztkyn-jgrapht'
 

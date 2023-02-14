@@ -93,10 +93,13 @@ allprojects {
 		lombokVersion = '1.18.24'
 		jacksonVersion = '2.14.1'
 		caffeineVersion = '3.1.2'
+		slf4jVersion = '2.0.6'
 	}
 
 	//配置子模块依赖
 	dependencies {
+		api("org.slf4j:slf4j-api:${slf4jVersion}")
+		api("ch.qos.logback:logback-classic:1.4.5")
 		compileOnly "org.projectlombok:lombok:${lombokVersion}"
 
 		annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
