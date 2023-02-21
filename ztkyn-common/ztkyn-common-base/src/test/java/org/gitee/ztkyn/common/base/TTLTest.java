@@ -3,6 +3,7 @@ package org.gitee.ztkyn.common.base;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
@@ -30,7 +31,8 @@ public class TTLTest {
 		for (int i = 0; i < 10; i++) {
 			mapTests.add(new MapTest("key" + i));
 		}
-		Map<String, String> stringMap = mapTests.stream().collect(Collectors.toMap(MapTest::getKey, MapTest::getValue));
+		Map<String, String> stringMap = mapTests.stream().filter(mapTest -> Objects.nonNull(mapTest.getValue()))
+				.collect(Collectors.toMap(MapTest::getKey, MapTest::getValue));
 	}
 
 	class MapTest {

@@ -5,14 +5,16 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 import java.util.function.Consumer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static org.gitee.ztkyn.core.string.CharsetUtil.UTF8;
 
 /**
  * @author whty
@@ -24,20 +26,13 @@ public class FileUtil {
 
 	private static final Logger logger = LoggerFactory.getLogger(FileUtil.class);
 
-	/**
-	 * 系统默认编码，与OS相关
-	 */
-	public static final Charset defaultCharset = Charset.defaultCharset();
+	public static String readUTF8Content(File file) {
+		return readContent(file, UTF8);
+	}
 
-	public static final Charset UTF8 = StandardCharsets.UTF_8;
-
-	public static final Charset ISO_8859_1 = StandardCharsets.ISO_8859_1;
-
-	public static final Charset GBK = Charset.forName("GBK");
-
-	public static final Charset GB2312 = Charset.forName("GB2312");
-
-	public static final Charset GB18030 = Charset.forName("GB18030");
+	public static String readUTF8Content(String path) {
+		return readContent(Paths.get(path).toFile(), UTF8);
+	}
 
 	public static List<String> readUTF8Lines(File file) {
 		return readAllLines(file, UTF8);
@@ -123,14 +118,26 @@ public class FileUtil {
 	}
 
 	/**
-	 * 将字符串转换成指定编码格式
-	 * @param str
+	 * 都去全部内容
+	 * @param file
 	 * @param charset
 	 * @return
 	 */
-	public static String unicodeConvert(String str, Charset charset) {
-		return new String(str.getBytes(charset), charset);
-
+	public static String readContent(File file, Charset charset) {
+		if (checkFileAccessError(file))
+			return null;
+		try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file, charset))) {
+			StringJoiner joiner = new StringJoiner("\n");
+			String line = null;
+			while ((line = bufferedReader.readLine()) != null) {
+				joiner.add(line);
+			}
+			return joiner.toString();
+		}
+		catch (IOException e) {
+			logger.error("文件读取异常", e);
+		}
+		return null;
 	}
 
 }

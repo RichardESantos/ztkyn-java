@@ -22,4 +22,5 @@ class AddressParserUtilTest {
 		System.out.println(AddressParserUtil.addressResolution("海南省省直辖县级行政单位中沙群岛的岛礁及其海域"));
 
 	}
+
 }

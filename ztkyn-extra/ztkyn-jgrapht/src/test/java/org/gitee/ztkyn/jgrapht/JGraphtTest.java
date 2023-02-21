@@ -16,8 +16,7 @@ public class JGraphtTest {
 
 	@Test
 	public void testPath() {
-		org.jgrapht.Graph<String, RelationshipEdge> undirectedGraph = new DefaultUndirectedGraph<>(
-				RelationshipEdge.class);
+
 	}
 
 }

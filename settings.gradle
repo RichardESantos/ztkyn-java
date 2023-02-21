@@ -12,4 +12,6 @@ include 'ztkyn-spring:ztkyn-spring-web-example'
 findProject(':ztkyn-spring:ztkyn-spring-web-example')?.name = 'ztkyn-spring-web-example'
 include 'ztkyn-extra:ztkyn-jgrapht'
 findProject(':ztkyn-extra:ztkyn-jgrapht')?.name = 'ztkyn-jgrapht'
+include 'ztkyn-extra:ztkyn-markdown'
+findProject(':ztkyn-extra:ztkyn-markdown')?.name = 'ztkyn-markdown'
 

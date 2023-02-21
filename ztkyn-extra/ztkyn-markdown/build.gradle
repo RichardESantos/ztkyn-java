@@ -1,0 +1,12 @@
+plugins {
+	id 'java'
+}
+
+
+dependencies {
+	api("com.vladsch.flexmark:flexmark-all:0.64.0")
+}
+
+test {
+	useJUnitPlatform()
+}

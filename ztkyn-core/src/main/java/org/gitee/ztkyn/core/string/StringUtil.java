@@ -1,6 +1,7 @@
 package org.gitee.ztkyn.core.string;
 
 import java.io.File;
+import java.nio.charset.Charset;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -181,6 +182,17 @@ public class StringUtil {
 	 */
 	public static int length(final CharSequence cs) {
 		return cs == null ? 0 : cs.length();
+	}
+
+	/**
+	 * 将字符串转换成指定编码格式
+	 * @param str
+	 * @param charset
+	 * @return
+	 */
+	public static String unicodeConvert(String str, Charset charset) {
+		return new String(str.getBytes(charset), charset);
+
 	}
 
 }
