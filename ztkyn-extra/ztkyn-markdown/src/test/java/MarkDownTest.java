@@ -1,9 +1,14 @@
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.StringJoiner;
 
 import com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterExtension;
@@ -12,7 +17,6 @@ import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.util.ast.Node;
 import com.vladsch.flexmark.util.data.DataHolder;
 import com.vladsch.flexmark.util.data.MutableDataSet;
-import org.gitee.ztkyn.core.io.FileUtil;
 import org.gitee.ztkyn.core.string.StringUtil;
 import org.gitee.ztkyn.markdown.flexmark.ext.yaml.front.matter.ZtkynYamlFrontMatterVisitor;
 import org.jetbrains.annotations.NotNull;
@@ -40,17 +44,27 @@ public class MarkDownTest {
 	@Test
 	public void readMD() {
 		String filePath = "C:\\Users\\whty\\Desktop\\基本信息模板.md";
-		String content = FileUtil.readUTF8Content(filePath);
-		System.out.println(content);
-
-		try (RandomAccessFile randomAccessFile = new RandomAccessFile(new File(filePath), "rw")) {
-			cleanBlankLineFrontText(randomAccessFile);
-			int index = 0;// 文件行号
-			int lastPoint = 0;// 上一行文本对应的 filePointer
-			String line;
-			// 读取yaml
+		File orgFile = Paths.get(filePath).toFile();
+		Path tmpPath = Paths.get(orgFile.getPath() + "_tmp");
+		try (RandomAccessFile randomAccessFile = new RandomAccessFile(orgFile, "r");
+				BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(tmpPath.toFile()))) {
+			String line = null;
+			boolean isFirstText = false;
+			boolean ymlStart = false;
+			boolean ymlEnd = false;
 			while ((line = randomAccessFile.readLine()) != null) {
+				if (!isFirstText && StringUtil.isBlank(line))
+					continue;
+				else if (!isFirstText && StringUtil.isNotBlank(line)) {
+					isFirstText = true;
+					if (Objects.equals(line, "---")) {
+						ymlStart = true;
+					}
+				}else {
 
+				}
+				bufferedWriter.write(line);
+				bufferedWriter.newLine();
 			}
 		}
 		catch (IOException e) {
