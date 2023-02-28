@@ -25,7 +25,7 @@ public class SQLParserUtil {
 
 	public static SQLAnalysis parseSQL(String sql) {
 		try {
-			Matcher matcher = Pattern.compile(RegexRule.MYSQL_QUERY.getRegex()).matcher(sql);
+			Matcher matcher = Pattern.compile(RegexRule.MYSQL_QUERY_GROUP_BY_LIMIT.getRegex()).matcher(sql);
 			List<SQLAnalysis> sqlAnalysisList = new ArrayList<>();
 			while (matcher.find()) {
 				SQLAnalysis sqlAnalysis = new SQLAnalysis().setSelect(matcher.group("select"))

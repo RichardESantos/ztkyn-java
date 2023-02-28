@@ -60,7 +60,8 @@ public class MarkDownTest {
 					if (Objects.equals(line, "---")) {
 						ymlStart = true;
 					}
-				}else {
+				}
+				else {
 
 				}
 				bufferedWriter.write(line);
