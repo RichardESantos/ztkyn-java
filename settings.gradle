@@ -14,4 +14,6 @@ include 'ztkyn-extra:ztkyn-jgrapht'
 findProject(':ztkyn-extra:ztkyn-jgrapht')?.name = 'ztkyn-jgrapht'
 include 'ztkyn-extra:ztkyn-markdown'
 findProject(':ztkyn-extra:ztkyn-markdown')?.name = 'ztkyn-markdown'
+include 'ztkyn-extra:webmagic'
+findProject(':ztkyn-extra:webmagic')?.name = 'webmagic'
 
