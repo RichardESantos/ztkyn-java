@@ -1,19 +1,15 @@
 rootProject.name = 'ztkyn-java'
 include 'ztkyn-core'
-include 'ztkyn-extra:ztkyn-guava'
-findProject(':ztkyn-extra:ztkyn-guava')?.name = 'ztkyn-guava'
-include 'ztkyn-extra:ztkyn-hutool'
-findProject(':ztkyn-extra:ztkyn-hutool')?.name = 'ztkyn-hutool'
-include 'ztkyn-spring:ztkyn-spring-starter'
-findProject(':ztkyn-spring:ztkyn-spring-starter')?.name = 'ztkyn-spring-starter'
-include 'ztkyn-common:ztkyn-common-base'
-findProject(':ztkyn-common:ztkyn-common-base')?.name = 'ztkyn-common-base'
-include 'ztkyn-spring:ztkyn-spring-web-example'
-findProject(':ztkyn-spring:ztkyn-spring-web-example')?.name = 'ztkyn-spring-web-example'
-include 'ztkyn-extra:ztkyn-jgrapht'
-findProject(':ztkyn-extra:ztkyn-jgrapht')?.name = 'ztkyn-jgrapht'
-include 'ztkyn-extra:ztkyn-markdown'
-findProject(':ztkyn-extra:ztkyn-markdown')?.name = 'ztkyn-markdown'
-include 'ztkyn-extra:webmagic'
-findProject(':ztkyn-extra:webmagic')?.name = 'webmagic'
 
+// 加载所有的example项目
+file("${rootDir}/ztkyn-extra").eachDirMatch(~/ztkyn.*/) {
+	include "ztkyn-extra:${it.name}"
+}
+
+file("${rootDir}/ztkyn-common").eachDirMatch(~/ztkyn.*/) {
+	include "ztkyn-common:${it.name}"
+}
+
+file("${rootDir}/ztkyn-spring").eachDirMatch(~/ztkyn.*/) {
+	include "ztkyn-spring:${it.name}"
+}
