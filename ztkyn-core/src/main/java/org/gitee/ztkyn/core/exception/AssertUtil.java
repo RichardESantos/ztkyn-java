@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.gitee.ztkyn.core.colleciton.CollectionUtil;
+import org.gitee.ztkyn.core.colleciton.MapUtil;
 import org.gitee.ztkyn.core.function.DataProcessHandler;
 import org.gitee.ztkyn.core.string.StringUtil;
 import org.slf4j.Logger;
@@ -24,7 +25,7 @@ public class AssertUtil {
 	 * @param errorMsg
 	 */
 	public static void objectNotNull(Object obj, String errorMsg) {
-		DataProcessHandler.of(obj, Objects::nonNull).ifFalseThrow(new RuntimeException(errorMsg));
+		DataProcessHandler.of(obj, Objects::nonNull).ifFalseThrow(new DataVerifyFailException(errorMsg));
 	}
 
 	/**
@@ -33,7 +34,7 @@ public class AssertUtil {
 	 * @param errorMsg
 	 */
 	public static void objectIsNull(Object obj, String errorMsg) {
-		DataProcessHandler.of(obj, Objects::isNull).ifFalseThrow(new RuntimeException(errorMsg));
+		DataProcessHandler.of(obj, Objects::isNull).ifFalseThrow(new DataVerifyFailException(errorMsg));
 	}
 
 	/**
@@ -42,7 +43,7 @@ public class AssertUtil {
 	 * @param errorMsg
 	 */
 	public static void strNotBlank(String str, String errorMsg) {
-		DataProcessHandler.of(str, StringUtil::isNotBlank).ifFalseThrow(new RuntimeException(errorMsg));
+		DataProcessHandler.of(str, StringUtil::isNotBlank).ifFalseThrow(new DataVerifyFailException(errorMsg));
 	}
 
 	/**
@@ -51,7 +52,7 @@ public class AssertUtil {
 	 * @param errorMsg
 	 */
 	public static void strIsBlank(String str, String errorMsg) {
-		DataProcessHandler.of(str, StringUtil::isBlank).ifFalseThrow(new RuntimeException(errorMsg));
+		DataProcessHandler.of(str, StringUtil::isBlank).ifFalseThrow(new DataVerifyFailException(errorMsg));
 	}
 
 	/**
@@ -60,7 +61,8 @@ public class AssertUtil {
 	 * @param errorMsg
 	 */
 	public static <T> void collectionNotBlank(Collection<T> collection, String errorMsg) {
-		DataProcessHandler.of(collection, CollectionUtil::isNotBlank).ifFalseThrow(new RuntimeException(errorMsg));
+		DataProcessHandler.of(collection, CollectionUtil::isNotBlank)
+				.ifFalseThrow(new DataVerifyFailException(errorMsg));
 	}
 
 	/**
@@ -70,7 +72,7 @@ public class AssertUtil {
 	 * @param <T>
 	 */
 	public static <T> void collectionIsBlank(Collection<T> collection, String errorMsg) {
-		DataProcessHandler.of(collection, CollectionUtil::isBlank).ifFalseThrow(new RuntimeException(errorMsg));
+		DataProcessHandler.of(collection, CollectionUtil::isBlank).ifFalseThrow(new DataVerifyFailException(errorMsg));
 	}
 
 	/**
@@ -79,7 +81,7 @@ public class AssertUtil {
 	 * @param errorMsg
 	 */
 	public static <K, V> void collectionNotBlank(Map<K, V> map, String errorMsg) {
-		DataProcessHandler.of(map, CollectionUtil::isNotBlank).ifFalseThrow(new RuntimeException(errorMsg));
+		DataProcessHandler.of(map, MapUtil::isNotBlank).ifFalseThrow(new DataVerifyFailException(errorMsg));
 	}
 
 	/**
@@ -90,7 +92,7 @@ public class AssertUtil {
 	 * @param <V>
 	 */
 	public static <K, V> void collectionIsBlank(Map<K, V> map, String errorMsg) {
-		DataProcessHandler.of(map, CollectionUtil::isBlank).ifFalseThrow(new RuntimeException(errorMsg));
+		DataProcessHandler.of(map, MapUtil::isBlank).ifFalseThrow(new DataVerifyFailException(errorMsg));
 	}
 
 	/**
@@ -102,7 +104,7 @@ public class AssertUtil {
 	 */
 	public static <T> void expect(T value, T expectValue, String errorMsg) {
 		if (!Objects.equals(value, expectValue)) {
-			throw new RuntimeException(errorMsg);
+			throw new DataVerifyFailException(errorMsg);
 		}
 	}
 

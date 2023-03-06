@@ -20,22 +20,6 @@ public class CollectionUtil {
 
 	private static final Logger logger = LoggerFactory.getLogger(CollectionUtil.class);
 
-	public static <T> List<T> listOf(T t) {
-		List<T> list = new ArrayList<>();
-		list.add(t);
-		return list;
-	}
-
-	public static <T> Set<T> setOf(T t) {
-		Set<T> set = new HashSet<>();
-		set.add(t);
-		return set;
-	}
-
-	public static <T> List<T> listOf(T[] t) {
-		return new ArrayList<>(Arrays.asList(t));
-	}
-
 	/**
 	 * 判断集合不能为空
 	 * @param collection
@@ -57,24 +41,6 @@ public class CollectionUtil {
 	}
 
 	/**
-	 * 判断 map 不能为空
-	 * @param map
-	 * @return
-	 */
-	public static <K, V> boolean isNotBlank(Map<K, V> map) {
-		return Objects.nonNull(map) && !map.isEmpty();
-	}
-
-	/**
-	 * 判断 map 为空
-	 * @param map
-	 * @return
-	 */
-	public static <K, V> boolean isBlank(Map<K, V> map) {
-		return !isNotBlank(map);
-	}
-
-	/**
 	 * 比较两个 集合 中的元素是否完全一致（数量，内容同时一致），支持两个集合不是同类型
 	 * @param first
 	 * @param second
@@ -91,16 +57,5 @@ public class CollectionUtil {
 			return first == null && second == null;
 		}
 	}
-
-	// /**
-	// * list 切片
-	// * @param list
-	// * @param length
-	// * @return
-	// * @param <T>
-	// */
-	// public static <T> List<List<T>> partition(List<T> list, int length) {
-	// return Lists.partition(list, length);
-	// }
 
 }
