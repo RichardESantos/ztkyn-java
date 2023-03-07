@@ -65,13 +65,7 @@ public class MapUtil {
 	 * @param <V>
 	 */
 	public static <K, V> Map<K, V> removeKeys(Map<K, V> originalMap, Predicate<Map.Entry<K, V>> predicate) {
-		Iterator<Entry<K, V>> iterator = originalMap.entrySet().iterator();
-		while (iterator.hasNext()) {
-			Entry<K, V> next = iterator.next();
-			if (predicate.test(next)) {
-				iterator.remove();
-			}
-		}
+		originalMap.entrySet().removeIf(predicate);
 		return originalMap;
 	}
 

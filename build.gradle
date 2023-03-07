@@ -94,6 +94,8 @@ allprojects {
 		jacksonVersion = '2.14.1'
 		caffeineVersion = '3.1.2'
 		slf4jVersion = '2.0.6'
+		guavaVersion = '31.1-jre'
+		eclipseCollectionVerion = '11.1.0'
 	}
 
 	//配置子模块依赖

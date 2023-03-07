@@ -4,7 +4,9 @@ plugins {
 
 
 dependencies {
-	api("com.google.guava:guava:31.1-jre")
+	api("com.google.guava:guava:${guavaVersion}")
+	api("com.fasterxml.jackson.datatype:jackson-datatype-guava:${jacksonVersion}")
+
 }
 
 test {

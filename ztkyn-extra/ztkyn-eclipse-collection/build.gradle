@@ -1,0 +1,15 @@
+plugins {
+	id 'java'
+}
+
+
+dependencies {
+	api("org.eclipse.collections:eclipse-collections-api:${eclipseCollectionVerion}")
+	api("org.eclipse.collections:eclipse-collections:${eclipseCollectionVerion}")
+	api("com.fasterxml.jackson.datatype:jackson-datatype-eclipse-collections:${jacksonVersion}")
+
+}
+
+test {
+	useJUnitPlatform()
+}
