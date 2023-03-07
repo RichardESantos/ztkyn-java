@@ -46,6 +46,10 @@ allprojects {
 	apply plugin: 'idea'
 	// 指定代码格式化插件
 	apply plugin: "io.spring.javaformat"
+	// maven 发布插件
+	apply plugin: 'maven-publish'
+	apply plugin: 'signing'
+
 	group 'org.gitee.ztkyn'
 	version '1.0-SNAPSHOT'
 

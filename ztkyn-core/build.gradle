@@ -12,3 +12,7 @@ dependencies {
 test {
 	useJUnitPlatform()
 }
+
+
+//在build.gradle里引用
+//apply from: "${rootDir}/maven_publish.gradle"
