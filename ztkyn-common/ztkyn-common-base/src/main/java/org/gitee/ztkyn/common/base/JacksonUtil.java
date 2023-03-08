@@ -1,67 +1,60 @@
 package org.gitee.ztkyn.common.base;
 
 import java.io.IOException;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cn.hutool.core.bean.BeanUtil;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.databind.type.TypeFactory;
+import lombok.Data;
+import lombok.experimental.Accessors;
+import org.eclipse.collections.impl.list.mutable.FastList;
+import org.eclipse.collections.impl.map.mutable.UnifiedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * @author whty
  * @version 1.0
- * @description
+ * @description Jackson 工具类
  * @date 2023/1/29 13:46
  */
 public class JacksonUtil {
 
 	private static final Logger logger = LoggerFactory.getLogger(JacksonUtil.class);
 
-	private static final ObjectMapper objectMapper = new ObjectMapper();
+	/**
+	 * 默认使用的 ObjectMapper
+	 */
+	public static final ObjectMapper objectMapper = new ObjectMapper();
 
-	private static final ObjectMapper allFieldMapper;
+	/**
+	 * 默认使用的 TypeFactory
+	 */
+	public static final TypeFactory typeFactory = objectMapper.getTypeFactory();
 
-	private static final JavaTimeModule javaTimeModule = new JavaTimeModule();
+	/**
+	 * 基础类 对应的 TypeReference
+	 */
+	public static TypeReference<String> stringTypeReference = new TypeReference<>() {
+	};
 
-	// 建立Json操作中的日期格式
-	private static final String JSON_STANDARD_FORMAT = "yyyy-MM-dd HH:mm:ss";
+	public static JavaType stringJavaType = typeFactory.constructType(stringTypeReference);
+
+	private static final ObjectMapper allFieldMapper = new ObjectMapper();
 
 	static {
-		// 对象字段之列入非空
-		objectMapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
-
-		// 取消默认转换timestamps形式
-		objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-
-		// 忽略空bean转json的错误
-		objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-
-		// 忽略在json字符串中存在,但是在java对象中不存在对应属性的情况
-		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		// 启用时间模块
-		objectMapper.registerModule(javaTimeModule);
-		javaTimeModule.addSerializer(Instant.class,
-				new InstantCustomSerializer(DateTimeFormatter.ofPattern(JSON_STANDARD_FORMAT)));
-
+		// 配置 ObjectMapper
+		JacksonConfiguration.configuration(objectMapper);
+		JacksonConfiguration.configuration(allFieldMapper);
 		// 对象字段之列入所有字段
-		allFieldMapper = BeanUtil.copyProperties(objectMapper, ObjectMapper.class);
 		allFieldMapper.setSerializationInclusion(Include.ALWAYS);
+
 	}
 
 	/**
@@ -89,7 +82,12 @@ public class JacksonUtil {
 			return null;
 		}
 		try {
-			return obj instanceof String ? (String) obj : mapper.writeValueAsString(obj);
+			if (obj instanceof String str) {
+				return str;
+			}
+			else {
+				return mapper.writeValueAsString(obj);
+			}
 		}
 		catch (Exception e) {
 			logger.error("Parse object to String error", e);
@@ -108,8 +106,12 @@ public class JacksonUtil {
 			return null;
 		}
 		try {
-			return obj instanceof String ? (String) obj
-					: objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
+			if (obj instanceof String str) {
+				return str;
+			}
+			else {
+				return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
+			}
 		}
 		catch (Exception e) {
 			logger.error("Parse object to String error", e);
@@ -145,20 +147,22 @@ public class JacksonUtil {
 	 * @return
 	 */
 	public static <T> List<T> json2List(String jsonData, Class<T> beanType) {
-		JavaType javaType = objectMapper.getTypeFactory().constructParametricType(ArrayList.class, beanType);
+		if (ZtkynStringUtil.isBlank(jsonData) || beanType == null) {
+			return null;
+		}
+		JavaType javaType = objectMapper.getTypeFactory().constructParametricType(FastList.class, beanType);
 
 		try {
 			return objectMapper.readValue(jsonData, javaType);
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Parse String to Object error", e);
 		}
-
 		return null;
 	}
 
 	/**
-	 * string转object 用于转为 map
+	 * string转object 用于转为 map,不适用于 多层 map 嵌套的情形
 	 * @param jsonData
 	 * @param keyType
 	 * @param valueType
@@ -167,36 +171,77 @@ public class JacksonUtil {
 	 * @return
 	 */
 	public static <K, V> Map<K, V> json2Map(String jsonData, Class<K> keyType, Class<V> valueType) {
-		JavaType javaType = objectMapper.getTypeFactory().constructMapType(HashMap.class, keyType, valueType);
+		if (ZtkynStringUtil.isBlank(jsonData) || keyType == null || valueType == null) {
+			return null;
+		}
+		JavaType javaType = objectMapper.getTypeFactory().constructMapType(UnifiedMap.class, keyType, valueType);
 
 		try {
 			return objectMapper.readValue(jsonData, javaType);
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Parse String to Object error", e);
 		}
-
 		return null;
 	}
 
-	static class InstantCustomSerializer extends JsonSerializer<Instant> {
-
-		private final DateTimeFormatter format;
-
-		public InstantCustomSerializer(DateTimeFormatter formatter) {
-			this.format = formatter;
+	/**
+	 * string转object 用于转为 map,适用于 多层 map 嵌套的情形
+	 * @param jsonData
+	 * @param javaType
+	 * @return
+	 * @param <K>
+	 * @param <V>
+	 */
+	public static <K, V> Map<K, V> json2Map(String jsonData, JavaType javaType) {
+		if (ZtkynStringUtil.isBlank(jsonData) || javaType == null) {
+			return null;
 		}
-
-		@Override
-		public void serialize(Instant instant, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
-				throws IOException {
-			if (instant == null) {
-				return;
-			}
-			String jsonValue = format.format(instant.atZone(ZoneId.systemDefault()));
-			jsonGenerator.writeString(jsonValue);
+		try {
+			return objectMapper.readValue(jsonData, javaType);
 		}
-
+		catch (JsonProcessingException e) {
+			logger.error("Parse String to Object error", e);
+		}
+		return null;
 	}
+
+	/**
+	 * 多层嵌套 Map 反序列化 示例
+	 * @return
+	 */
+	public static Map<String, Map<String, Map<String, JacksonExampleDomain>>> json2DeepMapExample() {
+		Map<String, Map<String, Map<String, JacksonExampleDomain>>> sourceMap = new HashMap<>();
+		for (int i = 0; i < 10; i++) {
+			Map<String, Map<String, JacksonExampleDomain>> secondMap = new HashMap<>();
+			for (int j = 0; j < 10; j++) {
+				Map<String, JacksonExampleDomain> thirdMap = new HashMap<>();
+				for (int k = 0; k < 10; k++) {
+					thirdMap.put("third" + k, new JacksonExampleDomain().setName("JacksonExampleDomain" + k));
+				}
+				secondMap.put("second" + j, thirdMap);
+			}
+			sourceMap.put("one" + i, secondMap);
+		}
+		String json = JacksonUtil.obj2String(sourceMap);
+		// 构造反序列化 数据结构
+		JavaType thirdType = typeFactory.constructParametricType(HashMap.class, String.class,
+				JacksonExampleDomain.class);
+		JavaType secondType = typeFactory.constructParametricType(HashMap.class, stringJavaType, thirdType);
+		JavaType javaType = typeFactory.constructParametricType(HashMap.class, stringJavaType, secondType);
+		Map<String, Map<String, Map<String, JacksonExampleDomain>>> targetMap = json2Map(json, javaType);
+		logger.info("打印反序列化结果{}", targetMap);
+		return targetMap;
+	}
+
+}
+
+@Data
+@Accessors(chain = true)
+class JacksonExampleDomain {
+
+	private String name;
+
+	private String address;
 
 }

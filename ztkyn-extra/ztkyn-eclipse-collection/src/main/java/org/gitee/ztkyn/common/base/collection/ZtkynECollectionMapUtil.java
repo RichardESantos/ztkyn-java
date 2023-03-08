@@ -1,7 +1,10 @@
 package org.gitee.ztkyn.common.base.collection;
 
 import java.util.Comparator;
+import java.util.Map;
 
+import org.eclipse.collections.api.factory.Maps;
+import org.eclipse.collections.api.map.ImmutableMap;
 import org.eclipse.collections.impl.map.mutable.UnifiedMap;
 import org.eclipse.collections.impl.map.sorted.mutable.TreeSortedMap;
 import org.slf4j.Logger;
@@ -16,6 +19,29 @@ import org.slf4j.LoggerFactory;
 public class ZtkynECollectionMapUtil {
 
 	private static final Logger logger = LoggerFactory.getLogger(ZtkynECollectionMapUtil.class);
+
+	/**
+	 * 创建不可变 map
+	 * @param key
+	 * @param value
+	 * @return
+	 * @param <K>
+	 * @param <V>
+	 */
+	public static <K, V> ImmutableMap<K, V> createImmutableMap(K key, V value) {
+		return Maps.immutable.with(key, value);
+	}
+
+	/**
+	 * 创建不可变 map
+	 * @param orgMap
+	 * @return
+	 * @param <K>
+	 * @param <V>
+	 */
+	public static <K, V> ImmutableMap<K, V> createImmutableMap(Map<K, V> orgMap) {
+		return Maps.immutable.withAll(orgMap);
+	}
 
 	/**
 	 * 创建 可变 Map ，具体实现是 UnifiedMap (HashMap 的替代)

@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.function.Predicate;
 
+import org.eclipse.collections.api.map.ImmutableMap;
 import org.gitee.ztkyn.core.colleciton.MapUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,29 @@ import org.slf4j.LoggerFactory;
 public class ZtkynMapUtil {
 
 	private static final Logger logger = LoggerFactory.getLogger(ZtkynMapUtil.class);
+
+	/**
+	 * 创建不可变 map
+	 * @param key
+	 * @param value
+	 * @return
+	 * @param <K>
+	 * @param <V>
+	 */
+	public static <K, V> ImmutableMap<K, V> createImmutableMap(K key, V value) {
+		return ZtkynECollectionMapUtil.createImmutableMap(key, value);
+	}
+
+	/**
+	 * 创建不可变 map
+	 * @param orgMap
+	 * @return
+	 * @param <K>
+	 * @param <V>
+	 */
+	public static <K, V> ImmutableMap<K, V> createImmutableMap(Map<K, V> orgMap) {
+		return ZtkynECollectionMapUtil.createImmutableMap(orgMap);
+	}
 
 	/**
 	 * 创建 可变 Map ，具体实现是 UnifiedMap (HashMap 的替代)

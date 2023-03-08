@@ -2,6 +2,7 @@ package org.gitee.ztkyn.common.base.collection;
 
 import java.util.List;
 
+import org.eclipse.collections.api.list.ImmutableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,6 +34,17 @@ public class ZtkynListUtil {
 	@SafeVarargs
 	public static <T> List<T> createFastList(T... elements) {
 		return ZtkynECollectionListUtil.createMutList(elements);
+	}
+
+	/**
+	 * 创建不可变 list
+	 * @param elements
+	 * @return
+	 * @param <T>
+	 */
+	@SafeVarargs
+	public static <T> ImmutableList<T> createImmutableList(T... elements) {
+		return ZtkynECollectionListUtil.createImmutList(elements);
 	}
 
 }

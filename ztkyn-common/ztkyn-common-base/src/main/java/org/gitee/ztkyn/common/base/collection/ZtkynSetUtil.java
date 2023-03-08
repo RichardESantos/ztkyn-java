@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.Set;
 import java.util.SortedSet;
 
+import org.eclipse.collections.api.set.ImmutableSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,6 +64,17 @@ public class ZtkynSetUtil {
 	 */
 	public static <T> SortedSet<T> createTreeSortedSet(Comparator<T> comparator) {
 		return ZtkynECollectionSetUtil.createTreeSortedSet(comparator);
+	}
+
+	/**
+	 * ImmutableSet
+	 * @param elements
+	 * @return
+	 * @param <T>
+	 */
+	@SafeVarargs
+	public static <T> ImmutableSet<T> createImmutableSet(T... elements) {
+		return ZtkynECollectionSetUtil.createImmutableSet(elements);
 	}
 
 }
