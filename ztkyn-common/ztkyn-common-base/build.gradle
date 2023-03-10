@@ -17,6 +17,10 @@ dependencies {
 	// InheritableThreadLocal 替代品，解决在线程池失效的问题
 	api("com.alibaba:transmittable-thread-local:2.14.2")
 
+	// 反应式流 Reactive Streams
+	api("io.projectreactor:reactor-core:${reactorVersion}")
+
+
 	// 日期解析库
 	implementation("com.github.sisyphsu:dateparser:1.0.11")
 
@@ -25,7 +29,13 @@ dependencies {
 	// Java 字符串相似度计算工具包
 	implementation("info.debatty:java-string-similarity:2.0.0")
 
-	testImplementation("ch.qos.logback:logback-classic:1.4.5")
+	// MapStruct是一个Java注释处理器，用于生成类型安全的bean映射类
+	implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+
+	testAnnotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+
+	testImplementation("io.projectreactor:reactor-test:${reactorVersion}")
 
 }
 

@@ -15,4 +15,12 @@ public class RequestLimitException extends RuntimeException {
 		super(message);
 	}
 
+	public RequestLimitException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
+	public RequestLimitException(Throwable cause) {
+		super(cause);
+	}
+
 }

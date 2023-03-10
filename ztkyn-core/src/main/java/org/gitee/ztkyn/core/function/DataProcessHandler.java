@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
  * @author whty
  * @version 1.0
  */
-public class DataProcessHandler<T> {
+public final class DataProcessHandler<T> {
 
 	private static final Logger logger = LoggerFactory.getLogger(DataProcessHandler.class);
 
@@ -46,7 +46,7 @@ public class DataProcessHandler<T> {
 	 * @return
 	 */
 	public static <T> DataProcessHandler<T> of(T t, Predicate<T> predicate) {
-		return new DataProcessHandler<>(t).judge(predicate);
+		return new DataProcessHandler<>(t, predicate.test(t));
 	}
 
 	private DataProcessHandler<T> judge(Predicate<T> predicate) {
@@ -61,9 +61,22 @@ public class DataProcessHandler<T> {
 		return this;
 	}
 
+	public DataProcessHandler<T> ifTrue(Runnable runnable) {
+		if (judgeResult) {
+			runnable.run();
+		}
+		return this;
+	}
+
 	public void ifFalse(Consumer<T> consumer) {
 		if (!judgeResult) {
 			consumer.accept(value);
+		}
+	}
+
+	public void ifFalse(Runnable runnable) {
+		if (!judgeResult) {
+			runnable.run();
 		}
 	}
 

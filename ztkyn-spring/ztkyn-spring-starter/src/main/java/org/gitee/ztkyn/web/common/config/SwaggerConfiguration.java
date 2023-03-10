@@ -43,10 +43,9 @@ public class SwaggerConfiguration {
 
 	@Bean
 	public OpenAPI customOpenAPI() {
-		return new OpenAPI().info(new Info().title("XXX用户系统API").version("1.0")
-
-				.description("Knife4j集成springdoc-openapi示例").termsOfService("http://doc.xiaominfo.com")
-				.license(new License().name("Apache 2.0").url("http://doc.xiaominfo.com")));
+		return new OpenAPI().info(new Info().title("Ztkyn-Boot").version("1.0").description("Ztkyn Spring Boot 项目示例")
+				.termsOfService("https://gitee.com/Ztkyn/ztkyn-java")
+				.license(new License().name("Apache 2.0").url("https://gitee.com/Ztkyn/ztkyn-java")));
 	}
 
 }

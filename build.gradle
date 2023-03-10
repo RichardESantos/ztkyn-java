@@ -100,19 +100,22 @@ allprojects {
 		slf4jVersion = '2.0.6'
 		guavaVersion = '31.1-jre'
 		eclipseCollectionVerion = '11.1.0'
+		mapstructVersion = '1.5.3.Final'
+		logbackVersion = '1.4.5'
+		reactorVersion = '3.5.3'
 	}
 
 	//配置子模块依赖
 	dependencies {
 		api("org.slf4j:slf4j-api:${slf4jVersion}")
-		api("ch.qos.logback:logback-classic:1.4.5")
+		api("ch.qos.logback:logback-classic:${logbackVersion}")
 		compileOnly "org.projectlombok:lombok:${lombokVersion}"
 
 		annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
 
-
 		testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
 		testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+		testImplementation("ch.qos.logback:logback-classic:${logbackVersion}")
 	}
 
 }

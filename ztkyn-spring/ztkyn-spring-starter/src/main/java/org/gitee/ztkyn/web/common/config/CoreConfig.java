@@ -22,6 +22,7 @@ import org.hibernate.validator.HibernateValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.caffeine.CaffeineCache;
@@ -48,6 +49,8 @@ public class CoreConfig {
 	private ZtkynCacheConfiguration ztkynCacheConfiguration;
 
 	/**
+	 * 在没有配置 Redis 的情况下，才使用 CaffeineCache
+	 * <p>
 	 * Caffeine配置说明： initialCapacity=[integer]: 初始的缓存空间大小 maximumSize=[long]: 缓存的最大条数
 	 * maximumWeight=[long]: 缓存的最大权重 expireAfterAccess=[duration]: 最后一次写入或访问后经过固定时间过期
 	 * expireAfterWrite=[duration]: 最后一次写入后经过固定时间过期 refreshAfterWrite=[duration]:
@@ -55,11 +58,12 @@ public class CoreConfig {
 	 * softValues：打开value的软引用 recordStats：开发统计功能 注意：
 	 * expireAfterWrite和expireAfterAccess同事存在时，以expireAfterWrite为准。
 	 * maximumSize和maximumWeight不可以同时使用 weakValues和softValues不可以同时使用
-	 *
+	 * <p>
 	 * CacheManager 定义了创建、配置、获取、管理和控制多个唯一命名的 Cache。这些 Cache 存在于 CacheManager 的上下文中。
 	 * SimpleCacheManager只能使用Cache和LoadingCache，异步缓存将无法支持。
 	 */
 	@Bean
+	@ConditionalOnMissingBean(name = "redisTemplate")
 	public CacheManager cacheManager() {
 		SimpleCacheManager cacheManager = new SimpleCacheManager();
 		List<CaffeineCache> list = new ArrayList<>();
