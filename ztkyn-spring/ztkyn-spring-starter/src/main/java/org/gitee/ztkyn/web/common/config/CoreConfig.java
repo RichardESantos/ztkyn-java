@@ -22,7 +22,6 @@ import org.hibernate.validator.HibernateValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.caffeine.CaffeineCache;
@@ -49,7 +48,8 @@ public class CoreConfig {
 	private ZtkynCacheConfiguration ztkynCacheConfiguration;
 
 	/**
-	 * 在没有配置 Redis 的情况下，才使用 CaffeineCache
+	 * 确保在单机环境中Spring cache 使用 CaffeineCache，减少缓存的网络开销 针对于 需要共享的缓存，使用缓存 工具类直接操作，不委托给spring
+	 * cache
 	 * <p>
 	 * Caffeine配置说明： initialCapacity=[integer]: 初始的缓存空间大小 maximumSize=[long]: 缓存的最大条数
 	 * maximumWeight=[long]: 缓存的最大权重 expireAfterAccess=[duration]: 最后一次写入或访问后经过固定时间过期
@@ -63,9 +63,7 @@ public class CoreConfig {
 	 * SimpleCacheManager只能使用Cache和LoadingCache，异步缓存将无法支持。
 	 */
 	@Bean
-	@ConditionalOnMissingBean(name = "redisTemplate", type = { "RedisTemplate.class" })
 	public CacheManager cacheManager() {
-		logger.info("没有检测到Redis，加载 CaffeineCache");
 		SimpleCacheManager cacheManager = new SimpleCacheManager();
 		List<CaffeineCache> list = new ArrayList<>();
 		// 添加默认缓存
