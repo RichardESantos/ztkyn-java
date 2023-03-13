@@ -5,6 +5,7 @@ plugins {
 
 dependencies {
 	implementation(project(":ztkyn-spring:ztkyn-spring-starter"))
+	implementation(project(":ztkyn-spring:ztkyn-redis-spring-starter"))
 }
 
 test {

@@ -63,8 +63,9 @@ public class CoreConfig {
 	 * SimpleCacheManager只能使用Cache和LoadingCache，异步缓存将无法支持。
 	 */
 	@Bean
-	@ConditionalOnMissingBean(name = "redisTemplate")
+	@ConditionalOnMissingBean(name = "redisTemplate", type = { "RedisTemplate.class" })
 	public CacheManager cacheManager() {
+		logger.info("没有检测到Redis，加载 CaffeineCache");
 		SimpleCacheManager cacheManager = new SimpleCacheManager();
 		List<CaffeineCache> list = new ArrayList<>();
 		// 添加默认缓存

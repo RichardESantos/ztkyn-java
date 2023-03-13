@@ -8,6 +8,20 @@ spring:
       fail-on-unknown-properties: false  # 常用,json中含pojo不存在属性时是否失败报错,默认true
     serialization:
       FAIL_ON_EMPTY_BEANS: true # 对象为空时是否报错，默认true
+  data:
+    #    redis lettuce 配置
+    redis:
+      database: 12
+      host: 10.8.80.240
+      lettuce:
+        pool:
+          max-active: 10
+          max-idle: 30
+          max-wait: 10000
+          min-idle: 5
+      password: passwd4airedis
+      port: 6379
+      timeout: 60s
 springdoc:
   swagger-ui:
     enabled: true

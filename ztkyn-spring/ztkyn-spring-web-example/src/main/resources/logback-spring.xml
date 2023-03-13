@@ -70,7 +70,6 @@
 	<logger name="com.dtflys" level="warn"/>
 	<logger name="com.arangodb" level="warn"/>
 	<logger name="org.elasticsearch" level="info"/>
-	<logger name="com.yishuifengxiao" level="warn"/>
 	<logger name="com.alibaba" level="warn"/>
 	<!--基础配置-->
 
