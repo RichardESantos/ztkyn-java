@@ -1,7 +1,11 @@
 package org.gitee.ztkyn.common.base;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 import java.util.StringJoiner;
 
+import org.gitee.ztkyn.common.base.collection.ZtkynListUtil;
 import org.gitee.ztkyn.core.string.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,6 +98,17 @@ public class ZtkynStringUtil {
 	}
 
 	/**
+	 * 多个参数不能为空
+	 * @param charSequence
+	 * @param others
+	 * @return
+	 */
+	public static boolean isNotBlank(final CharSequence charSequence, final CharSequence... others) {
+		return isNotBlank(charSequence)
+				&& (Objects.nonNull(others) && Arrays.stream(others).allMatch(ZtkynStringUtil::isNotBlank));
+	}
+
+	/**
 	 * 字符串拼接工具
 	 * @param splitChar
 	 * @param args
@@ -105,6 +120,53 @@ public class ZtkynStringUtil {
 			joiner.add(String.valueOf(arg));
 		}
 		return joiner.toString();
+	}
+
+	/**
+	 * 切割字符串，允许结果中包含空字符串
+	 * @param charSequence
+	 * @param splitChar
+	 * @return
+	 */
+	public static List<String> splitToList(CharSequence charSequence, char splitChar) {
+		return splitToList(charSequence, splitChar, false);
+	}
+
+	/**
+	 * 切割字符串
+	 * @param charSequence
+	 * @param splitChar
+	 * @param excludeEmpty true，不包含空字符串，false，包含空字符串
+	 * @return
+	 */
+	public static List<String> splitToList(CharSequence charSequence, char splitChar, boolean excludeEmpty) {
+		List<String> splitList = ZtkynListUtil.createFastList();
+		int length = charSequence.length();
+		StringBuilder buffer = new StringBuilder();
+		for (int i = 0; i < length; i++) {
+			char charAt = charSequence.charAt(i);
+			// 匹配到了切割符号
+			if (Objects.equals(charAt, splitChar)) {
+				add(excludeEmpty, splitList, buffer.toString());
+				buffer = new StringBuilder();
+			}
+			else {
+				buffer.append(charAt);
+			}
+		}
+		add(excludeEmpty, splitList, buffer.toString());
+		return splitList;
+	}
+
+	private static void add(boolean excludeEmpty, List<String> splitList, String tmpStr) {
+		if (isNotBlank(tmpStr)) {
+			splitList.add(tmpStr);
+		}
+		else {
+			if (!excludeEmpty) {
+				splitList.add(emptyStr);
+			}
+		}
 	}
 
 }

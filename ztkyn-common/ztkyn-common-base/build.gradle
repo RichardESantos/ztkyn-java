@@ -20,6 +20,14 @@ dependencies {
 	// 反应式流 Reactive Streams
 	api("io.projectreactor:reactor-core:${reactorVersion}")
 
+	// okhttp 工具类
+	implementation 'cn.zhxu:okhttps:4.0.1'
+	implementation 'cn.zhxu:okhttps-jackson:4.0.1'
+	// JsonPath 工具类
+	implementation("org.noear:snack3:3.2.61")
+
+	// Html 解析工具
+	implementation("org.jsoup:jsoup:1.15.4")
 
 	// 日期解析库
 	implementation("com.github.sisyphsu:dateparser:1.0.11")
