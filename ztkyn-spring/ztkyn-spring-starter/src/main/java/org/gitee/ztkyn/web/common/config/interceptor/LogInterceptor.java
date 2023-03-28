@@ -14,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 /**
  * @author whty
  * @version 1.0
- * @description
+ * @description 日志拦截器，给所有请求添加 request_id
  * @date 2023/1/31 15:20
  */
 public class LogInterceptor implements HandlerInterceptor {
