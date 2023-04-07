@@ -37,8 +37,9 @@ public class ZtkynOkHttpsUtil {
 
 	public static String post(String url, Map<String, Object> paramsMap, Map<String, String> headerMap) {
 		SHttpTask httpTask = OkHttps.sync(url);
-		DataProcessHandler.of(paramsMap, PredicateUtil.mapNotBlank()).ifTrue(httpTask::setBodyPara)
-				.ifFalse(() -> httpTask.setBodyPara(Collections.emptyMap()));
+		DataProcessHandler.of(paramsMap, PredicateUtil.mapNotBlank())
+			.ifTrue(httpTask::setBodyPara)
+			.ifFalse(() -> httpTask.setBodyPara(Collections.emptyMap()));
 		DataProcessHandler.of(headerMap, PredicateUtil.mapNotBlank()).ifTrue(httpTask::addHeader);
 		return httpTask.post().getBody().toString();
 	}
@@ -49,8 +50,9 @@ public class ZtkynOkHttpsUtil {
 
 	public static String postJson(String url, Map<String, Object> paramsMap, Map<String, String> headerMap) {
 		SHttpTask httpTask = OkHttps.sync(url).bodyType(OkHttps.JSON);
-		DataProcessHandler.of(paramsMap, PredicateUtil.mapNotBlank()).ifTrue(httpTask::setBodyPara)
-				.ifFalse(() -> httpTask.setBodyPara(Collections.emptyMap()));
+		DataProcessHandler.of(paramsMap, PredicateUtil.mapNotBlank())
+			.ifTrue(httpTask::setBodyPara)
+			.ifFalse(() -> httpTask.setBodyPara(Collections.emptyMap()));
 		DataProcessHandler.of(headerMap, PredicateUtil.mapNotBlank()).ifTrue(httpTask::addHeader);
 		return httpTask.post().getBody().toString();
 	}

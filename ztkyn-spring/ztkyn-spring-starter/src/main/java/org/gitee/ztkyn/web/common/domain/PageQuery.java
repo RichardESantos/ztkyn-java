@@ -40,8 +40,9 @@ public class PageQuery<T> {
 	private T queryParams;
 
 	public static <T> PageQuery<T> of(T queryParams) {
-		return new PageQuery<T>().setQueryParams(queryParams).setPageSize(DEFAULT_PAGE_SIZE)
-				.setPageNum(DEFAULT_PAGE_NUM);
+		return new PageQuery<T>().setQueryParams(queryParams)
+			.setPageSize(DEFAULT_PAGE_SIZE)
+			.setPageNum(DEFAULT_PAGE_NUM);
 	}
 
 	public static <T> PageQuery<T> of(T queryParams, Integer pageNum) {

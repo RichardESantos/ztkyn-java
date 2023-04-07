@@ -34,10 +34,12 @@ public class CaffeineExpireTest {
 	@Test
 	public void maximumSizeTest() throws InterruptedException {
 		Cache<Integer, Integer> cache = Caffeine.newBuilder()
-				// 超过10个后会使用W-TinyLFU算法进行淘汰
-				.maximumSize(10).evictionListener((key, val, removalCause) -> {
-					logger.info("淘汰缓存：key:{} val:{}", key, val);
-				}).build();
+			// 超过10个后会使用W-TinyLFU算法进行淘汰
+			.maximumSize(10)
+			.evictionListener((key, val, removalCause) -> {
+				logger.info("淘汰缓存：key:{} val:{}", key, val);
+			})
+			.build();
 
 		for (int i = 1; i < 20; i++) {
 			cache.put(i, i);
@@ -54,11 +56,13 @@ public class CaffeineExpireTest {
 	@Test
 	public void maximumWeightTest() throws InterruptedException {
 		Cache<Integer, Integer> cache = Caffeine.newBuilder()
-				// 限制总权重，若所有缓存的权重加起来>总权重就会淘汰权重小的缓存
-				.maximumWeight(100).weigher((Weigher<Integer, Integer>) (key, value) -> key)
-				.evictionListener((key, val, removalCause) -> {
-					logger.info("淘汰缓存：key:{} val:{}", key, val);
-				}).build();
+			// 限制总权重，若所有缓存的权重加起来>总权重就会淘汰权重小的缓存
+			.maximumWeight(100)
+			.weigher((Weigher<Integer, Integer>) (key, value) -> key)
+			.evictionListener((key, val, removalCause) -> {
+				logger.info("淘汰缓存：key:{} val:{}", key, val);
+			})
+			.build();
 
 		// 总权重其实是=所有缓存的权重加起来
 		int maximumWeight = 0;
@@ -78,13 +82,16 @@ public class CaffeineExpireTest {
 	 */
 	@Test
 	public void expireAfterAccessTest() throws InterruptedException {
-		Cache<Integer, Integer> cache = Caffeine.newBuilder().expireAfterAccess(1, TimeUnit.SECONDS)
-				// 可以指定调度程序来及时删除过期缓存项，而不是等待Caffeine触发定期维护
-				// 若不设置scheduler，则缓存会在下一次调用get的时候才会被动删除
-				.scheduler(Scheduler.systemScheduler()).evictionListener((key, val, removalCause) -> {
-					logger.info("淘汰缓存：key:{} val:{}", key, val);
+		Cache<Integer, Integer> cache = Caffeine.newBuilder()
+			.expireAfterAccess(1, TimeUnit.SECONDS)
+			// 可以指定调度程序来及时删除过期缓存项，而不是等待Caffeine触发定期维护
+			// 若不设置scheduler，则缓存会在下一次调用get的时候才会被动删除
+			.scheduler(Scheduler.systemScheduler())
+			.evictionListener((key, val, removalCause) -> {
+				logger.info("淘汰缓存：key:{} val:{}", key, val);
 
-				}).build();
+			})
+			.build();
 		cache.put(1, 2);
 		System.out.println(cache.getIfPresent(1));
 		Thread.sleep(3000);
@@ -96,12 +103,15 @@ public class CaffeineExpireTest {
 	 */
 	@Test
 	public void expireAfterWriteTest() throws InterruptedException {
-		Cache<Integer, Integer> cache = Caffeine.newBuilder().expireAfterWrite(1, TimeUnit.SECONDS)
-				// 可以指定调度程序来及时删除过期缓存项，而不是等待Caffeine触发定期维护
-				// 若不设置scheduler，则缓存会在下一次调用get的时候才会被动删除
-				.scheduler(Scheduler.systemScheduler()).evictionListener((key, val, removalCause) -> {
-					logger.info("淘汰缓存：key:{} val:{}", key, val);
-				}).build();
+		Cache<Integer, Integer> cache = Caffeine.newBuilder()
+			.expireAfterWrite(1, TimeUnit.SECONDS)
+			// 可以指定调度程序来及时删除过期缓存项，而不是等待Caffeine触发定期维护
+			// 若不设置scheduler，则缓存会在下一次调用get的时候才会被动删除
+			.scheduler(Scheduler.systemScheduler())
+			.evictionListener((key, val, removalCause) -> {
+				logger.info("淘汰缓存：key:{} val:{}", key, val);
+			})
+			.build();
 		cache.put(1, 2);
 		Thread.sleep(3000);
 		System.out.println(cache.getIfPresent(1));// null

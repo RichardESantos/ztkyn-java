@@ -85,6 +85,7 @@ public class TuiImgPageProcessor implements PageProcessor {
 
 	/**
 	 * 结果记录
+	 *
 	 * @param fileUrl
 	 * @param title
 	 * @param date
@@ -94,8 +95,11 @@ public class TuiImgPageProcessor implements PageProcessor {
 	}
 
 	public static void main(String[] args) {
-		Spider.create(new TuiImgPageProcessor()).addUrl("https://www.tuiimg.com/meinv/")
-				.addPipeline(new JsonFilePipeline("/www.tuiimg.com")).thread(1).run();
+		Spider.create(new TuiImgPageProcessor())
+			.addUrl("https://www.tuiimg.com/meinv/")
+			.addPipeline(new JsonFilePipeline("/www.tuiimg.com"))
+			.thread(1)
+			.run();
 	}
 
 }

@@ -72,19 +72,19 @@ public class CoreConfig {
 
 		// 添加通过配置文件添加的缓存
 		DataProcessHandler.of(ztkynCacheConfiguration.getCaffeineList(), PredicateUtil.listNotBlank())
-				.ifTrue(caffeineCacheConfigs -> {
-					caffeineCacheConfigs.forEach(caffeineCacheConfig -> list
-							.add(new CaffeineCache(caffeineCacheConfig.getName(), generateCache(caffeineCacheConfig))));
-				});
+			.ifTrue(caffeineCacheConfigs -> {
+				caffeineCacheConfigs.forEach(caffeineCacheConfig -> list
+					.add(new CaffeineCache(caffeineCacheConfig.getName(), generateCache(caffeineCacheConfig))));
+			});
 
 		// 添加通过编程手动导入的缓存
 		// 考虑后期手动扩展，不需要修改到底层包
 		// 参考 org.gitee.ztkyn.web.config.CaffeineLoadingCachePostProcessor 中自定义的缓存
 		DataProcessHandler.of(ztkynCacheConfiguration.getCaffeineLoadCacheList(), PredicateUtil.listNotBlank())
-				.ifTrue(caffeineCacheConfigs -> {
-					caffeineCacheConfigs.forEach(caffeineCacheConfig -> list
-							.add(new CaffeineCache(caffeineCacheConfig.getName(), generateCache(caffeineCacheConfig))));
-				});
+			.ifTrue(caffeineCacheConfigs -> {
+				caffeineCacheConfigs.forEach(caffeineCacheConfig -> list
+					.add(new CaffeineCache(caffeineCacheConfig.getName(), generateCache(caffeineCacheConfig))));
+			});
 
 		cacheManager.setCaches(list);
 		return cacheManager;
@@ -156,8 +156,10 @@ public class CoreConfig {
 	 */
 	@Bean
 	public Validator validator() {
-		ValidatorFactory validatorFactory = Validation.byProvider(HibernateValidator.class).configure().failFast(true)
-				.buildValidatorFactory();
+		ValidatorFactory validatorFactory = Validation.byProvider(HibernateValidator.class)
+			.configure()
+			.failFast(true)
+			.buildValidatorFactory();
 		return validatorFactory.getValidator();
 	}
 

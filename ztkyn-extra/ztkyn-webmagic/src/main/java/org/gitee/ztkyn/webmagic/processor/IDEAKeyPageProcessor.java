@@ -41,8 +41,9 @@ public class IDEAKeyPageProcessor implements PageProcessor {
 
 	public static void main(String[] args) {
 		Spider.create(new IDEAKeyPageProcessor())
-				.addUrl("https://bafybeiatyghkzrrtodzt3stm652rkrjxndg4hq2ublfdmifk7plg5k5brq.ipfs.dweb.link/").thread(1)
-				.run();
+			.addUrl("https://bafybeiatyghkzrrtodzt3stm652rkrjxndg4hq2ublfdmifk7plg5k5brq.ipfs.dweb.link/")
+			.thread(1)
+			.run();
 	}
 
 }

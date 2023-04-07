@@ -45,8 +45,9 @@ class JacksonConfiguration {
 		// 忽略在json字符串中存在,但是在java对象中不存在对应属性的情况
 		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		// 启用时间模块,guava,eclipse-collection
-		objectMapper.registerModule(javaTimeModule).registerModule(new GuavaModule())
-				.registerModule(new EclipseCollectionsModule());
+		objectMapper.registerModule(javaTimeModule)
+			.registerModule(new GuavaModule())
+			.registerModule(new EclipseCollectionsModule());
 		javaTimeModule.addSerializer(Instant.class,
 				new InstantCustomSerializer(DateTimeFormatter.ofPattern(JSON_STANDARD_FORMAT)));
 	}

@@ -1,126 +1,126 @@
 buildscript {
-	repositories {
-		maven {
-			url 'https://repo.huaweicloud.com/repository/maven/'
-		}
-		maven {
-			url 'https://maven.aliyun.com/repository/public'
-		}
-		maven {
-			url 'https://maven.aliyun.com/repository/jcenter'
-		}
-		maven {
-			url 'https://maven.aliyun.com/repository/spring'
-		}
-		maven {
-			url 'https://maven.aliyun.com/repository/spring-plugin'
-		}
-		maven {
-			url 'https://maven.aliyun.com/repository/gradle-plugin'
-		}
-		maven {
-			url 'https://maven.aliyun.com/repository/google'
-		}
-		maven {
-			url 'https://maven.aliyun.com/repository/grails-core'
-		}
-		maven {
-			url 'https://maven.aliyun.com/repository/apache-snapshots'
-		}
-		mavenCentral()
-	}
-	dependencies {
-		classpath("io.spring.javaformat:spring-javaformat-gradle-plugin:0.0.35")
-	}
+    repositories {
+        maven {
+            url 'https://repo.huaweicloud.com/repository/maven/'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/public'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/jcenter'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/spring'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/spring-plugin'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/gradle-plugin'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/google'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/grails-core'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/apache-snapshots'
+        }
+        mavenCentral()
+    }
+    dependencies {
+        classpath("io.spring.javaformat:spring-javaformat-gradle-plugin:0.0.38")
+    }
 }
 
 plugins {
-	id 'java'
+    id 'java'
 }
 
 allprojects {
-	// 指定需要的插件
-	// 指定语言
-	apply plugin: 'java-library'
-	//指定编辑器
-	apply plugin: 'idea'
-	// 指定代码格式化插件
-	apply plugin: "io.spring.javaformat"
-	// maven 发布插件
-	apply plugin: 'maven-publish'
-	apply plugin: 'signing'
+    // 指定需要的插件
+    // 指定语言
+    apply plugin: 'java-library'
+    //指定编辑器
+    apply plugin: 'idea'
+    // 指定代码格式化插件
+    apply plugin: "io.spring.javaformat"
+    // maven 发布插件
+    apply plugin: 'maven-publish'
+    apply plugin: 'signing'
 
-	group 'org.gitee.ztkyn'
-	version '1.0-SNAPSHOT'
+    group 'org.gitee.ztkyn'
+    version '1.0-SNAPSHOT'
 
-	//指定JDK版本
-	sourceCompatibility = JavaVersion.VERSION_17
-	targetCompatibility = JavaVersion.VERSION_17
+    //指定JDK版本
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 
-	//指定编码格式
-	[compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
+    //指定编码格式
+    [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
 
-	repositories {
-		maven {
-			url 'https://repo.huaweicloud.com/repository/maven/'
-		}
-		maven {
-			url 'https://maven.aliyun.com/repository/public'
-		}
-		maven {
-			url 'https://maven.aliyun.com/repository/jcenter'
-		}
-		maven {
-			url 'https://maven.aliyun.com/repository/spring'
-		}
-		maven {
-			url 'https://maven.aliyun.com/repository/spring-plugin'
-		}
-		maven {
-			url 'https://maven.aliyun.com/repository/gradle-plugin'
-		}
-		maven {
-			url 'https://maven.aliyun.com/repository/google'
-		}
-		maven {
-			url 'https://maven.aliyun.com/repository/grails-core'
-		}
-		maven {
-			url 'https://maven.aliyun.com/repository/apache-snapshots'
-		}
-		mavenCentral()
-	}
+    repositories {
+        maven {
+            url 'https://repo.huaweicloud.com/repository/maven/'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/public'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/jcenter'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/spring'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/spring-plugin'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/gradle-plugin'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/google'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/grails-core'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/apache-snapshots'
+        }
+        mavenCentral()
+    }
 
-	// 配置全局依赖版本信息
-	ext {
-		junitVersion = '5.9.2'
-		lombokVersion = '1.18.24'
-		jacksonVersion = '2.14.1'
-		caffeineVersion = '3.1.2'
-		slf4jVersion = '2.0.6'
-		guavaVersion = '31.1-jre'
-		eclipseCollectionVerion = '11.1.0'
-		mapstructVersion = '1.5.3.Final'
-		logbackVersion = '1.4.5'
-		reactorVersion = '3.5.3'
-	}
+    // 配置全局依赖版本信息
+    ext {
+        junitVersion = '5.9.2'
+        lombokVersion = '1.18.24'
+        jacksonVersion = '2.14.1'
+        caffeineVersion = '3.1.2'
+        slf4jVersion = '2.0.6'
+        guavaVersion = '31.1-jre'
+        eclipseCollectionVerion = '11.1.0'
+        mapstructVersion = '1.5.3.Final'
+        logbackVersion = '1.4.5'
+        reactorVersion = '3.5.3'
+    }
 
-	//配置子模块依赖
-	dependencies {
-		api("org.slf4j:slf4j-api:${slf4jVersion}")
-		api("ch.qos.logback:logback-classic:${logbackVersion}")
-		compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    //配置子模块依赖
+    dependencies {
+        api("org.slf4j:slf4j-api:${slf4jVersion}")
+        api("ch.qos.logback:logback-classic:${logbackVersion}")
+        compileOnly "org.projectlombok:lombok:${lombokVersion}"
 
-		annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
+        annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
 
-		testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
-		testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
-		testImplementation("ch.qos.logback:logback-classic:${logbackVersion}")
-	}
+        testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
+        testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+        testImplementation("ch.qos.logback:logback-classic:${logbackVersion}")
+    }
 
 }
 
 
 test {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }

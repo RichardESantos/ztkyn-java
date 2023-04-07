@@ -35,7 +35,8 @@ public class MarkDownTest {
 	private static final Logger logger = LoggerFactory.getLogger(MarkDownTest.class);
 
 	final private static DataHolder OPTIONS = new MutableDataSet()
-			.set(Parser.EXTENSIONS, Collections.singleton(YamlFrontMatterExtension.create())).toImmutable();
+		.set(Parser.EXTENSIONS, Collections.singleton(YamlFrontMatterExtension.create()))
+		.toImmutable();
 
 	final private static @NotNull Parser PARSER = Parser.builder(OPTIONS).build();
 

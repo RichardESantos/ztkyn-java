@@ -99,10 +99,12 @@ public class ZtkynWeXinUtil {
 					msgId.set(albumArticle.getMsgid());
 				});
 				// 确认是否找到了最后一条
-				articleList.stream().filter(albumArticle -> Objects.equals(albumArticle.getPosNum(), "1")).findAny()
-						.ifPresent(albumArticle -> {
-							msgId.set(null);
-						});
+				articleList.stream()
+					.filter(albumArticle -> Objects.equals(albumArticle.getPosNum(), "1"))
+					.findAny()
+					.ifPresent(albumArticle -> {
+						msgId.set(null);
+					});
 				albumArticleList.addAll(articleList);
 			});
 		});

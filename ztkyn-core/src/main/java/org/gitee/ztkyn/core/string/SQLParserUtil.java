@@ -29,8 +29,9 @@ public class SQLParserUtil {
 			List<SQLAnalysis> sqlAnalysisList = new ArrayList<>();
 			while (matcher.find()) {
 				SQLAnalysis sqlAnalysis = new SQLAnalysis().setSelect(matcher.group("select"))
-						.setFrom(matcher.group("from")).setWhere(matcher.group("where"))
-						.setLimit(matcher.group("limit"));
+					.setFrom(matcher.group("from"))
+					.setWhere(matcher.group("where"))
+					.setLimit(matcher.group("limit"));
 				sqlAnalysisList.add(sqlAnalysis);
 			}
 			AssertUtil.expect(sqlAnalysisList.size(), 1, "SQL 解析错误");

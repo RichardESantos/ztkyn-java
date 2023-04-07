@@ -31,8 +31,9 @@ public class TTLTest {
 		for (int i = 0; i < 10; i++) {
 			mapTests.add(new MapTest("key" + i));
 		}
-		Map<String, String> stringMap = mapTests.stream().filter(mapTest -> Objects.nonNull(mapTest.getValue()))
-				.collect(Collectors.toMap(MapTest::getKey, MapTest::getValue));
+		Map<String, String> stringMap = mapTests.stream()
+			.filter(mapTest -> Objects.nonNull(mapTest.getValue()))
+			.collect(Collectors.toMap(MapTest::getKey, MapTest::getValue));
 	}
 
 	class MapTest {

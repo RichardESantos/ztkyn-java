@@ -62,7 +62,7 @@ public class AssertUtil {
 	 */
 	public static <T> void collectionNotBlank(Collection<T> collection, String errorMsg) {
 		DataProcessHandler.of(collection, CollectionUtil::isNotBlank)
-				.ifFalseThrow(new DataVerifyFailException(errorMsg));
+			.ifFalseThrow(new DataVerifyFailException(errorMsg));
 	}
 
 	/**

@@ -194,9 +194,12 @@ public class RedissonAutoConfiguration {
 
 			config = new Config();
 			SentinelServersConfig c = config.useSentinelServers()
-					.setMasterName(redisProperties.getSentinel().getMaster()).addSentinelAddress(nodes)
-					.setDatabase(redisProperties.getDatabase()).setUsername(username)
-					.setPassword(redisProperties.getPassword()).setClientName(clientName);
+				.setMasterName(redisProperties.getSentinel().getMaster())
+				.addSentinelAddress(nodes)
+				.setDatabase(redisProperties.getDatabase())
+				.setUsername(username)
+				.setPassword(redisProperties.getPassword())
+				.setClientName(clientName);
 			if (connectTimeout != null) {
 				c.setConnectTimeout(connectTimeout);
 			}
@@ -212,8 +215,11 @@ public class RedissonAutoConfiguration {
 			String[] nodes = convert(nodesObject);
 
 			config = new Config();
-			ClusterServersConfig c = config.useClusterServers().addNodeAddress(nodes).setUsername(username)
-					.setPassword(redisProperties.getPassword()).setClientName(clientName);
+			ClusterServersConfig c = config.useClusterServers()
+				.addNodeAddress(nodes)
+				.setUsername(username)
+				.setPassword(redisProperties.getPassword())
+				.setClientName(clientName);
 			if (connectTimeout != null) {
 				c.setConnectTimeout(connectTimeout);
 			}
@@ -230,9 +236,11 @@ public class RedissonAutoConfiguration {
 			}
 
 			SingleServerConfig c = config.useSingleServer()
-					.setAddress(prefix + redisProperties.getHost() + ":" + redisProperties.getPort())
-					.setDatabase(redisProperties.getDatabase()).setUsername(username)
-					.setPassword(redisProperties.getPassword()).setClientName(clientName);
+				.setAddress(prefix + redisProperties.getHost() + ":" + redisProperties.getPort())
+				.setDatabase(redisProperties.getDatabase())
+				.setUsername(username)
+				.setPassword(redisProperties.getPassword())
+				.setClientName(clientName);
 			if (connectTimeout != null) {
 				c.setConnectTimeout(connectTimeout);
 			}

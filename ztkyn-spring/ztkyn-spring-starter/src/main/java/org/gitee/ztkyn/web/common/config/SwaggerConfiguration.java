@@ -43,9 +43,11 @@ public class SwaggerConfiguration {
 
 	@Bean
 	public OpenAPI customOpenAPI() {
-		return new OpenAPI().info(new Info().title("Ztkyn-Boot").version("1.0").description("Ztkyn Spring Boot 项目示例")
-				.termsOfService("https://gitee.com/Ztkyn/ztkyn-java")
-				.license(new License().name("Apache 2.0").url("https://gitee.com/Ztkyn/ztkyn-java")));
+		return new OpenAPI().info(new Info().title("Ztkyn-Boot")
+			.version("1.0")
+			.description("Ztkyn Spring Boot 项目示例")
+			.termsOfService("https://gitee.com/Ztkyn/ztkyn-java")
+			.license(new License().name("Apache 2.0").url("https://gitee.com/Ztkyn/ztkyn-java")));
 	}
 
 }

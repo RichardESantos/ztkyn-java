@@ -16,11 +16,7 @@ public final class DataProcessHandler<T> {
 
 	private final T value;
 
-	private boolean judgeResult = false;
-
-	private DataProcessHandler(T value) {
-		this.value = value;
-	}
+	private final boolean judgeResult;
 
 	private DataProcessHandler(T value, boolean judgeResult) {
 		this.value = value;
@@ -47,11 +43,6 @@ public final class DataProcessHandler<T> {
 	 */
 	public static <T> DataProcessHandler<T> of(T t, Predicate<T> predicate) {
 		return new DataProcessHandler<>(t, predicate.test(t));
-	}
-
-	private DataProcessHandler<T> judge(Predicate<T> predicate) {
-		judgeResult = predicate.test(value);
-		return this;
 	}
 
 	public DataProcessHandler<T> ifTrue(Consumer<T> consumer) {
@@ -84,6 +75,14 @@ public final class DataProcessHandler<T> {
 		ifFalse(value -> {
 			throw exception;
 		});
+	}
+
+	public T getValue() {
+		return value;
+	}
+
+	public boolean isJudgeResult() {
+		return judgeResult;
 	}
 
 }

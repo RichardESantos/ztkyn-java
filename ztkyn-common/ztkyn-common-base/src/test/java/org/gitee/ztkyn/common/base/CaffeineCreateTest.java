@@ -36,20 +36,21 @@ public class CaffeineCreateTest {
 	@Test
 	public void manualCreate() {
 		Cache<Object, Object> cache = Caffeine.newBuilder()
-				// 初始数量
-				.initialCapacity(10)
-				// 最大条数
-				.maximumSize(10)
-				// expireAfterWrite和expireAfterAccess同时存在时，以expireAfterWrite为准
-				// 最后一次写操作后经过指定时间过期
-				.expireAfterWrite(1, TimeUnit.SECONDS)
-				// 最后一次读或写操作后经过指定时间过期
-				.expireAfterAccess(1, TimeUnit.SECONDS)
-				// 监听缓存被移除
-				.removalListener((key, val, removalCause) -> {
-				})
-				// 记录命中
-				.recordStats().build();
+			// 初始数量
+			.initialCapacity(10)
+			// 最大条数
+			.maximumSize(10)
+			// expireAfterWrite和expireAfterAccess同时存在时，以expireAfterWrite为准
+			// 最后一次写操作后经过指定时间过期
+			.expireAfterWrite(1, TimeUnit.SECONDS)
+			// 最后一次读或写操作后经过指定时间过期
+			.expireAfterAccess(1, TimeUnit.SECONDS)
+			// 监听缓存被移除
+			.removalListener((key, val, removalCause) -> {
+			})
+			// 记录命中
+			.recordStats()
+			.build();
 
 		cache.put("1", "张三");
 		// 张三
@@ -67,11 +68,13 @@ public class CaffeineCreateTest {
 	@Test
 	public void loadingCacheTest() {
 		LoadingCache<String, String> loadingCache = Caffeine.newBuilder()
-				// 创建缓存或者最近一次更新缓存后经过指定时间间隔，刷新缓存；refreshAfterWrite仅支持LoadingCache
-				.refreshAfterWrite(10, TimeUnit.SECONDS).expireAfterWrite(10, TimeUnit.SECONDS)
-				.expireAfterAccess(10, TimeUnit.SECONDS).maximumSize(10)
-				// 根据key查询数据库里面的值，这里是个lamba表达式
-				.build(key -> new Date().toString());
+			// 创建缓存或者最近一次更新缓存后经过指定时间间隔，刷新缓存；refreshAfterWrite仅支持LoadingCache
+			.refreshAfterWrite(10, TimeUnit.SECONDS)
+			.expireAfterWrite(10, TimeUnit.SECONDS)
+			.expireAfterAccess(10, TimeUnit.SECONDS)
+			.maximumSize(10)
+			// 根据key查询数据库里面的值，这里是个lamba表达式
+			.build(key -> new Date().toString());
 	}
 
 	/**
@@ -83,14 +86,16 @@ public class CaffeineCreateTest {
 	@Test
 	public void asyncLoadingCacheTest() {
 		AsyncLoadingCache<String, String> asyncLoadingCache = Caffeine.newBuilder()
-				// 创建缓存或者最近一次更新缓存后经过指定时间间隔刷新缓存；仅支持LoadingCache
-				.refreshAfterWrite(1, TimeUnit.SECONDS).expireAfterWrite(1, TimeUnit.SECONDS)
-				.expireAfterAccess(1, TimeUnit.SECONDS).maximumSize(10)
-				// 根据key查询数据库里面的值
-				.buildAsync(key -> {
-					Thread.sleep(1000);
-					return new Date().toString();
-				});
+			// 创建缓存或者最近一次更新缓存后经过指定时间间隔刷新缓存；仅支持LoadingCache
+			.refreshAfterWrite(1, TimeUnit.SECONDS)
+			.expireAfterWrite(1, TimeUnit.SECONDS)
+			.expireAfterAccess(1, TimeUnit.SECONDS)
+			.maximumSize(10)
+			// 根据key查询数据库里面的值
+			.buildAsync(key -> {
+				Thread.sleep(1000);
+				return new Date().toString();
+			});
 
 		// 异步缓存返回的是CompletableFuture
 		CompletableFuture<String> future = asyncLoadingCache.get("1");
@@ -104,9 +109,10 @@ public class CaffeineCreateTest {
 
 	@Test
 	public void refreshAfterWriteTest() throws InterruptedException {
-		LoadingCache<Integer, Integer> cache = Caffeine.newBuilder().refreshAfterWrite(1, TimeUnit.SECONDS)
-				// 模拟获取数据，每次获取就自增1
-				.build(integer -> ++NUM);
+		LoadingCache<Integer, Integer> cache = Caffeine.newBuilder()
+			.refreshAfterWrite(1, TimeUnit.SECONDS)
+			// 模拟获取数据，每次获取就自增1
+			.build(integer -> ++NUM);
 
 		// 获取ID=1的值，由于缓存里还没有，所以会自动放入缓存
 		System.out.println(cache.get(1));// 1
@@ -126,16 +132,18 @@ public class CaffeineCreateTest {
 	 */
 	public void recordStatsTest() {
 		LoadingCache<String, String> cache = Caffeine.newBuilder()
-				// 创建缓存或者最近一次更新缓存后经过指定时间间隔，刷新缓存；refreshAfterWrite仅支持LoadingCache
-				.refreshAfterWrite(1, TimeUnit.SECONDS).expireAfterWrite(1, TimeUnit.SECONDS)
-				.expireAfterAccess(1, TimeUnit.SECONDS).maximumSize(10)
-				// 开启记录缓存命中率等信息
-				.recordStats()
-				// 根据key查询数据库里面的值
-				.build(key -> {
-					Thread.sleep(1000);
-					return new Date().toString();
-				});
+			// 创建缓存或者最近一次更新缓存后经过指定时间间隔，刷新缓存；refreshAfterWrite仅支持LoadingCache
+			.refreshAfterWrite(1, TimeUnit.SECONDS)
+			.expireAfterWrite(1, TimeUnit.SECONDS)
+			.expireAfterAccess(1, TimeUnit.SECONDS)
+			.maximumSize(10)
+			// 开启记录缓存命中率等信息
+			.recordStats()
+			// 根据key查询数据库里面的值
+			.build(key -> {
+				Thread.sleep(1000);
+				return new Date().toString();
+			});
 
 		cache.put("1", "shawn");
 		cache.get("1");
