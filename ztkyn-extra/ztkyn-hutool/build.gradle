@@ -2,10 +2,6 @@ plugins {
 	id 'java'
 }
 
-ext {
-	hutoolVersion = '5.8.11'
-}
-
 dependencies {
 	api("cn.hutool:hutool-system:${hutoolVersion}")
 	api("cn.hutool:hutool-setting:${hutoolVersion}")

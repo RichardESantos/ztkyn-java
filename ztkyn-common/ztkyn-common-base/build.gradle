@@ -1,52 +1,48 @@
 plugins {
-	id 'java'
+    id 'java'
 }
 
 
 dependencies {
-	api(project(":ztkyn-core"))
-	api(project(":ztkyn-extra:ztkyn-guava"))
-	api(project(":ztkyn-extra:ztkyn-hutool"))
-	implementation(project(":ztkyn-extra:ztkyn-eclipse-collection"))
+    api(project(":ztkyn-core"))
+    api(project(":ztkyn-extra:ztkyn-guava"))
+    api(project(":ztkyn-extra:ztkyn-hutool"))
+    implementation(project(":ztkyn-extra:ztkyn-eclipse-collection"))
 
-	api("com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}")
-	api("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonVersion}")
-	// 新一代内存缓存
-	api("com.github.ben-manes.caffeine:caffeine:${caffeineVersion}")
+    api("com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}")
+    api("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonVersion}")
+    // 新一代内存缓存
+    api("com.github.ben-manes.caffeine:caffeine:${caffeineVersion}")
 
-	// InheritableThreadLocal 替代品，解决在线程池失效的问题
-	api("com.alibaba:transmittable-thread-local:2.14.2")
+    // InheritableThreadLocal 替代品，解决在线程池失效的问题
+    api("com.alibaba:transmittable-thread-local:${ttlVersion}")
 
-	// 反应式流 Reactive Streams
-	api("io.projectreactor:reactor-core:${reactorVersion}")
+    // 反应式流 Reactive Streams
+    api("io.projectreactor:reactor-core:${reactorVersion}")
 
-	// okhttp 工具类
-	implementation 'cn.zhxu:okhttps:4.0.1'
-	implementation 'cn.zhxu:okhttps-jackson:4.0.1'
-	// JsonPath 工具类
-	implementation("org.noear:snack3:3.2.61")
+    // okhttp 工具类
+    implementation("cn.zhxu:okhttps:${okhttpsVersion}")
+    implementation("cn.zhxu:okhttps-jackson:${okhttpsVersion}")
+    // JsonPath 工具类
+    implementation("org.noear:snack3:3.2.61")
 
-	// Html 解析工具
-	implementation("org.jsoup:jsoup:1.15.4")
+    // Html 解析工具
+    implementation("org.jsoup:jsoup:1.15.4")
 
-	// 日期解析库
-	implementation("com.github.sisyphsu:dateparser:1.0.11")
+    // 日期解析库
+    implementation("com.github.sisyphsu:dateparser:1.0.11")
+    // SQL 解析库
+    implementation("com.github.jsqlparser:jsqlparser:4.6")
 
-	// Java 字符串相似度计算工具包
-	implementation("com.github.shibing624:similarity:1.1.6")
-	// Java 字符串相似度计算工具包
-	implementation("info.debatty:java-string-similarity:2.0.0")
+    // Java 字符串相似度计算工具包
+    implementation("com.github.shibing624:similarity:1.1.6")
+    // Java 字符串相似度计算工具包
+    implementation("info.debatty:java-string-similarity:2.0.0")
 
-	// MapStruct是一个Java注释处理器，用于生成类型安全的bean映射类
-	implementation "org.mapstruct:mapstruct:${mapstructVersion}"
-	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
-
-	testAnnotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
-
-	testImplementation("io.projectreactor:reactor-test:${reactorVersion}")
+    testImplementation("io.projectreactor:reactor-test:${reactorVersion}")
 
 }
 
 test {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }

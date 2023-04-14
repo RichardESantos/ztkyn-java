@@ -4,9 +4,9 @@ plugins {
 
 
 dependencies {
-    api("org.slf4j:slf4j-api:2.0.6")
+    api("org.slf4j:slf4j-api:${slf4jVersion}")
 
-    testImplementation("ch.qos.logback:logback-classic:1.4.5")
+    testImplementation("ch.qos.logback:logback-classic:${logbackVersion}")
 }
 
 test {

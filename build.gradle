@@ -98,21 +98,31 @@ allprojects {
         jacksonVersion = '2.14.1'
         caffeineVersion = '3.1.2'
         slf4jVersion = '2.0.6'
+        logbackVersion = '1.4.5'
         guavaVersion = '31.1-jre'
         eclipseCollectionVerion = '11.1.0'
         mapstructVersion = '1.5.3.Final'
         logbackVersion = '1.4.5'
         reactorVersion = '3.5.3'
+        ttlVersion = '2.14.2'
+        okhttpsVersion = '4.0.1'
+        hutoolVersion = '5.8.11'
     }
 
     //配置子模块依赖
     dependencies {
         api("org.slf4j:slf4j-api:${slf4jVersion}")
         api("ch.qos.logback:logback-classic:${logbackVersion}")
+        // MapStruct是一个Java注释处理器，用于生成类型安全的bean映射类
+        implementation "org.mapstruct:mapstruct:${mapstructVersion}"
         compileOnly "org.projectlombok:lombok:${lombokVersion}"
 
+        annotationProcessor("org.projectlombok:lombok-mapstruct-binding:0.2.0")
+        annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
         annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
 
+        testAnnotationProcessor("org.mapstruct:mapstruct-processor:${mapstructVersion}")
+        testAnnotationProcessor("org.projectlombok:lombok:${lombokVersion}")
         testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
         testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
         testImplementation("ch.qos.logback:logback-classic:${logbackVersion}")
