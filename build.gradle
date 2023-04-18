@@ -1,34 +1,6 @@
 buildscript {
-    repositories {
-        maven {
-            url 'https://repo.huaweicloud.com/repository/maven/'
-        }
-        maven {
-            url 'https://maven.aliyun.com/repository/public'
-        }
-        maven {
-            url 'https://maven.aliyun.com/repository/jcenter'
-        }
-        maven {
-            url 'https://maven.aliyun.com/repository/spring'
-        }
-        maven {
-            url 'https://maven.aliyun.com/repository/spring-plugin'
-        }
-        maven {
-            url 'https://maven.aliyun.com/repository/gradle-plugin'
-        }
-        maven {
-            url 'https://maven.aliyun.com/repository/google'
-        }
-        maven {
-            url 'https://maven.aliyun.com/repository/grails-core'
-        }
-        maven {
-            url 'https://maven.aliyun.com/repository/apache-snapshots'
-        }
-        mavenCentral()
-    }
+    //在build.gradle里引用
+    apply from: "${rootDir}/repositories.gradle"
     dependencies {
         classpath("io.spring.javaformat:spring-javaformat-gradle-plugin:0.0.38")
     }
@@ -60,36 +32,8 @@ allprojects {
     //指定编码格式
     [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
 
-    repositories {
-        maven {
-            url 'https://repo.huaweicloud.com/repository/maven/'
-        }
-        maven {
-            url 'https://maven.aliyun.com/repository/public'
-        }
-        maven {
-            url 'https://maven.aliyun.com/repository/jcenter'
-        }
-        maven {
-            url 'https://maven.aliyun.com/repository/spring'
-        }
-        maven {
-            url 'https://maven.aliyun.com/repository/spring-plugin'
-        }
-        maven {
-            url 'https://maven.aliyun.com/repository/gradle-plugin'
-        }
-        maven {
-            url 'https://maven.aliyun.com/repository/google'
-        }
-        maven {
-            url 'https://maven.aliyun.com/repository/grails-core'
-        }
-        maven {
-            url 'https://maven.aliyun.com/repository/apache-snapshots'
-        }
-        mavenCentral()
-    }
+    //在build.gradle里引用
+    apply from: "${rootDir}/repositories.gradle"
 
     // 配置全局依赖版本信息
     ext {
