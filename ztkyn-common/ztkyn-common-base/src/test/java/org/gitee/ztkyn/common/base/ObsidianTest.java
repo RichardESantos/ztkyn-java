@@ -6,8 +6,11 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import cn.hutool.core.lang.id.NanoId;
 import org.gitee.ztkyn.common.base.collection.ZtkynListUtil;
 import org.gitee.ztkyn.core.io.FileUtil;
 import org.junit.jupiter.api.Test;
@@ -21,43 +24,130 @@ import org.slf4j.LoggerFactory;
  * @description ObsidianTest
  */
 public class ObsidianTest {
-    private static final Logger logger = LoggerFactory.getLogger(ObsidianTest.class);
 
-    List<File> mdFileList = ZtkynListUtil.createFastList();
+	private static final Logger logger = LoggerFactory.getLogger(ObsidianTest.class);
 
-    @Test
-    public void readAttachments() throws IOException {
-        String obsidianPath = "E:\\Code\\AAA_AliCode\\KM_Obsidian";
-        Arrays.stream(Paths.get(obsidianPath).toFile().listFiles(pathname -> {
-            return pathname.isDirectory() && pathname.getName().startsWith("KM_");
-        })).forEach(file -> {
-            listMDFile(file);
-        });
-        Pattern pattern = Pattern.compile("]\\(attachments/");
-        mdFileList.forEach(file -> {
-            List<String> utf8Lines = ZtkynListUtil.createFastList();
-            Iterator<String> iterator = FileUtil.readUTF8Lines(file).iterator();
-            while (iterator.hasNext()) {
-                String next = iterator.next();
-                if (pattern.matcher(next).find()) {
-                    next = next.replace("(attachments/", "(/attachments/");
-                }
-                utf8Lines.add(next);
-            }
-            cn.hutool.core.io.FileUtil.writeUtf8Lines(utf8Lines, file);
-        });
-    }
+	List<File> mdFileList = ZtkynListUtil.createFastList();
 
-    public void listMDFile(File file) {
-        if (file.isFile()) {
-            if (file.canRead() && file.getName().endsWith(".md")) {
-                mdFileList.add(file);
-            }
-        } else if (file.isDirectory()) {
-            for (File listFile : file.listFiles()) {
-                listMDFile(listFile);
-            }
-        }
-    }
+	@Test
+	public void renamePasteImg() {
+		String obsidianPath = "E:\\Code\\AAA_AliCode\\KM_Obsidian";
+		Arrays.stream(Paths.get(obsidianPath).toFile().listFiles(pathname -> {
+			return pathname.isDirectory() && pathname.getName().startsWith("KM_");
+		})).forEach(this::listMDFile);
+		List<String> attachments = Arrays
+			.stream(Objects.requireNonNull(Paths.get(obsidianPath, "attachments").toFile().list()))
+			.toList();
+		Pattern attachmentPattern = Pattern.compile("\\(/attachments/(?<fileName>Pasted[A-Za-z0-9_\\s.]+?)\\)");
+		mdFileList.forEach(file -> {
+			boolean isReplace = false;
+			List<String> utf8Lines = ZtkynListUtil.createFastList();
+			Iterator<String> iterator = FileUtil.readUTF8Lines(file).iterator();
+			while (iterator.hasNext()) {
+				String next = iterator.next();
+				Matcher matcher = attachmentPattern.matcher(next);
+				if (matcher.find()) {
+					String fileName = matcher.group("fileName");
+					System.out.println(fileName);
+					String fileExt = fileName.substring(fileName.lastIndexOf("."));
+					String nanoIdFileName = "image-" + NanoId.randomNanoId() + fileExt;
+					if (attachments.contains(fileName)) {
+						isReplace = true;
+						next = next.replace(fileName, nanoIdFileName);
+						Paths.get(obsidianPath, "attachments", fileName)
+							.toFile()
+							.renameTo(Paths.get(obsidianPath, "attachments", nanoIdFileName).toFile());
+					}
+					System.out.println(next);
+				}
+				utf8Lines.add(next);
+			}
+			if (isReplace) {
+				cn.hutool.core.io.FileUtil.writeUtf8Lines(utf8Lines, file);
+			}
+		});
+	}
+
+	/**
+	 * 确认资源是否存在遗失问题
+	 */
+	@Test
+	public void confirmAttachments() {
+		String obsidianPath = "E:\\Code\\AAA_AliCode\\KM_Obsidian";
+		Arrays.stream(Paths.get(obsidianPath).toFile().listFiles(pathname -> {
+			return pathname.isDirectory() && pathname.getName().startsWith("KM_");
+		})).forEach(this::listMDFile);
+
+		List<String> attachments = Arrays
+			.stream(Objects.requireNonNull(Paths.get(obsidianPath, "attachments").toFile().list()))
+			.toList();
+		Pattern attachmentPattern = Pattern.compile("\\(/attachments/(?<fileName>[A-Za-z0-9_\\s.]+?)\\)");
+		mdFileList.forEach(file -> {
+
+			Iterator<String> iterator = FileUtil.readUTF8Lines(file).iterator();
+			while (iterator.hasNext()) {
+				String next = iterator.next();
+				Matcher matcher = attachmentPattern.matcher(next);
+				if (matcher.find()) {
+					String fileName = matcher.group("fileName").replace("%20", " ");
+					if (!attachments.contains(fileName)) {
+						System.out.println(file.getName());
+						System.out.println(fileName);
+					}
+				}
+			}
+		});
+	}
+
+	@Test
+	public void readAttachments() throws IOException {
+		String obsidianPath = "E:\\Code\\AAA_AliCode\\KM_Obsidian";
+		Arrays.stream(Paths.get(obsidianPath).toFile().listFiles(pathname -> {
+			return pathname.isDirectory() && pathname.getName().startsWith("KM_");
+		})).forEach(this::listMDFile);
+		Pattern resourcePattern = Pattern.compile("!\\[");
+		Pattern attachmentPattern = Pattern.compile("\\(/attachments/");
+		Pattern wikiPattern = Pattern.compile("!\\[\\[(?<fileName>[\\S\\s]*?)]]");
+		mdFileList.forEach(file -> {
+			boolean isReplace = false;
+			List<String> utf8Lines = ZtkynListUtil.createFastList();
+			Iterator<String> iterator = FileUtil.readUTF8Lines(file).iterator();
+			while (iterator.hasNext()) {
+				String next = iterator.next();
+				if (resourcePattern.matcher(next).find() && !attachmentPattern.matcher(next).find()) {
+					System.out.println(next);
+					// wiki 格式
+					Matcher wikiMatcher = wikiPattern.matcher(next);
+					if (wikiMatcher.find()) {
+						isReplace = true;
+						String fileName = wikiMatcher.group("fileName");
+						next = next.replace(wikiMatcher.group(), "![](/attachments/" + fileName + ")");
+					}
+					else {
+						isReplace = true;
+						next = next.replace("](", "](/attachments/");
+					}
+					// next = next.replace("(attachments/", "(/attachments/");
+				}
+				utf8Lines.add(next);
+			}
+			if (isReplace) {
+				// cn.hutool.core.io.FileUtil.writeUtf8Lines(utf8Lines, file);
+			}
+		});
+	}
+
+	public void listMDFile(File file) {
+		if (file.isFile()) {
+			if (file.canRead() && file.getName().endsWith(".md")) {
+				mdFileList.add(file);
+			}
+		}
+		else if (file.isDirectory()) {
+			for (File listFile : Objects.requireNonNull(file.listFiles())) {
+				listMDFile(listFile);
+			}
+		}
+	}
 
 }
