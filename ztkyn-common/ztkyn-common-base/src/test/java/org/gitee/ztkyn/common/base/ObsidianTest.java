@@ -30,6 +30,25 @@ public class ObsidianTest {
 	List<File> mdFileList = ZtkynListUtil.createFastList();
 
 	@Test
+	void readAllLines() {
+		String path = "D:\\各种文档\\项目文档\\行业知识图谱管理平台BlueKG\\电影数据\\事件抽取数据\\data\\dev.json";
+		// FileUtil.readAllLines(path, StandardCharsets.UTF_8);
+		path = "F:\\Download\\Edge\\神魔书.txt";
+
+		// try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path,
+		// CharsetUtil.GB18030))) {
+		// String line = null;
+		// while ((line = bufferedReader.readLine()) != null) {
+		// System.out.println(line);
+		// System.out.println(StringUtil.unicodeConvert(line, StandardCharsets.UTF_8));
+		// }
+		// }
+		// catch (IOException e) {
+		// throw new RuntimeException(e);
+		// }
+	}
+
+	@Test
 	public void renamePasteImg() {
 		String obsidianPath = "E:\\Code\\AAA_AliCode\\KM_Obsidian";
 		Arrays.stream(Paths.get(obsidianPath).toFile().listFiles(pathname -> {

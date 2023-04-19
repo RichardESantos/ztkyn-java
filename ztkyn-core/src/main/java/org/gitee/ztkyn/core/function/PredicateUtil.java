@@ -19,6 +19,10 @@ public class PredicateUtil {
 
 	public static Predicate<String> strNotBlank = StringUtil::isNotBlank;
 
+	public static <T> Predicate<T> notNull() {
+		return Objects::nonNull;
+	}
+
 	public static <T> Predicate<Collection<T>> collectionNotBlank() {
 		return collection -> Objects.nonNull(collection) && !collection.isEmpty();
 	}

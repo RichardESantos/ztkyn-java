@@ -51,6 +51,7 @@ allprojects {
         ttlVersion = '2.14.2'
         okhttpsVersion = '4.0.1'
         hutoolVersion = '5.8.11'
+        springBootVersion = '3.0.5'
     }
 
     //配置子模块依赖

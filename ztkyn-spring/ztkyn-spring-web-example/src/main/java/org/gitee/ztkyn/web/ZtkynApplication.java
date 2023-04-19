@@ -2,16 +2,17 @@ package org.gitee.ztkyn.web;
 
 import java.net.SocketException;
 
-import org.gitee.ztkyn.core.http.IpUtil;
-import org.gitee.ztkyn.core.string.StringUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.EnableAsync;
+
+import cn.dev33.satoken.SaManager;
+import org.gitee.ztkyn.core.http.IpUtil;
+import org.gitee.ztkyn.core.string.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author whty
@@ -27,7 +28,7 @@ public class ZtkynApplication {
 
 	public static void main(String[] args) throws SocketException {
 		ConfigurableApplicationContext applicationContext = SpringApplication.run(ZtkynApplication.class, args);
-		logger.info("项目启动成功");
+		logger.info("项目启动成功,Sa-Token配置如下：{}", SaManager.getConfig());
 		IpUtil.getLocalIp4Address().ifPresent(inet4Address -> {
 			Environment env = applicationContext.getEnvironment();
 			String ip = inet4Address.toString().replaceAll("/", "");

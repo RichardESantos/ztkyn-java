@@ -13,8 +13,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.collections.impl.list.mutable.FastList;
 import org.eclipse.collections.impl.map.mutable.UnifiedMap;
+import org.gitee.ztkyn.common.base.collection.ZtkynMapUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,6 +29,8 @@ import org.slf4j.LoggerFactory;
 public class JacksonUtil {
 
 	private static final Logger logger = LoggerFactory.getLogger(JacksonUtil.class);
+
+	private static final Map<String, JavaType> javaTypeMap = ZtkynMapUtil.createUnifiedMap(64);
 
 	/**
 	 * 默认使用的 ObjectMapper
@@ -41,8 +45,13 @@ public class JacksonUtil {
 	/**
 	 * 基础类 对应的 TypeReference
 	 */
-	public static TypeReference<String> stringTypeReference = new TypeReference<>() {
+	public static TypeReference<String> stringTypeReference = new TypeReference<String>() {
 	};
+
+	/**
+	 * 基础的对应 Map<String,Object>
+	 */
+	public static JavaType stringObjectMapJavaType = getMapWithStringKeyJavaType(Object.class);
 
 	public static JavaType stringJavaType = typeFactory.constructType(stringTypeReference);
 
@@ -55,6 +64,17 @@ public class JacksonUtil {
 		// 对象字段之列入所有字段
 		allFieldMapper.setSerializationInclusion(Include.ALWAYS);
 
+	}
+
+	/**
+	 * 基础的对应 Map<String,T>
+	 * @param tClass
+	 * @return
+	 * @param <T>
+	 */
+	public static <T> JavaType getMapWithStringKeyJavaType(Class<T> tClass) {
+		return javaTypeMap.computeIfAbsent(tClass.getTypeName(),
+				s -> typeFactory.constructMapType(UnifiedMap.class, String.class, tClass));
 	}
 
 	/**
@@ -82,8 +102,8 @@ public class JacksonUtil {
 			return null;
 		}
 		try {
-			if (obj instanceof String str) {
-				return str;
+			if (obj instanceof String) {
+				return (String) obj;
 			}
 			else {
 				return mapper.writeValueAsString(obj);
@@ -106,8 +126,8 @@ public class JacksonUtil {
 			return null;
 		}
 		try {
-			if (obj instanceof String str) {
-				return str;
+			if (obj instanceof String) {
+				return (String) obj;
 			}
 			else {
 				return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
@@ -127,7 +147,7 @@ public class JacksonUtil {
 	 * @return
 	 */
 	public static <T> T string2Obj(String str, Class<T> clazz) {
-		if (ZtkynStringUtil.isBlank(str) || clazz == null) {
+		if (StringUtils.isBlank(str) || clazz == null) {
 			return null;
 		}
 		try {
@@ -142,15 +162,37 @@ public class JacksonUtil {
 	/**
 	 * string转object 用于转为集合对象
 	 * @param jsonData
-	 * @param beanType
+	 * @param tClass
 	 * @param <T>
 	 * @return
 	 */
-	public static <T> List<T> json2List(String jsonData, Class<T> beanType) {
-		if (ZtkynStringUtil.isBlank(jsonData) || beanType == null) {
+	public static <T> List<T> json2List(String jsonData, Class<T> tClass) {
+		if (StringUtils.isBlank(jsonData) || tClass == null) {
 			return null;
 		}
-		JavaType javaType = objectMapper.getTypeFactory().constructParametricType(FastList.class, beanType);
+		JavaType javaType = objectMapper.getTypeFactory().constructCollectionLikeType(FastList.class, tClass);
+
+		try {
+			return objectMapper.readValue(jsonData, javaType);
+		}
+		catch (Exception e) {
+			logger.error("Parse String to Object error", e);
+		}
+		return null;
+	}
+
+	/**
+	 * string转object 用于转为集合对象
+	 * @param jsonData
+	 * @param paramType
+	 * @return
+	 * @param <T>
+	 */
+	public static <T> List<T> json2List(String jsonData, JavaType paramType) {
+		if (StringUtils.isBlank(jsonData) || paramType == null) {
+			return null;
+		}
+		JavaType javaType = objectMapper.getTypeFactory().constructCollectionLikeType(FastList.class, paramType);
 
 		try {
 			return objectMapper.readValue(jsonData, javaType);
@@ -171,7 +213,7 @@ public class JacksonUtil {
 	 * @return
 	 */
 	public static <K, V> Map<K, V> json2Map(String jsonData, Class<K> keyType, Class<V> valueType) {
-		if (ZtkynStringUtil.isBlank(jsonData) || keyType == null || valueType == null) {
+		if (StringUtils.isBlank(jsonData) || keyType == null || valueType == null) {
 			return null;
 		}
 		JavaType javaType = objectMapper.getTypeFactory().constructMapType(UnifiedMap.class, keyType, valueType);
@@ -194,7 +236,7 @@ public class JacksonUtil {
 	 * @param <V>
 	 */
 	public static <K, V> Map<K, V> json2Map(String jsonData, JavaType javaType) {
-		if (ZtkynStringUtil.isBlank(jsonData) || javaType == null) {
+		if (StringUtils.isBlank(jsonData) || javaType == null) {
 			return null;
 		}
 		try {

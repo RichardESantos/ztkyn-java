@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @author whty
  * @version 1.0
- * @description
+ * @description 文件操作异常
  * @date 2023/2/21 10:52
  */
 public class FileOperationException extends RuntimeException {

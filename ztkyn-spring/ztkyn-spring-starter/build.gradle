@@ -1,33 +1,33 @@
-plugins {
-	id "org.springframework.boot" version "3.0.1"
-	id "io.spring.dependency-management" version "1.1.0"
-}
+//plugins {
+//    id "org.springframework.boot" version "${springBootVersion}"
+//    id "io.spring.dependency-management" version "1.1.0"
+//}
 
 //在build.gradle里引用
 //apply from: "${rootDir}/spring.gradle"
 
 dependencies {
-	api(project(":ztkyn-common:ztkyn-common-base"))
 
-	api("org.springframework.boot:spring-boot-starter-web") {
-		exclude group: "org.springframework.boot", module: "spring-boot-starter-tomcat"
-	}
-	api("org.springframework.boot:spring-boot-starter-validation")
-	api("org.springframework.boot:spring-boot-starter-cache")
-	api("org.springframework.boot:spring-boot-starter-actuator")
-	api("org.springframework.boot:spring-boot-starter-test")
-	api("org.springframework.boot:spring-boot-starter-undertow")
-	api("org.springframework.boot:spring-boot-starter-aop")
 
-	api("com.github.xiaoymin:knife4j-openapi3-jakarta-spring-boot-starter:4.0.0")
+    api("org.springframework.boot:spring-boot-starter-web") {
+        exclude group: "org.springframework.boot", module: "spring-boot-starter-tomcat"
+    }
+    api("org.springframework.boot:spring-boot-starter-validation")
+    api("org.springframework.boot:spring-boot-starter-cache")
+    api("org.springframework.boot:spring-boot-starter-actuator")
+    api("org.springframework.boot:spring-boot-starter-test")
+    api("org.springframework.boot:spring-boot-starter-undertow")
+    api("org.springframework.boot:spring-boot-starter-aop")
+
+    api("com.github.xiaoymin:knife4j-openapi3-jakarta-spring-boot-starter:4.1.0")
 
 
 }
 
 bootJar {
-	enabled(false)
+    enabled(false)
 }
 
 test {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
