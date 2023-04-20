@@ -87,7 +87,7 @@ public class ZtkynWeXinUtil {
 		logger.info("消息ID:{}，请求当前分页地址:{}", curMsgId, listUrl);
 		DataProcessHandler.of(ZtkynOkHttpsUtil.get(listUrl), PredicateUtil.strNotBlank).ifTrue(s -> {
 			logger.info("消息ID:{}，请求当前分页结果:{}", curMsgId, s);
-			AlbumPage albumPage = JacksonUtil.string2Obj(s, AlbumPage.class);
+			AlbumPage albumPage = JacksonUtil.json2Obj(s, AlbumPage.class);
 			if (Objects.isNull(albumPage))
 				return;
 			AlbumResp albumResp = albumPage.getAlbumResp();
