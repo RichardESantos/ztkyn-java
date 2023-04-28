@@ -12,5 +12,5 @@ git commit -m %date:~3,4%-%date:~8,2%-%date:~11,2%
 git pull
 for %%i in (config*) do (echo "%%i" & copy /y %%i .git\config & git push)
 
-pause
+rem pause
 
