@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.gitee.ztkyn.common.base.JacksonUtil;
-import org.gitee.ztkyn.common.base.collection.ZtkynListUtil;
+import org.gitee.ztkyn.common.base.collection.ECollectionUtil;
 import org.gitee.ztkyn.common.base.http.ZtkynUrlUtil.UrlContent;
 import org.gitee.ztkyn.core.exception.AssertUtil;
 import org.gitee.ztkyn.core.function.DataProcessHandler;
@@ -38,7 +38,7 @@ public class ZtkynWeXinUtil {
 	 * @return
 	 */
 	public static List<AlbumArticle> getAlbumArticles(String albumUrl) {
-		List<AlbumArticle> albumArticleList = ZtkynListUtil.createFastList();
+		List<AlbumArticle> albumArticleList = ECollectionUtil.createFastList();
 		// 获取到专栏首页
 		String albumPageHtml = ZtkynOkHttpsUtil.get(albumUrl);
 		Document albumDoc = Jsoup.parse(albumPageHtml);

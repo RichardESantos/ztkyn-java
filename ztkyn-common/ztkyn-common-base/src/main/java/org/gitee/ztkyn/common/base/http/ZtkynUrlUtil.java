@@ -7,9 +7,11 @@ import java.util.Map.Entry;
 import java.util.StringJoiner;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.gitee.ztkyn.common.base.ZtkynStringUtil;
-import org.gitee.ztkyn.common.base.collection.ZtkynMapUtil;
+import org.gitee.ztkyn.common.base.collection.ECollectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,7 +39,7 @@ public class ZtkynUrlUtil {
 	}
 
 	public static String genPathUrl(String url, Map<String, Object> params) {
-		url = ZtkynMapUtil.isNotBlank(params) ? url + "?" : url;
+		url = ECollectionUtil.isNotBlank(params) ? url + "?" : url;
 		StringJoiner joiner = new StringJoiner("&");
 		for (Entry<String, Object> entry : params.entrySet()) {
 			joiner.add(entry.getKey() + "=" + entry.getValue());
@@ -55,7 +57,7 @@ public class ZtkynUrlUtil {
 		if (paramIndex > 0) {
 			urlContent.setBaseUrl(requestUrl.substring(0, paramIndex));
 			String paramStr = requestUrl.substring(paramIndex + 1);
-			Map<String, Object> paramsMap = ZtkynMapUtil.createUnifiedMap(16);
+			Map<String, Object> paramsMap = ECollectionUtil.createUnifiedMap(16);
 			ZtkynStringUtil.splitToList(paramStr, '&', true).forEach(s -> {
 				// 获取第一个 = 所在的位置
 				int splitIndex = s.indexOf("=");
@@ -74,7 +76,8 @@ public class ZtkynUrlUtil {
 		System.out.println(parseUrl(url).getParamsMap());
 	}
 
-	@Data
+	@Getter
+	@Setter
 	@Accessors(chain = true)
 	static class UrlContent {
 

@@ -14,9 +14,9 @@ import org.slf4j.LoggerFactory;
  * @description eclipse Collection List 集合工具类
  * @date 2023/3/7 9:13
  */
-public class ZtkynECollectionListUtil {
+public class ECollectionListUtil {
 
-	private static final Logger logger = LoggerFactory.getLogger(ZtkynECollectionListUtil.class);
+	private static final Logger logger = LoggerFactory.getLogger(ECollectionListUtil.class);
 
 	/**
 	 * 创建 可变 list ，具体实现是 FastList (ArrayList 的替代)

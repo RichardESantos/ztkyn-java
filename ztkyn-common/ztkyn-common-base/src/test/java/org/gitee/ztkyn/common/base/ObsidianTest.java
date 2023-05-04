@@ -11,7 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import cn.hutool.core.lang.id.NanoId;
-import org.gitee.ztkyn.common.base.collection.ZtkynListUtil;
+import org.gitee.ztkyn.common.base.collection.ECollectionUtil;
 import org.gitee.ztkyn.core.io.FileUtil;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -27,7 +27,7 @@ public class ObsidianTest {
 
 	private static final Logger logger = LoggerFactory.getLogger(ObsidianTest.class);
 
-	List<File> mdFileList = ZtkynListUtil.createFastList();
+	List<File> mdFileList = ECollectionUtil.createFastList();
 
 	@Test
 	void readAllLines() {
@@ -60,7 +60,7 @@ public class ObsidianTest {
 		Pattern attachmentPattern = Pattern.compile("\\(/attachments/(?<fileName>Pasted[A-Za-z0-9_\\s.]+?)\\)");
 		mdFileList.forEach(file -> {
 			boolean isReplace = false;
-			List<String> utf8Lines = ZtkynListUtil.createFastList();
+			List<String> utf8Lines = ECollectionUtil.createFastList();
 			Iterator<String> iterator = FileUtil.readUTF8Lines(file).iterator();
 			while (iterator.hasNext()) {
 				String next = iterator.next();
@@ -129,7 +129,7 @@ public class ObsidianTest {
 		Pattern wikiPattern = Pattern.compile("!\\[\\[(?<fileName>[\\S\\s]*?)]]");
 		mdFileList.forEach(file -> {
 			boolean isReplace = false;
-			List<String> utf8Lines = ZtkynListUtil.createFastList();
+			List<String> utf8Lines = ECollectionUtil.createFastList();
 			Iterator<String> iterator = FileUtil.readUTF8Lines(file).iterator();
 			while (iterator.hasNext()) {
 				String next = iterator.next();

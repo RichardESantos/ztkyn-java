@@ -16,9 +16,9 @@ import org.slf4j.LoggerFactory;
  * @description eclipse Collection Map 集合工具类
  * @date 2023/3/7 10:38
  */
-public class ZtkynECollectionMapUtil {
+public class ECollectionMapUtil {
 
-	private static final Logger logger = LoggerFactory.getLogger(ZtkynECollectionMapUtil.class);
+	private static final Logger logger = LoggerFactory.getLogger(ECollectionMapUtil.class);
 
 	/**
 	 * 创建不可变 map

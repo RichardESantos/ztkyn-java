@@ -19,9 +19,9 @@ import org.slf4j.LoggerFactory;
  * @description
  * @date 2023/3/7 10:53
  */
-public class ZtkynECollectionSetUtil {
+public class ECollectionSetUtil {
 
-	private static final Logger logger = LoggerFactory.getLogger(ZtkynECollectionSetUtil.class);
+	private static final Logger logger = LoggerFactory.getLogger(ECollectionSetUtil.class);
 
 	/**
 	 * 创建 可变 Set ，具体实现是 UnifiedSet (HashSet 的替代)

@@ -133,7 +133,7 @@ public class ColorUtil {
 	 * <strong>获取颜色RGB数组</strong><br>
 	 */
 	public static String[] getRGB(String rgb) {
-		return RegexUtil.replaceAll(StringUtil.strim(rgb), regRepRgb, StringUtil.emptyStr).split(",");
+		return RegexUtil.replaceAll(StringUtil.strip(rgb), regRepRgb, StringUtil.emptyStr).split(",");
 	}
 
 	public static boolean isRgb(String rgb) {
@@ -145,7 +145,7 @@ public class ColorUtil {
 	}
 
 	public static boolean isRgbFormat(String rgb) {
-		return RegexUtil.isMatch(regRgb, StringUtil.strim(rgb));
+		return RegexUtil.isMatch(regRgb, StringUtil.strip(rgb));
 	}
 
 }

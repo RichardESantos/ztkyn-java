@@ -109,7 +109,7 @@ public class StringUtil {
 	 * @param charSequence
 	 * @return
 	 */
-	public static String strim(CharSequence charSequence) {
+	public static String strip(CharSequence charSequence) {
 		StringBuilder buffer = new StringBuilder();
 		for (int i = 0; i < charSequence.length(); i++) {
 			char c = charSequence.charAt(i);

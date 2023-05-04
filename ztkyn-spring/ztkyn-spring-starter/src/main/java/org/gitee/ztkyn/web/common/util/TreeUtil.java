@@ -3,7 +3,7 @@ package org.gitee.ztkyn.web.common.util;
 import java.util.List;
 import java.util.Objects;
 
-import org.gitee.ztkyn.common.base.collection.ZtkynListUtil;
+import org.gitee.ztkyn.common.base.collection.ECollectionUtil;
 import org.gitee.ztkyn.web.common.domain.TreeNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +24,7 @@ public class TreeUtil {
 	 * 根据pid，构建树节点 (单棵树)
 	 */
 	public static <T, E> List<TreeNode<T, E>> buildOneTree(List<TreeNode<T, E>> treeNodes, T pid) {
-		List<TreeNode<T, E>> treeList = ZtkynListUtil.createFastList();
+		List<TreeNode<T, E>> treeList = ECollectionUtil.createFastList();
 		treeNodes.stream().filter(node -> Objects.equals(pid, node.getPid())).findFirst().ifPresent(rootNode -> {
 			findChildren(treeNodes, rootNode);
 		});
@@ -36,7 +36,7 @@ public class TreeUtil {
 	 */
 	@SafeVarargs
 	public static <T, E> List<TreeNode<T, E>> buildMultiTree(List<TreeNode<T, E>> treeNodes, T... pids) {
-		List<TreeNode<T, E>> treeList = ZtkynListUtil.createFastList();
+		List<TreeNode<T, E>> treeList = ECollectionUtil.createFastList();
 		for (T pid : pids) {
 			treeNodes.stream().filter(node -> Objects.equals(pid, node.getPid())).findFirst().ifPresent(rootNode -> {
 				findChildren(treeNodes, rootNode);

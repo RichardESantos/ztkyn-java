@@ -5,7 +5,7 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.gitee.ztkyn.common.base.collection.ZtkynListUtil;
+import org.gitee.ztkyn.common.base.collection.ECollectionUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,9 +15,9 @@ class JsonPathUtilTest {
 
 	@BeforeEach
 	void creatJson() {
-		List<UserCol> fastList = ZtkynListUtil.createFastList();
+		List<UserCol> fastList = ECollectionUtil.createFastList();
 		for (int i = 0; i < 10; i++) {
-			List<User> userList = ZtkynListUtil.createFastList();
+			List<User> userList = ECollectionUtil.createFastList();
 			for (int j = 0; j < 10; j++) {
 				userList.add(new User().setName("name" + i + "_" + j).setNickName("nickName" + i + "_" + j));
 			}

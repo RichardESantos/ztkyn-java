@@ -83,7 +83,7 @@ public class FileUtil {
 		File oldFolder = Paths.get(oldPath).toFile();
 		checkFolderAccessException(oldFolder);
 		try {
-			checkDestPathAcess(newPath, isReplace);
+			checkDestPathAccess(newPath, isReplace);
 			DataProcessHandler.of(oldFolder.listFiles(), PredicateUtil.notNull()).ifTrue(files -> {
 				for (File file : files) {
 					file.renameTo(Paths.get(newPath, file.getName()).toFile());
@@ -98,7 +98,7 @@ public class FileUtil {
 		return true;
 	}
 
-	private static void checkDestPathAcess(String newPath, boolean isReplace) throws IOException {
+	private static void checkDestPathAccess(String newPath, boolean isReplace) throws IOException {
 		File newFolder = Paths.get(newPath).toFile();
 		if (newFolder.exists()) {
 			if (newFolder.isDirectory()) {

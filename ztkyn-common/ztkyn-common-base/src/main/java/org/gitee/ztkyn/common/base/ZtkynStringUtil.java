@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-import org.gitee.ztkyn.common.base.collection.ZtkynListUtil;
+import org.gitee.ztkyn.common.base.collection.ECollectionUtil;
 import org.gitee.ztkyn.core.string.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -140,7 +140,7 @@ public class ZtkynStringUtil {
 	 * @return
 	 */
 	public static List<String> splitToList(CharSequence charSequence, char splitChar, boolean excludeEmpty) {
-		List<String> splitList = ZtkynListUtil.createFastList();
+		List<String> splitList = ECollectionUtil.createFastList();
 		int length = charSequence.length();
 		StringBuilder buffer = new StringBuilder();
 		for (int i = 0; i < length; i++) {

@@ -6,7 +6,7 @@ import java.util.List;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import org.gitee.ztkyn.common.base.collection.ZtkynListUtil;
+import org.gitee.ztkyn.common.base.collection.ECollectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,6 +48,6 @@ public class TreeNode<T, E> implements Serializable {
 	/**
 	 * 子节点列表
 	 */
-	private List<TreeNode<T, E>> children = ZtkynListUtil.createFastList();
+	private List<TreeNode<T, E>> children = ECollectionUtil.createFastList();
 
 }
