@@ -38,6 +38,9 @@ dependencies {
     implementation("com.github.shibing624:similarity:1.1.6")
     // Java 字符串相似度计算工具包
     implementation("info.debatty:java-string-similarity:2.0.0")
+    // xml 解析工具
+    implementation("org.dom4j:dom4j:2.1.4")
+
 
     testImplementation("io.projectreactor:reactor-test:${reactorVersion}")
 
