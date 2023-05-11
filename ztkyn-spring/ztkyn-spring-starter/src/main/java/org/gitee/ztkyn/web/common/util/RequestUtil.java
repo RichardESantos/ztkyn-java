@@ -12,5 +12,4 @@ import org.slf4j.LoggerFactory;
 public class RequestUtil {
     private static final Logger logger = LoggerFactory.getLogger(RequestUtil.class);
 
-    private static final ThreadLocal
 }
