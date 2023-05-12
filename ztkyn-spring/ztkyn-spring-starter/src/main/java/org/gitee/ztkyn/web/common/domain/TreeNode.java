@@ -5,14 +5,16 @@ import java.util.List;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.gitee.ztkyn.common.base.collection.ECollectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * 树节点，所有需要实现树节点的，都需要继承该类
- *
+ * <p>
  * T 为 ID 类型, E 为 节点元素类型
  *
  * @author whty
@@ -20,7 +22,9 @@ import org.slf4j.LoggerFactory;
  * @description
  * @date 2023/3/10 9:16
  */
-@Data
+@Getter
+@Setter
+@Accessors(chain = true)
 public class TreeNode<T, E> implements Serializable {
 
 	private static final Logger logger = LoggerFactory.getLogger(TreeNode.class);

@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
  * @description RequestUtil
  */
 public class RequestUtil {
-    private static final Logger logger = LoggerFactory.getLogger(RequestUtil.class);
+
+	private static final Logger logger = LoggerFactory.getLogger(RequestUtil.class);
 
 }

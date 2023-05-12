@@ -29,7 +29,7 @@ public class SaTokenConfigure implements WebMvcConfigurer {
 			// 根据请求类型匹配
 			SaRouter.notMatch(SaHttpMethod.OPTIONS).check(r -> StpUtil.checkLogin());
 			// 排除登录接口
-			SaRouter.notMatch("/api/sys/login").check(r -> StpUtil.checkLogin());
+			SaRouter.notMatch("/api/login").check(r -> StpUtil.checkLogin());
 		})).addPathPatterns("/api/**");
 	}
 
