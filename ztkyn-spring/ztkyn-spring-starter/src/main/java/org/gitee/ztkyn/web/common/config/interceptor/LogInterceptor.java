@@ -32,7 +32,7 @@ public class LogInterceptor implements HandlerInterceptor {
 			traceId = NanoId.randomNanoId(null, DEFAULT_ALPHABET, NanoId.DEFAULT_SIZE);
 			response.addHeader(ComConstant.REQUEST_ID, traceId);
 		}
-
+		// 往MDC中注入 traceId
 		MDC.put(ComConstant.REQUEST_ID, traceId);
 		return true;
 	}
