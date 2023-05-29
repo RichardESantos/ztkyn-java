@@ -1,4 +1,4 @@
-package org.gitee.ztkyn.common.base.collection;
+package org.gitee.ztkyn.core.colleciton;
 
 import java.util.Comparator;
 import java.util.List;
@@ -6,12 +6,18 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
-import java.util.function.Predicate;
 
+import org.eclipse.collections.api.factory.Lists;
+import org.eclipse.collections.api.factory.Maps;
+import org.eclipse.collections.api.factory.Sets;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.map.ImmutableMap;
 import org.eclipse.collections.api.set.ImmutableSet;
-import org.gitee.ztkyn.core.colleciton.MapUtil;
+import org.eclipse.collections.impl.list.mutable.FastList;
+import org.eclipse.collections.impl.map.mutable.UnifiedMap;
+import org.eclipse.collections.impl.map.sorted.mutable.TreeSortedMap;
+import org.eclipse.collections.impl.set.mutable.UnifiedSet;
+import org.eclipse.collections.impl.set.sorted.mutable.TreeSortedSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +37,7 @@ public class ECollectionUtil {
 	 * @param <T>
 	 */
 	public static <T> List<T> createFastList() {
-		return ECollectionListUtil.createFastList();
+		return new FastList<>();
 	}
 
 	/**
@@ -42,7 +48,7 @@ public class ECollectionUtil {
 	 */
 	@SafeVarargs
 	public static <T> List<T> createFastList(T... elements) {
-		return ECollectionListUtil.createMutList(elements);
+		return Lists.mutable.with(elements);
 	}
 
 	/**
@@ -53,7 +59,7 @@ public class ECollectionUtil {
 	 */
 	@SafeVarargs
 	public static <T> ImmutableList<T> createImmutableList(T... elements) {
-		return ECollectionListUtil.createImmutList(elements);
+		return Lists.immutable.with(elements);
 	}
 
 	/**
@@ -65,7 +71,7 @@ public class ECollectionUtil {
 	 * @param <V>
 	 */
 	public static <K, V> ImmutableMap<K, V> createImmutableMap(K key, V value) {
-		return ECollectionMapUtil.createImmutableMap(key, value);
+		return Maps.immutable.with(key, value);
 	}
 
 	/**
@@ -76,7 +82,7 @@ public class ECollectionUtil {
 	 * @param <V>
 	 */
 	public static <K, V> ImmutableMap<K, V> createImmutableMap(Map<K, V> orgMap) {
-		return ECollectionMapUtil.createImmutableMap(orgMap);
+		return Maps.immutable.withAll(orgMap);
 	}
 
 	/**
@@ -87,7 +93,7 @@ public class ECollectionUtil {
 	 * @param <V>
 	 */
 	public static <K, V> Map<K, V> createUnifiedMap(int size) {
-		return ECollectionMapUtil.createUnifiedMap(size);
+		return UnifiedMap.newMap(size);
 	}
 
 	/**
@@ -99,7 +105,7 @@ public class ECollectionUtil {
 	 * @param <V>
 	 */
 	public static <K, V> Map<K, V> createUnifiedMap(K key, V value) {
-		return ECollectionMapUtil.createUnifiedMap(key, value);
+		return UnifiedMap.newWithKeysValues(key, value);
 	}
 
 	/**
@@ -110,7 +116,7 @@ public class ECollectionUtil {
 	 * @param <V>
 	 */
 	public static <K, V> SortedMap<K, V> createTreeSortedMap(Comparator<K> comparator) {
-		return ECollectionMapUtil.createTreeSortedMap(comparator);
+		return TreeSortedMap.newMap(comparator);
 	}
 
 	/**
@@ -123,63 +129,7 @@ public class ECollectionUtil {
 	 * @param <V>
 	 */
 	public static <K, V> SortedMap<K, V> createTreeSortedMap(Comparator<K> comparator, K key, V value) {
-		return ECollectionMapUtil.createTreeSortedMap(comparator, key, value);
-	}
-
-	/**
-	 * 保留 map 中指定的 key 值，如果 key 值对应的 value 为null，则丢弃
-	 * @param originalMap
-	 * @param retainKeys
-	 * @return
-	 * @param <K>
-	 * @param <V>
-	 */
-	public static <K, V> Map<K, V> retainKeys(Map<K, V> originalMap, Set<K> retainKeys) {
-		return retainKeysWithNullValue(originalMap, retainKeys, false);
-	}
-
-	/**
-	 * 保留 map 中指定的 key 值，如果 key 值对应的 value 为null，根据 retainNullValue 确定是否保留
-	 * @param originalMap
-	 * @param retainKeys
-	 * @param retainNullValue
-	 * @return
-	 * @param <K>
-	 * @param <V>
-	 */
-	public static <K, V> Map<K, V> retainKeysWithNullValue(Map<K, V> originalMap, Set<K> retainKeys,
-			boolean retainNullValue) {
-		return MapUtil.retainKeysWithNullValue(originalMap, retainKeys, retainNullValue);
-	}
-
-	/**
-	 * 根据条件删除 map 中指定的key 值
-	 * @param originalMap
-	 * @param predicate
-	 * @return
-	 * @param <K>
-	 * @param <V>
-	 */
-	public static <K, V> Map<K, V> removeKeys(Map<K, V> originalMap, Predicate<Map.Entry<K, V>> predicate) {
-		return MapUtil.removeKeys(originalMap, predicate);
-	}
-
-	/**
-	 * 判断 map 不能为空
-	 * @param map
-	 * @return
-	 */
-	public static <K, V> boolean isNotBlank(Map<K, V> map) {
-		return MapUtil.isNotBlank(map);
-	}
-
-	/**
-	 * 判断 map 为空
-	 * @param map
-	 * @return
-	 */
-	public static <K, V> boolean isBlank(Map<K, V> map) {
-		return MapUtil.isNotBlank(map);
+		return TreeSortedMap.newMapWith(comparator, key, value);
 	}
 
 	/**
@@ -188,7 +138,7 @@ public class ECollectionUtil {
 	 * @param <T>
 	 */
 	public static <T> Set<T> createUnifiedSet() {
-		return ECollectionSetUtil.createUnifiedSet();
+		return new UnifiedSet<>();
 	}
 
 	/**
@@ -199,7 +149,7 @@ public class ECollectionUtil {
 	 */
 	@SafeVarargs
 	public static <T> Set<T> createMutSet(T... elements) {
-		return ECollectionSetUtil.createMutableSet(elements);
+		return Sets.mutable.with(elements);
 	}
 
 	/**
@@ -208,7 +158,7 @@ public class ECollectionUtil {
 	 * @param <T>
 	 */
 	public static <T> SortedSet<T> createTreeSortedSet() {
-		return ECollectionSetUtil.createTreeSortedSet();
+		return new TreeSortedSet<>();
 	}
 
 	/**
@@ -218,7 +168,7 @@ public class ECollectionUtil {
 	 * @param <T>
 	 */
 	public static <T> SortedSet<T> createTreeSortedSet(Iterable<T> iterable) {
-		return ECollectionSetUtil.createTreeSortedSet(iterable);
+		return new TreeSortedSet<>(iterable);
 	}
 
 	/**
@@ -227,18 +177,18 @@ public class ECollectionUtil {
 	 * @param <T>
 	 */
 	public static <T> SortedSet<T> createTreeSortedSet(Comparator<T> comparator) {
-		return ECollectionSetUtil.createTreeSortedSet(comparator);
+		return new TreeSortedSet<>(comparator);
 	}
 
 	/**
-	 * ImmutableSet
+	 * 不可变 set 集合
 	 * @param elements
 	 * @return
 	 * @param <T>
 	 */
 	@SafeVarargs
 	public static <T> ImmutableSet<T> createImmutableSet(T... elements) {
-		return ECollectionSetUtil.createImmutableSet(elements);
+		return Sets.immutable.with(elements);
 	}
 
 }

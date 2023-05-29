@@ -17,9 +17,9 @@ public class DataProcessFuture<T, R> {
 
 	private static final Logger logger = LoggerFactory.getLogger(DataProcessFuture.class);
 
-	private DataProcessHandler<T> processHandler;
+	private final DataProcessHandler<T> processHandler;
 
-	private AtomicReference<R> reference;
+	private final AtomicReference<R> reference;
 
 	private DataProcessFuture(DataProcessHandler<T> processHandler) {
 		this.processHandler = processHandler;

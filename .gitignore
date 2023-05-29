@@ -44,3 +44,5 @@ secrets.yml
 chblogs
 **/logs
 *.log
+
+*_bak

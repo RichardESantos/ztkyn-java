@@ -1,9 +1,0 @@
-
-dependencies {
-	implementation("us.codecraft:webmagic-core:0.8.0")
-	implementation("us.codecraft:webmagic-extension:0.8.0")
-}
-
-test {
-    useJUnitPlatform()
-}

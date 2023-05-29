@@ -1,16 +1,11 @@
 rootProject.name = 'ztkyn-java'
 include 'ztkyn-core'
 
-// 加载所有的example项目
-file("${rootDir}/ztkyn-extra").eachDirMatch(~/ztkyn.*/) {
-	include "ztkyn-extra:${it.name}"
-}
-
-file("${rootDir}/ztkyn-common").eachDirMatch(~/ztkyn.*/) {
-	include "ztkyn-common:${it.name}"
-}
-
-file("${rootDir}/ztkyn-spring").eachDirMatch(~/ztkyn.*/) {
+file("${rootDir}/ztkyn-spring").eachDirMatch(~/spring.*/) {
 	include "ztkyn-spring:${it.name}"
+}
+
+file("${rootDir}/ztkyn-learn").eachDirMatch(~/learn.*/) {
+	include "ztkyn-learn:${it.name}"
 }
 

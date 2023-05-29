@@ -4,13 +4,10 @@ plugins {
 
 
 dependencies {
-    api("org.slf4j:slf4j-api:${slf4jVersion}")
 
-    testImplementation("ch.qos.logback:logback-classic:${logbackVersion}")
 }
 
 test {
-
     useJUnitPlatform()
 }
 

@@ -1,6 +1,0 @@
-subprojects() {
-	dependencies {
-		implementation(project(":ztkyn-core"))
-		implementation("com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}")
-	}
-}

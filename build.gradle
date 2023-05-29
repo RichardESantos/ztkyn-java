@@ -37,40 +37,67 @@ allprojects {
 
     // 配置全局依赖版本信息
     ext {
-        junitVersion = '5.9.2'
-        lombokVersion = '1.18.24'
-        jacksonVersion = '2.14.1'
-        caffeineVersion = '3.1.2'
-        slf4jVersion = '2.0.6'
-        logbackVersion = '1.4.5'
-        guavaVersion = '31.1-jre'
-        eclipseCollectionVerion = '11.1.0'
-        mapstructVersion = '1.5.3.Final'
-        logbackVersion = '1.4.5'
-        reactorVersion = '3.5.3'
         ttlVersion = '2.14.2'
         okhttpsVersion = '4.0.1'
         hutoolVersion = '5.8.11'
-        springBootVersion = '3.0.5'
+        springBootVersion = '3.1.0'
+
+        guavaVersion = '32.0.0-jre'
+        mapstructVersion = '1.5.3.Final'
+        lombokVersion = '1.18.26'
     }
 
     //配置子模块依赖
     dependencies {
-        api("org.slf4j:slf4j-api:${slf4jVersion}")
-        api("ch.qos.logback:logback-classic:${logbackVersion}")
+        implementation(enforcedPlatform("org.springframework.boot:spring-boot-dependencies:3.1.0"))
+
+        implementation("org.slf4j:slf4j-api")
+        implementation("ch.qos.logback:logback-classic")
         // MapStruct是一个Java注释处理器，用于生成类型安全的bean映射类
         implementation "org.mapstruct:mapstruct:${mapstructVersion}"
-        compileOnly "org.projectlombok:lombok:${lombokVersion}"
+
+
+        // jackson
+        implementation("com.fasterxml.jackson.core:jackson-databind")
+        implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+        implementation("com.fasterxml.jackson.datatype:jackson-datatype-eclipse-collections")
+        implementation("com.fasterxml.jackson.datatype:jackson-datatype-guava")
+
+
+        implementation("com.google.guava:guava:${guavaVersion}")
+        // eclipse 封装 集合类
+        implementation("org.eclipse.collections:eclipse-collections-api")
+        implementation("org.eclipse.collections:eclipse-collections")
+
+        // 新一代内存缓存
+        api("com.github.ben-manes.caffeine:caffeine")
+
+        // InheritableThreadLocal 替代品，解决在线程池失效的问题
+        api("com.alibaba:transmittable-thread-local:${ttlVersion}")
+
+        // 反应式流 Reactive Streams
+        api("io.projectreactor:reactor-core")
+
 
         annotationProcessor("org.projectlombok:lombok-mapstruct-binding:0.2.0")
-        annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+        annotationProcessor("org.mapstruct:mapstruct-processor:${mapstructVersion}")
+        compileOnly("org.projectlombok:lombok")
         annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
 
         testAnnotationProcessor("org.mapstruct:mapstruct-processor:${mapstructVersion}")
-        testAnnotationProcessor("org.projectlombok:lombok:${lombokVersion}")
-        testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
-        testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
-        testImplementation("ch.qos.logback:logback-classic:${logbackVersion}")
+        testCompileOnly("org.projectlombok:lombok")
+        testAnnotationProcessor("org.projectlombok:lombok")
+
+        testImplementation("org.junit.jupiter:junit-jupiter-api")
+        testImplementation("org.junit.jupiter:junit-jupiter-params")
+        testImplementation("org.junit.platform:junit-platform-suite-api")
+        testImplementation("ch.qos.logback:logback-classic")
+        testImplementation("io.projectreactor:reactor-test")
+
+        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+        testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+        testRuntimeOnly("org.junit.platform:junit-platform-suite-engine")
+
     }
 
 }
