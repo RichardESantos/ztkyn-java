@@ -17,4 +17,8 @@ public enum DateStyle {
 		this.formatter = formatter;
 	}
 
+	public String getFormatter() {
+		return formatter;
+	}
+
 }
