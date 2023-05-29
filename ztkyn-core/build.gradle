@@ -4,7 +4,8 @@ plugins {
 
 
 dependencies {
-
+    // JsonPath 工具类
+    implementation("org.noear:snack3:3.2.61")
 }
 
 test {
