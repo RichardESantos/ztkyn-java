@@ -1,0 +1,18 @@
+plugins {
+    id 'java'
+}
+
+
+dependencies {
+    implementation(project(":ztkyn-core"))
+    // easyexcel 工具类
+    implementation("com.alibaba:easyexcel:3.3.1")
+}
+
+test {
+    useJUnitPlatform()
+}
+
+
+//在build.gradle里引用
+//apply from: "${rootDir}/maven_publish.gradle"
