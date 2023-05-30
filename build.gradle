@@ -86,7 +86,7 @@ allprojects {
 
         testAnnotationProcessor("org.mapstruct:mapstruct-processor:${mapstructVersion}")
         testCompileOnly("org.projectlombok:lombok")
-        testAnnotationProcessor("org.projectlombok:lombok")
+        testAnnotationProcessor("org.projectlombok:lombok:${lombokVersion}")
 
         testImplementation("org.junit.jupiter:junit-jupiter-api")
         testImplementation("org.junit.jupiter:junit-jupiter-params")
