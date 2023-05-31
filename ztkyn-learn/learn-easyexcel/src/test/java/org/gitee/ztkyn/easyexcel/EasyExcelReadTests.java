@@ -28,4 +28,9 @@ public class EasyExcelReadTests {
 		System.out.println(count);
 	}
 
+	@Test
+	public void testFtl() {
+
+	}
+
 }
