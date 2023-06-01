@@ -35,7 +35,7 @@ public class EasyExcelReadTests {
 
 	@Test
 	public void testMultiRead() {
-		String filePath = "D:\\各种文档\\项目文档\\四机项目\\数据收集\\存货数据样本（郭瑞）\\存货库龄\\00030 DCM2.XLSX";
+		String filePath = "C:\\Users\\whty\\Desktop\\1000000line.xlsx";
 		long count = EasyExcelHelper.batchReadFirstSheet(filePath, EasyExcelHelper.multiLineConsumer);
 		System.out.println(count);
 	}
