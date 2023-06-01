@@ -10,21 +10,27 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author whty
+ * @version 1.0.0
  * @date 2023-05-30 15:12
  * @description DataDefinition
- * @version 1.0.0
  */
 @Setter
 @Getter
 @Accessors(chain = true)
 public class DataDefinition {
 
-	private static final Logger logger = LoggerFactory.getLogger(DataDefinition.class);
+    private static final Logger logger = LoggerFactory.getLogger(DataDefinition.class);
 
-	private String className;
+    private String packageName;
 
-	private String description;
+    private String className;
 
-	private List<DataConfiguration> configurations;
+    private String description;
+
+    private List<DataConfiguration> configurations;
+
+    public String getFullName() {
+        return packageName + "." + className;
+    }
 
 }

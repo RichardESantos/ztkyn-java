@@ -3,15 +3,21 @@ package org.gitee.ztkyn.easyexcel;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelReader;
+import com.alibaba.excel.context.AnalysisContext;
+import com.alibaba.excel.metadata.data.ReadCellData;
+import com.alibaba.excel.read.listener.ReadListener;
 import com.alibaba.excel.read.metadata.ReadSheet;
+import com.alibaba.excel.util.ConverterUtils;
 import org.gitee.ztkyn.core.colleciton.CollectionUtil;
 import org.gitee.ztkyn.core.colleciton.ECollectionUtil;
+import org.gitee.ztkyn.core.json.JacksonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -83,6 +89,55 @@ public class EasyExcelHelper {
 	}
 
 	/**
+	 * 多行读取，读取第一个sheet
+	 * @param filePath
+	 * @param tClass
+	 * @param multiLineConsumer
+	 * @param <T>
+	 * @return
+	 */
+	public static <T> long batchReadFirstSheet(String filePath, Class<T> tClass, Consumer<List<T>> multiLineConsumer) {
+		return batchReadSheet(filePath, 0, tClass, multiLineConsumer);
+	}
+
+	/**
+	 * 单行读取，读取第一个sheet
+	 * @param filePath
+	 * @param tClass
+	 * @param singleLineConsumer
+	 * @param <T>
+	 * @return
+	 */
+	public static <T> long readFirstSheet(String filePath, Class<T> tClass, Consumer<T> singleLineConsumer) {
+		return readSheet(filePath, 0, tClass, singleLineConsumer);
+	}
+
+	/**
+	 * 多行读取，读取第一个sheet
+	 * @param inputStream
+	 * @param tClass
+	 * @param multiLineConsumer
+	 * @param <T>
+	 * @return
+	 */
+	public static <T> long batchReadFirstSheet(InputStream inputStream, Class<T> tClass,
+			Consumer<List<T>> multiLineConsumer) {
+		return batchReadSheet(inputStream, 0, tClass, multiLineConsumer);
+	}
+
+	/**
+	 * 单行读取，读取第一个sheet
+	 * @param inputStream
+	 * @param tClass
+	 * @param singleLineConsumer
+	 * @param <T>
+	 * @return
+	 */
+	public static <T> long readFirstSheet(InputStream inputStream, Class<T> tClass, Consumer<T> singleLineConsumer) {
+		return readSheet(inputStream, 0, tClass, singleLineConsumer);
+	}
+
+	/**
 	 * 多行读取，读取指定sheet
 	 * @param filePath
 	 * @param multiLineConsumer
@@ -92,6 +147,22 @@ public class EasyExcelHelper {
 	public static <T> long batchReadSheet(String filePath, int sheetNo, Consumer<List<T>> multiLineConsumer) {
 		AtomicLong count = new AtomicLong(0);
 		EasyExcel.read(filePath, new MultiLineReadListener<>(multiLineConsumer, count)).sheet(sheetNo).doRead();
+		return count.longValue();
+	}
+
+	/**
+	 * 多行读取，读取指定sheet,此方法的用处在于，不用知道具体类型（也就是无法准确知道泛型类型的时候），只需要传入对应的 class
+	 * @param filePath
+	 * @param sheetNo
+	 * @param tClass
+	 * @param multiLineConsumer
+	 * @return
+	 * @param <T>
+	 */
+	public static <T> long batchReadSheet(String filePath, int sheetNo, Class<T> tClass,
+			Consumer<List<T>> multiLineConsumer) {
+		AtomicLong count = new AtomicLong(0);
+		EasyExcel.read(filePath, tClass, new MultiLineReadListener<>(multiLineConsumer, count)).sheet(sheetNo).doRead();
 		return count.longValue();
 	}
 
@@ -109,6 +180,23 @@ public class EasyExcelHelper {
 	}
 
 	/**
+	 * 单行读取，读取指定sheet,此方法的用处在于，不用知道具体类型（也就是无法准确知道泛型类型的时候），只需要传入对应的 class
+	 * @param filePath
+	 * @param sheetNo
+	 * @param tClass
+	 * @param singleLineConsumer
+	 * @return
+	 * @param <T>
+	 */
+	public static <T> long readSheet(String filePath, int sheetNo, Class<T> tClass, Consumer<T> singleLineConsumer) {
+		AtomicLong count = new AtomicLong(0);
+		EasyExcel.read(filePath, tClass, new SingleLineReadListener<>(singleLineConsumer, count))
+			.sheet(sheetNo)
+			.doRead();
+		return count.longValue();
+	}
+
+	/**
 	 * 多行读取，读取指定sheet
 	 * @param inputStream
 	 * @param multiLineConsumer
@@ -122,6 +210,22 @@ public class EasyExcelHelper {
 	}
 
 	/**
+	 * 多行读取，读取指定sheet,此方法的用处在于，不用知道具体类型（也就是无法准确知道泛型类型的时候），只需要传入对应的 class
+	 * @param inputStream
+	 * @param sheetNo
+	 * @param tClass
+	 * @param multiLineConsumer
+	 * @return
+	 * @param <T>
+	 */
+	public static <T> long batchReadSheet(InputStream inputStream, int sheetNo, Class<T> tClass,
+			Consumer<List<T>> multiLineConsumer) {
+		AtomicLong count = new AtomicLong(0);
+		EasyExcel.read(inputStream, tClass, new MultiLineReadListener<>(multiLineConsumer)).sheet(sheetNo).doRead();
+		return count.longValue();
+	}
+
+	/**
 	 * 单行读取，读取指定sheet
 	 * @param inputStream
 	 * @param singleLineConsumer
@@ -131,6 +235,22 @@ public class EasyExcelHelper {
 	public static <T> long readSheet(InputStream inputStream, int sheetNo, Consumer<T> singleLineConsumer) {
 		AtomicLong count = new AtomicLong(0);
 		EasyExcel.read(inputStream, new SingleLineReadListener<>(singleLineConsumer)).sheet(sheetNo).doRead();
+		return count.longValue();
+	}
+
+	/**
+	 * 单行读取，读取指定sheet, 此方法的用处在于，不用知道具体类型（也就是无法准确知道泛型类型的时候），只需要传入对应的 class
+	 * @param inputStream
+	 * @param sheetNo
+	 * @param tClass
+	 * @param singleLineConsumer
+	 * @return
+	 * @param <T>
+	 */
+	public static <T> long readSheet(InputStream inputStream, int sheetNo, Class<T> tClass,
+			Consumer<T> singleLineConsumer) {
+		AtomicLong count = new AtomicLong(0);
+		EasyExcel.read(inputStream, tClass, new SingleLineReadListener<>(singleLineConsumer)).sheet(sheetNo).doRead();
 		return count.longValue();
 	}
 
@@ -200,6 +320,63 @@ public class EasyExcelHelper {
 				excelReader.read(sheetList);
 			}
 		}
+	}
+
+	/**
+	 * 读取excel 表头
+	 * @param inputStream
+	 * @param headLine
+	 * @return
+	 */
+	public static Map<Integer, String> readExcelHeader(InputStream inputStream, Integer headLine) {
+		Map<Integer, String> headerMap = ECollectionUtil.createUnifiedMap(64);
+		headLine = Objects.isNull(headLine) ? 1 : headLine;
+		// 获取表头
+		EasyExcel.read(inputStream, readHeaderListener(headerMap)).sheet(0).doRead();
+		return headerMap;
+	}
+
+	/**
+	 * 读取excel 表头
+	 * @param filePath
+	 * @param headLine
+	 * @return
+	 */
+	public static Map<Integer, String> readExcelHeader(String filePath, Integer headLine) {
+		Map<Integer, String> headerMap = ECollectionUtil.createUnifiedMap(64);
+		headLine = Objects.isNull(headLine) ? 1 : headLine;
+		// 获取表头
+		EasyExcel.read(filePath, readHeaderListener(headerMap)).sheet(0).doRead();
+		return headerMap;
+	}
+
+	private static ReadListener<Object> readHeaderListener(Map<Integer, String> headerMap) {
+		return new ReadListener<>() {
+
+			@Override
+			public void invokeHead(Map<Integer, ReadCellData<?>> headMap, AnalysisContext context) {
+				Map<Integer, String> map = ConverterUtils.convertToStringMap(headMap, context);
+				if (CollectionUtil.notBlank(map)) {
+					headerMap.putAll(map);
+				}
+			}
+
+			@Override
+			public boolean hasNext(AnalysisContext context) {
+				// 返回false ，跳过具体的excel 数据读取
+				return false;
+			}
+
+			@Override
+			public void invoke(Object o, AnalysisContext analysisContext) {
+				logger.info("读取到数据：{}", JacksonUtil.obj2String(o));
+			}
+
+			@Override
+			public void doAfterAllAnalysed(AnalysisContext analysisContext) {
+				logger.info("所有数据解析完成！");
+			}
+		};
 	}
 
 }
