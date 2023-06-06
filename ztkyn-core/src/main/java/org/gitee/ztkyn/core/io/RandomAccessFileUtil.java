@@ -25,7 +25,7 @@ import static org.gitee.ztkyn.core.string.CharsetUtil.ISO_8859_1;
 import static org.gitee.ztkyn.core.string.CharsetUtil.UTF8;
 
 /**
- * @author whty
+ * @author richard
  * @version 1.0
  * @description
  * @date 2023/2/20 14:18

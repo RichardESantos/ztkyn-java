@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author whty
+ * @author richard
  * @version 1.0.0
  * @date 2023-05-30 15:12
  * @description DataDefinition
@@ -19,18 +19,18 @@ import org.slf4j.LoggerFactory;
 @Accessors(chain = true)
 public class DataDefinition {
 
-    private static final Logger logger = LoggerFactory.getLogger(DataDefinition.class);
+	private static final Logger logger = LoggerFactory.getLogger(DataDefinition.class);
 
-    private String packageName;
+	private String packageName;
 
-    private String className;
+	private String className;
 
-    private String description;
+	private String description;
 
-    private List<DataConfiguration> configurations;
+	private List<DataConfiguration> configurations;
 
-    public String getFullName() {
-        return packageName + "." + className;
-    }
+	public String getFullName() {
+		return packageName + "." + className;
+	}
 
 }

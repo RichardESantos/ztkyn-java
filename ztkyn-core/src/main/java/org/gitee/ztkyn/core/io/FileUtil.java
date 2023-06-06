@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
 import static org.gitee.ztkyn.core.string.CharsetUtil.UTF8;
 
 /**
- * @author whty
+ * @author richard
  * @version 1.0
  * @description 文件工具类
  * @date 2023/1/16 13:15

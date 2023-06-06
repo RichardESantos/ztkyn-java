@@ -20,7 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author whty
+ * @author richard
  * @version 1.0
  * @description Jackson 配置类
  * @date 2023/3/8 11:15

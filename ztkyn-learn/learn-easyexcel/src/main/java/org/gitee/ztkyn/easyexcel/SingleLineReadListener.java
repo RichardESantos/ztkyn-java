@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author whty
+ * @author richard
  * @date 2023-05-30 10:44
  * @description SingleLineReadListener
  * @version 1.0.0

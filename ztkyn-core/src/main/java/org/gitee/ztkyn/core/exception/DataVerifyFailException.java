@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author whty
+ * @author richard
  * @version 1.0
  * @description 数据校验失败 exception
  * @date 2023/3/6 16:43

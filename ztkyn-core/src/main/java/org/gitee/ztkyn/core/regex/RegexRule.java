@@ -1,7 +1,7 @@
 package org.gitee.ztkyn.core.regex;
 
 /**
- * @author whty
+ * @author richard
  * @version 1.0
  * @description 正则表达式规则 参考自 <a href="https://hub.yzuu.cf/any86/any-rule">any-rule</a>
  * @date 2023/2/8 17:01

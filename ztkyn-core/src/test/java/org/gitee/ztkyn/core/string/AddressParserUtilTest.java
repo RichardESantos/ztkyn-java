@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * @author whty
+ * @author richard
  * @version 1.0
  * @description
  * @date 2023/2/8 17:07

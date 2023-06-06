@@ -19,7 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author whty
+ * @author richard
  * @version 1.0.0
  * @date 2023-05-31 10:01
  * @description FreeMarkerTemplateUtils

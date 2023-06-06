@@ -6,7 +6,7 @@ import org.gitee.ztkyn.core.string.CharsetUtil;
 import org.junit.jupiter.api.Test;
 
 /**
- * @author whty
+ * @author richard
  * @version 1.0
  * @description
  * @date 2023/1/17 9:08

@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author whty
+ * @author richard
  * @date 2023-04-13 10:21
  * @description Json Path 工具类
  * @version 1.0.0

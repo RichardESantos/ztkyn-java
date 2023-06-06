@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author whty
+ * @author richard
  * @date 2023-05-29 16:52
  * @description 多行数据读取监听器
  * @version 1.0.0

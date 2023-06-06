@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author whty
+ * @author richard
  * @date 2023-05-31 10:38
  * @description ByteCodeClassLoader
  * @version 1.0.0

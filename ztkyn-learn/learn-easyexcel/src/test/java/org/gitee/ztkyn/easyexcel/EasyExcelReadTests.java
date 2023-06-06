@@ -17,7 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author whty
+ * @author richard
  * @version 1.0.0
  * @date 2023-05-30 13:47
  * @description SingleLineReadTests
@@ -35,7 +35,7 @@ public class EasyExcelReadTests {
 
 	@Test
 	public void testMultiRead() {
-		String filePath = "C:\\Users\\whty\\Desktop\\1000000line.xlsx";
+		String filePath = "C:\\Users\\richard\\Desktop\\1000000line.xlsx";
 		long count = EasyExcelHelper.batchReadFirstSheet(filePath, EasyExcelHelper.multiLineConsumer);
 		System.out.println(count);
 	}

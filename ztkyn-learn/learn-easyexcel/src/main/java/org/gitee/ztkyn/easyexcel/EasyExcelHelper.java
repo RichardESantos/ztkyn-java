@@ -22,7 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author whty
+ * @author richard
  * @date 2023-05-30 10:56
  * @description EasyExcelHelper
  * @version 1.0.0
