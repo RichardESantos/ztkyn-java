@@ -15,8 +15,6 @@ public class PredicateUtil {
 
 	private static final Logger logger = LoggerFactory.getLogger(PredicateUtil.class);
 
-	public static Predicate<Object> objectNotNull = Objects::nonNull;
-
 	public static Predicate<String> strNotBlank = StringUtil::isNotBlank;
 
 	public static <T> Predicate<T> notNull() {

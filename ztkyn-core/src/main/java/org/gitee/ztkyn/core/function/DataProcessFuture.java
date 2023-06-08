@@ -17,11 +17,11 @@ public class DataProcessFuture<T, R> {
 
 	private static final Logger logger = LoggerFactory.getLogger(DataProcessFuture.class);
 
-	private final DataProcessHandler<T> processHandler;
+	private final SomeObj<T> processHandler;
 
 	private final AtomicReference<R> reference;
 
-	private DataProcessFuture(DataProcessHandler<T> processHandler) {
+	private DataProcessFuture(SomeObj<T> processHandler) {
 		this.processHandler = processHandler;
 		this.reference = new AtomicReference<>();
 	}
@@ -35,7 +35,7 @@ public class DataProcessFuture<T, R> {
 	 * @return
 	 */
 	public static <T, R> DataProcessFuture<T, R> of(T value, Predicate<T> predicate, Class<R> rClass) {
-		return new DataProcessFuture<>(DataProcessHandler.of(value, predicate));
+		return new DataProcessFuture<>(SomeObj.of(value, predicate));
 	}
 
 	public DataProcessFuture<T, R> ifTrue(Function<T, R> function) {
