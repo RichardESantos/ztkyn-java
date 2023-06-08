@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import org.gitee.ztkyn.core.colleciton.CollectionUtil;
-import org.gitee.ztkyn.core.function.SomeObj;
+import org.gitee.ztkyn.core.function.DataHandler;
 import org.gitee.ztkyn.core.string.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +25,7 @@ public class AssertUtil {
 	 * @param errorMsg
 	 */
 	public static void objectNotNull(Object obj, String errorMsg) {
-		SomeObj.of(obj, Objects::nonNull).ifFalseThrow(new DataVerifyFailException(errorMsg));
+		DataHandler.of(obj, Objects::nonNull).ifFalseThrow(new DataVerifyFailException(errorMsg));
 	}
 
 	/**
@@ -34,7 +34,7 @@ public class AssertUtil {
 	 * @param errorMsg
 	 */
 	public static void objectIsNull(Object obj, String errorMsg) {
-		SomeObj.of(obj, Objects::isNull).ifFalseThrow(new DataVerifyFailException(errorMsg));
+		DataHandler.of(obj, Objects::isNull).ifFalseThrow(new DataVerifyFailException(errorMsg));
 	}
 
 	/**
@@ -43,7 +43,7 @@ public class AssertUtil {
 	 * @param errorMsg
 	 */
 	public static void notBlank(String str, String errorMsg) {
-		SomeObj.of(str, StringUtil::isNotBlank).ifFalseThrow(new DataVerifyFailException(errorMsg));
+		DataHandler.of(str, StringUtil::isNotBlank).ifFalseThrow(new DataVerifyFailException(errorMsg));
 	}
 
 	/**
@@ -52,7 +52,7 @@ public class AssertUtil {
 	 * @param errorMsg
 	 */
 	public static void isBlank(String str, String errorMsg) {
-		SomeObj.of(str, StringUtil::isBlank).ifFalseThrow(new DataVerifyFailException(errorMsg));
+		DataHandler.of(str, StringUtil::isBlank).ifFalseThrow(new DataVerifyFailException(errorMsg));
 	}
 
 	/**
@@ -61,7 +61,7 @@ public class AssertUtil {
 	 * @param errorMsg
 	 */
 	public static <T> void notBlank(List<T> list, String errorMsg) {
-		SomeObj.of(list, CollectionUtil::notBlank).ifFalseThrow(new DataVerifyFailException(errorMsg));
+		DataHandler.of(list, CollectionUtil::notBlank).ifFalseThrow(new DataVerifyFailException(errorMsg));
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class AssertUtil {
 	 * @param errorMsg
 	 */
 	public static <T> void isBlank(List<T> list, String errorMsg) {
-		SomeObj.of(list, CollectionUtil::isBlank).ifFalseThrow(new DataVerifyFailException(errorMsg));
+		DataHandler.of(list, CollectionUtil::isBlank).ifFalseThrow(new DataVerifyFailException(errorMsg));
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class AssertUtil {
 	 * @param errorMsg
 	 */
 	public static <T> void notBlank(Set<T> set, String errorMsg) {
-		SomeObj.of(set, CollectionUtil::notBlank).ifFalseThrow(new DataVerifyFailException(errorMsg));
+		DataHandler.of(set, CollectionUtil::notBlank).ifFalseThrow(new DataVerifyFailException(errorMsg));
 	}
 
 	/**
@@ -88,7 +88,7 @@ public class AssertUtil {
 	 * @param errorMsg
 	 */
 	public static <T> void isBlank(Set<T> set, String errorMsg) {
-		SomeObj.of(set, CollectionUtil::isBlank).ifFalseThrow(new DataVerifyFailException(errorMsg));
+		DataHandler.of(set, CollectionUtil::isBlank).ifFalseThrow(new DataVerifyFailException(errorMsg));
 	}
 
 	/**
@@ -97,7 +97,7 @@ public class AssertUtil {
 	 * @param errorMsg
 	 */
 	public static <K, V> void notBlank(Map<K, V> map, String errorMsg) {
-		SomeObj.of(map, CollectionUtil::notBlank).ifFalseThrow(new DataVerifyFailException(errorMsg));
+		DataHandler.of(map, CollectionUtil::notBlank).ifFalseThrow(new DataVerifyFailException(errorMsg));
 	}
 
 	/**
@@ -108,7 +108,7 @@ public class AssertUtil {
 	 * @param <V>
 	 */
 	public static <K, V> void isBlank(Map<K, V> map, String errorMsg) {
-		SomeObj.of(map, CollectionUtil::isBlank).ifFalseThrow(new DataVerifyFailException(errorMsg));
+		DataHandler.of(map, CollectionUtil::isBlank).ifFalseThrow(new DataVerifyFailException(errorMsg));
 	}
 
 	/**
