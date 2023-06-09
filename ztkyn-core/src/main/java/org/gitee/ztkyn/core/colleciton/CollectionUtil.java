@@ -20,8 +20,8 @@ public class CollectionUtil {
 	/**
 	 * 判断集合不能为空
 	 * @param list
-	 * @return
 	 * @param <T>
+	 * @return
 	 */
 	public static <T> boolean notBlank(List<T> list) {
 		return Objects.nonNull(list) && !list.isEmpty();
@@ -30,8 +30,8 @@ public class CollectionUtil {
 	/**
 	 * 判断集合为空
 	 * @param list
-	 * @return
 	 * @param <T>
+	 * @return
 	 */
 	public static <T> boolean isBlank(List<T> list) {
 		return !notBlank(list);
@@ -40,8 +40,8 @@ public class CollectionUtil {
 	/**
 	 * 判断集合不能为空
 	 * @param set
-	 * @return
 	 * @param <T>
+	 * @return
 	 */
 	public static <T> boolean notBlank(Set<T> set) {
 		return Objects.nonNull(set) && !set.isEmpty();
@@ -50,8 +50,8 @@ public class CollectionUtil {
 	/**
 	 * 判断集合为空
 	 * @param set
-	 * @return
 	 * @param <T>
+	 * @return
 	 */
 	public static <T> boolean isBlank(Set<T> set) {
 		return !notBlank(set);
@@ -78,11 +78,14 @@ public class CollectionUtil {
 	/**
 	 * 删除所有value==null 的值
 	 * @param map
-	 * @return
 	 * @param <K>
 	 * @param <V>
+	 * @return
 	 */
 	public static <K, V> Map<K, V> removeNulls(Map<K, V> map) {
+		if (isBlank(map)) {
+			return map;
+		}
 		return removeValues(map, (k, v) -> Objects.isNull(v));
 	}
 
@@ -90,11 +93,14 @@ public class CollectionUtil {
 	 * 删除满足条件的(k,v)
 	 * @param map
 	 * @param predicate
-	 * @return
 	 * @param <K>
 	 * @param <V>
+	 * @return
 	 */
 	public static <K, V> Map<K, V> removeValues(Map<K, V> map, BiPredicate<K, V> predicate) {
+		if (isBlank(map)) {
+			return map;
+		}
 		Map<K, V> unifiedMap = ECollectionUtil.createUnifiedMap(map.size());
 		map.forEach((k, v) -> {
 			if (!predicate.test(k, v)) {
