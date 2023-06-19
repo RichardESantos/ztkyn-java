@@ -282,7 +282,7 @@ public class EasyExcelHelper {
 	 */
 	public static <T> void batchReadMultiSheet(String filePath, List<Consumer<List<T>>> multiLineConsumerList) {
 		try (ExcelReader excelReader = EasyExcel.read(filePath).build()) {
-			List<ReadSheet> sheetList = ECollectionUtil.createFastList();
+			List<ReadSheet> sheetList = ECollectionUtil.MutableList.newList();
 			for (int i = 0; i < multiLineConsumerList.size(); i++) {
 				final int tmpInt = i;
 				Optional.ofNullable(multiLineConsumerList.get(i)).ifPresent(listConsumer -> {
@@ -306,7 +306,7 @@ public class EasyExcelHelper {
 	 */
 	public static <T> void readMultiSheet(String filePath, List<Consumer<T>> singleLineConsumer) {
 		try (ExcelReader excelReader = EasyExcel.read(filePath).build()) {
-			List<ReadSheet> sheetList = ECollectionUtil.createFastList();
+			List<ReadSheet> sheetList = ECollectionUtil.MutableList.newList();
 			for (int i = 0; i < singleLineConsumer.size(); i++) {
 				final int tmpInt = i;
 				Optional.ofNullable(singleLineConsumer.get(i)).ifPresent(consumer -> {
@@ -329,7 +329,7 @@ public class EasyExcelHelper {
 	 * @return
 	 */
 	public static Map<Integer, String> readExcelHeader(InputStream inputStream, Integer headLine) {
-		Map<Integer, String> headerMap = ECollectionUtil.createUnifiedMap(64);
+		Map<Integer, String> headerMap = ECollectionUtil.MutableMap.newMap(64);
 		headLine = Objects.isNull(headLine) ? 1 : headLine;
 		// 获取表头
 		EasyExcel.read(inputStream, readHeaderListener(headerMap)).sheet(0).doRead();
@@ -343,7 +343,7 @@ public class EasyExcelHelper {
 	 * @return
 	 */
 	public static Map<Integer, String> readExcelHeader(String filePath, Integer headLine) {
-		Map<Integer, String> headerMap = ECollectionUtil.createUnifiedMap(64);
+		Map<Integer, String> headerMap = ECollectionUtil.MutableMap.newMap(64);
 		headLine = Objects.isNull(headLine) ? 1 : headLine;
 		// 获取表头
 		EasyExcel.read(filePath, readHeaderListener(headerMap)).sheet(0).doRead();

@@ -101,7 +101,7 @@ public class CollectionUtil {
 		if (isBlank(map)) {
 			return map;
 		}
-		Map<K, V> unifiedMap = ECollectionUtil.createUnifiedMap(map.size());
+		Map<K, V> unifiedMap = ECollectionUtil.MutableMap.newMap(map.size());
 		map.forEach((k, v) -> {
 			if (!predicate.test(k, v)) {
 				unifiedMap.put(k, v);

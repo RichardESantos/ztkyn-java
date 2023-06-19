@@ -30,7 +30,7 @@ public class JacksonUtil {
 
 	private static final Logger logger = LoggerFactory.getLogger(JacksonUtil.class);
 
-	private static final Map<String, JavaType> javaTypeMap = ECollectionUtil.createUnifiedMap(64);
+	private static final Map<String, JavaType> javaTypeMap = ECollectionUtil.MutableMap.newMap(64);
 
 	/**
 	 * 默认使用的 ObjectMapper
