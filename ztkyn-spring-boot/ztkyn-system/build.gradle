@@ -7,7 +7,7 @@ plugins {
 
 dependencies {
     implementation(project(":ztkyn-core"))
-    implementation(project(":ztkyn-spring-boot:ztkyn-framework"))
+    api(project(":ztkyn-spring-boot:ztkyn-framework"))
 }
 
 test {
