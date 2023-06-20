@@ -1,0 +1,14 @@
+plugins {
+    id 'java'
+}
+
+
+dependencies {
+    implementation(project(":ztkyn-core"))
+    implementation(project(":ztkyn-spring-boot:ztkyn-system"))
+}
+
+test {
+    useJUnitPlatform()
+}
+
