@@ -1,8 +1,8 @@
 rootProject.name = 'ztkyn-java'
 include 'ztkyn-core'
 
-file("${rootDir}/ztkyn-spring").eachDirMatch(~/spring.*/) {
-	include "ztkyn-spring:${it.name}"
+file("${rootDir}/ztkyn-spring-boot").eachDirMatch(~/ztkyn.*/) {
+	include "ztkyn-spring-boot:${it.name}"
 }
 
 file("${rootDir}/ztkyn-learn").eachDirMatch(~/learn.*/) {

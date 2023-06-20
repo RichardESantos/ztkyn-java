@@ -49,7 +49,7 @@ allprojects {
 
     //配置子模块依赖
     dependencies {
-        implementation(enforcedPlatform("org.springframework.boot:spring-boot-dependencies:3.1.0"))
+        implementation(enforcedPlatform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}"))
 
         implementation("org.slf4j:slf4j-api")
         implementation("ch.qos.logback:logback-classic")
