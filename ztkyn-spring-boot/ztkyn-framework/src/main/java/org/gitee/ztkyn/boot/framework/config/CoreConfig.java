@@ -1,5 +1,6 @@
 package org.gitee.ztkyn.boot.framework.config;
 
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,6 +17,7 @@ import org.slf4j.LoggerFactory;
  * @description CoreConfg
  * @version 1.0.0
  */
+@EnableConfigurationProperties(ZtkynProperties.class)
 @Configuration
 public class CoreConfig {
 

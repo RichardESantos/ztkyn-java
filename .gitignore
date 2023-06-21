@@ -46,3 +46,5 @@ chblogs
 *.log
 
 *_bak
+
+*.yml
