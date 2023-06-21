@@ -53,4 +53,16 @@ public class RedisDistributedLock extends AbstractDistributedLock implements Dis
 		return true;
 	}
 
+	@Override
+	public boolean isLocked(String lockKey) {
+		RLock lock = redisson.getLock(lockKey);
+		return lock.isLocked();
+	}
+
+	@Override
+	public boolean isHeldByCurrentThread(String lockKey) {
+		RLock lock = redisson.getLock(lockKey);
+		return lock.isHeldByCurrentThread();
+	}
+
 }

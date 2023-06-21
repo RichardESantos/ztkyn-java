@@ -20,6 +20,16 @@ public interface DistributedLock {
 
 	boolean lock(String key, long expire, int retryTimes, long sleepMillis);
 
+	/**
+	 * 锁是否被任意一个线程锁持有
+	 * @param lockKey
+	 * @return true-被锁 false-未被锁
+	 */
+	boolean isLocked(String lockKey);
+
+	// lock.isHeldByCurrentThread()的作用是查询当前线程是否保持此锁定
+	boolean isHeldByCurrentThread(String lockKey);
+
 	boolean releaseLock(String key);
 
 }

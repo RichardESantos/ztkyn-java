@@ -1,11 +1,18 @@
 package org.gitee.ztkyn.boot.framework.distribute.lock;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 /**
  * @author richard
  * @date 2023-06-21 16:27
  * @description RedisLock
  * @version 1.0.0
  */
+@Target(ElementType.METHOD) // 注解在方法
+@Retention(RetentionPolicy.RUNTIME)
 public @interface RedisLock {
 
 	/** 锁的资源，redis的key */
@@ -17,7 +24,7 @@ public @interface RedisLock {
 	/** 当获取失败时候动作 */
 	LockFailAction action() default LockFailAction.CONTINUE;
 
-	public enum LockFailAction {
+	enum LockFailAction {
 
 		/** 放弃 */
 		GIVEUP,
