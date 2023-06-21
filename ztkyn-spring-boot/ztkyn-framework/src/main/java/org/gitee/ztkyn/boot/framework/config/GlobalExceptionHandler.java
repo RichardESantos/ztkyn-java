@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import jakarta.validation.ConstraintViolationException;
 import org.gitee.ztkyn.boot.framework.domain.ResponseResult;
+import org.gitee.ztkyn.boot.framework.exception.ZtkynException;
 import org.gitee.ztkyn.core.string.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,27 +27,10 @@ public class GlobalExceptionHandler {
 	/**
 	 * 捕获 {@code BusinessException} 异常
 	 */
-	@ExceptionHandler({ BusinessException.class })
-	public ResponseResult<?> handleBusinessException(BusinessException ex) {
-		logger.error("业务异常", ex);
+	@ExceptionHandler({ ZtkynException.class })
+	public ResponseResult<?> handleBusinessException(ZtkynException ex) {
+		logger.error(ex.getMessage(), ex.getCause());
 		return ResponseResult.failed(ex.getMessage());
-	}
-
-	/**
-	 * 捕获 {@code RequestLimitException} 异常
-	 */
-	@ExceptionHandler({ RequestLimitException.class })
-	public ResponseResult<?> handleRequestLimitException(RequestLimitException ex) {
-		logger.warn("触发接口限流逻辑", ex);
-		return ResponseResult.failed(ex.getMessage());
-	}
-
-	/**
-	 * 捕获 {@code ForbiddenException} 异常
-	 */
-	@ExceptionHandler({ ForbiddenException.class })
-	public ResponseResult<?> handleForbiddenException(ForbiddenException ex) {
-		return ResponseResult.failed(ResponseResult.ResultEnum.FORBIDDEN);
 	}
 
 	/**
