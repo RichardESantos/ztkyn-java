@@ -41,6 +41,8 @@ allprojects {
         okhttpsVersion = '4.0.1'
         hutoolVersion = '5.8.11'
         springBootVersion = '3.1.0'
+        redissonVersion = '3.22.1'
+        knife4jVersion = '4.1.0'
 
         guavaVersion = '32.0.0-jre'
         mapstructVersion = '1.5.3.Final'

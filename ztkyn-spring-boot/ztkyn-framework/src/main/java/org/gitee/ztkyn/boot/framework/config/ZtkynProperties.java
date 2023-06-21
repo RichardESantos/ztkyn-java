@@ -25,7 +25,8 @@ public class ZtkynProperties {
 	private RedisConf redis;
 
 	/**
-	 * 知识点：配置类的内部类必须为静态类，否则会存在 nullException Redis 相关配置
+	 * 知识点：配置类的内部类必须为静态类，否则会存在 nullException <br/>
+	 * Redis 相关配置
 	 */
 	@Getter
 	@Setter

@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
@@ -32,6 +33,8 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import jakarta.annotation.Resource;
+import org.gitee.ztkyn.boot.framework.distribute.lock.DistributedLock;
+import org.gitee.ztkyn.boot.framework.distribute.lock.impl.RedisDistributedLock;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.api.RedissonReactiveClient;
@@ -77,7 +80,6 @@ public class RedisConfig {
 
 	@Bean
 	public Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer() {
-		System.out.println(ztkynProperties.getRedis().isEnable());
 		ObjectMapper objectMapper = new ObjectMapper();
 		objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
 		objectMapper.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL);
@@ -120,6 +122,17 @@ public class RedisConfig {
 	@ConditionalOnMissingBean(RedissonRxClient.class)
 	public RedissonRxClient redissonRxJava(RedissonClient redisson) {
 		return redisson.rxJava();
+	}
+
+	/**
+	 * 分布式锁实现
+	 * @param redisson
+	 * @return
+	 */
+	@Bean
+	@ConditionalOnBean(RedissonClient.class)
+	public DistributedLock redisDistributedLock(RedissonClient redisson) {
+		return new RedisDistributedLock(redisson);
 	}
 
 	@Bean(destroyMethod = "shutdown")
