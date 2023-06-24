@@ -43,6 +43,7 @@ allprojects {
         springBootVersion = '3.1.0'
         redissonVersion = '3.22.1'
         knife4jVersion = '4.1.0'
+        cosidVersion = '1.14.5'
 
         guavaVersion = '32.0.0-jre'
         mapstructVersion = '1.5.3.Final'
