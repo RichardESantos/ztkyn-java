@@ -48,11 +48,11 @@ public class SpringUtil implements ApplicationContextAware {
 
 	@SuppressWarnings("unchecked")
 	public static <T> T getBean(Class<T> clz) throws BeansException {
-		return (T) applicationContext.getBean(clz);
+		return applicationContext.getBean(clz);
 	}
 
 	public static <T> T getBean(String name, Class<T> clz) throws BeansException {
-		return (T) applicationContext.getBean(name, clz);
+		return applicationContext.getBean(name, clz);
 	}
 
 	/**
@@ -61,7 +61,7 @@ public class SpringUtil implements ApplicationContextAware {
 	 * @param t
 	 * @param <T>
 	 */
-	public static <T> void registerBean(String name, T t) {
+	public static <T> void registerBean(String name, final T t) {
 		beanFactory.registerSingleton(name, t);
 	}
 
