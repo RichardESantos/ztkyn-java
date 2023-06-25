@@ -15,8 +15,15 @@ dependencies {
     api("org.springframework.boot:spring-boot-starter-undertow")
     api("org.springframework.boot:spring-boot-starter-aop")
 
+    // redisson 客户端
     api("org.redisson:redisson-spring-data-31:${redissonVersion}")
 
+    // 分布式 ID 生成器
+    api("me.ahoo.cosid:cosid-spring-boot-starter:${cosidVersion}")
+    api("me.ahoo.cosid:cosid-spring-redis:${cosidVersion}")
+//    api("me.ahoo.cosid:cosid-jackson:${cosidVersion}")
+
+    // swagger 客户端
     api("com.github.xiaoymin:knife4j-openapi3-jakarta-spring-boot-starter:${knife4jVersion}")
 }
 

@@ -3,7 +3,7 @@ package org.gitee.ztkyn.boot.framework.distribute.lock;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 
@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
  */
 @Aspect
 @Configuration
-@ConditionalOnClass(DistributedLock.class)
+@ConditionalOnBean(DistributedLock.class)
 public class DistributedLockAspect {
 
 	private static final Logger logger = LoggerFactory.getLogger(DistributedLockAspect.class);

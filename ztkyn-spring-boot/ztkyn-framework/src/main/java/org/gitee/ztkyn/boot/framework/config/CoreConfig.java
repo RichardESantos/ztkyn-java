@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
+import me.ahoo.cosid.annotation.CosId;
 import org.hibernate.validator.HibernateValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,7 @@ import org.slf4j.LoggerFactory;
  * @description CoreConfg
  * @version 1.0.0
  */
+@CosId
 @EnableConfigurationProperties(ZtkynProperties.class)
 @Configuration
 public class CoreConfig {
