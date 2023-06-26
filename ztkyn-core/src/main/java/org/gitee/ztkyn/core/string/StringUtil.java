@@ -90,6 +90,16 @@ public class StringUtil {
 	public static final String underscoreSeparator = "_";
 
 	/**
+	 * 重新开始一行，并且对齐
+	 */
+	public static final String newTabLine = "\n\t";
+
+	/**
+	 * 重新开始一行
+	 */
+	public static final String newLine = "\n";
+
+	/**
 	 * 驼峰转下划线,最后转为大写
 	 * @param str
 	 * @return

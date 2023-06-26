@@ -21,7 +21,8 @@ dependencies {
     // 分布式 ID 生成器
     api("me.ahoo.cosid:cosid-spring-boot-starter:${cosidVersion}")
     api("me.ahoo.cosid:cosid-spring-redis:${cosidVersion}")
-//    api("me.ahoo.cosid:cosid-jackson:${cosidVersion}")
+    // 参考 https://cosid.ahoo.me/guide/cosid-jackson.html
+    api("me.ahoo.cosid:cosid-jackson:${cosidVersion}")
 
     // swagger 客户端
     api("com.github.xiaoymin:knife4j-openapi3-jakarta-spring-boot-starter:${knife4jVersion}")
