@@ -24,6 +24,9 @@ import org.apache.zookeeper.server.ServerConfig;
 import org.apache.zookeeper.server.ZooKeeperServerMain;
 import org.apache.zookeeper.server.quorum.QuorumPeerConfig;
 
+/**
+ * 基于 Apache Zookeeper 注册中心的简易启动器
+ */
 public class EmbeddedZooKeeper {
 
 	public static void main(String[] args) throws Exception {
