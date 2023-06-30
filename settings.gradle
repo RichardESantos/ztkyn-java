@@ -9,3 +9,7 @@ file("${rootDir}/ztkyn-learn").eachDirMatch(~/learn.*/) {
 	include "ztkyn-learn:${it.name}"
 }
 
+file("${rootDir}/ztkyn-spring-boot-dubbo").eachDirMatch(~/ztkyn.*/) {
+	include "ztkyn-spring-boot-dubbo:${it.name}"
+}
+

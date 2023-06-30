@@ -1,0 +1,72 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+ext {
+    zookeeperJettyVersion = '9.4.49.v20220914'
+}
+
+dependencies {
+    implementation(project(":ztkyn-core"))
+    implementation(enforcedPlatform("org.apache.zookeeper:parent:${zookeeperVersion}"))
+    implementation("org.apache.zookeeper:zookeeper:${zookeeperVersion}") {
+        exclude group: "io.netty", module: "netty-handler"
+        exclude group: "io.netty", module: "netty-transport-native-epoll"
+    }
+    implementation("org.eclipse.jetty:jetty-server") {
+        version {
+            strictly("${zookeeperJettyVersion}")
+        }
+    }
+    implementation("org.eclipse.jetty:jetty-servlet") {
+        version {
+            strictly("${zookeeperJettyVersion}")
+        }
+    }
+    implementation("org.eclipse.jetty:jetty-client") {
+        version {
+            strictly("${zookeeperJettyVersion}")
+        }
+    }
+    implementation('org.eclipse.jetty:jetty-util') {
+        version {
+            strictly("${zookeeperJettyVersion}")
+        }
+    }
+    implementation('org.eclipse.jetty:jetty-io') {
+        version {
+            strictly("${zookeeperJettyVersion}")
+        }
+    }
+    implementation('org.eclipse.jetty:jetty-http') {
+        version {
+            strictly("${zookeeperJettyVersion}")
+        }
+    }
+    implementation('org.eclipse.jetty:jetty-security') {
+        version {
+            strictly("${zookeeperJettyVersion}")
+        }
+    }
+    implementation('org.eclipse.jetty:jetty-util-ajax') {
+        version {
+            strictly("${zookeeperJettyVersion}")
+        }
+    }
+    implementation("jline:jline")
+    implementation("io.dropwizard.metrics:metrics-core")
+    implementation("org.xerial.snappy:snappy-java")
+    implementation("commons-cli:commons-cli")
+    implementation("commons-io:commons-io")
+
+}
+
+application {
+    mainClass = "org.gitee.ztkyn.boot.zookeeper.EmbeddedZooKeeper"
+}
+
+test {
+    useJUnitPlatform()
+}
+

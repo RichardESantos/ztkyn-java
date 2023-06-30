@@ -40,10 +40,15 @@ allprojects {
         ttlVersion = '2.14.2'
         okhttpsVersion = '4.0.1'
         hutoolVersion = '5.8.11'
-        springBootVersion = '3.1.0'
+        springBootVersion = '3.1.1'
         redissonVersion = '3.22.1'
         knife4jVersion = '4.1.0'
         cosidVersion = '2.1.1'
+        zookeeperVersion = '3.8.1'
+        jettyVersion = '11.0.15'
+        metricsVersion = '4.2.19'
+        commonsCliVersion= '1.5.0'
+        commonsIOVersion= '2.13.0'
 
         guavaVersion = '32.0.0-jre'
         mapstructVersion = '1.5.3.Final'
@@ -52,36 +57,10 @@ allprojects {
 
     //配置子模块依赖
     dependencies {
-        implementation(enforcedPlatform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}"))
+        implementation(platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}"))
 
-        implementation("org.slf4j:slf4j-api")
-        implementation("ch.qos.logback:logback-classic")
         // MapStruct是一个Java注释处理器，用于生成类型安全的bean映射类
         implementation "org.mapstruct:mapstruct:${mapstructVersion}"
-
-
-        // jackson
-        implementation("com.fasterxml.jackson.core:jackson-databind")
-        implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
-        implementation("com.fasterxml.jackson.datatype:jackson-datatype-eclipse-collections")
-        implementation("com.fasterxml.jackson.datatype:jackson-datatype-guava")
-
-
-        implementation("com.google.guava:guava:${guavaVersion}")
-        // eclipse 封装 集合类
-        implementation("org.eclipse.collections:eclipse-collections-api")
-        implementation("org.eclipse.collections:eclipse-collections")
-
-        // 新一代内存缓存
-        api("com.github.ben-manes.caffeine:caffeine")
-
-        // InheritableThreadLocal 替代品，解决在线程池失效的问题
-        api("com.alibaba:transmittable-thread-local:${ttlVersion}")
-
-        // 反应式流 Reactive Streams
-        api("io.projectreactor:reactor-core")
-
-
         annotationProcessor("org.projectlombok:lombok-mapstruct-binding:0.2.0")
         annotationProcessor("org.mapstruct:mapstruct-processor:${mapstructVersion}")
         compileOnly("org.projectlombok:lombok")

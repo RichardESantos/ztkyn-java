@@ -4,6 +4,27 @@ plugins {
 
 
 dependencies {
+    api("org.slf4j:slf4j-api")
+    api("ch.qos.logback:logback-classic")
+    // jackson
+    api("com.fasterxml.jackson.core:jackson-databind")
+    api("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+    api("com.fasterxml.jackson.datatype:jackson-datatype-eclipse-collections")
+    api("com.fasterxml.jackson.datatype:jackson-datatype-guava")
+    api("com.google.guava:guava:${guavaVersion}")
+    // eclipse 封装 集合类
+    implementation("org.eclipse.collections:eclipse-collections-api")
+    implementation("org.eclipse.collections:eclipse-collections")
+
+    // 新一代内存缓存
+    api("com.github.ben-manes.caffeine:caffeine")
+
+    // InheritableThreadLocal 替代品，解决在线程池失效的问题
+    api("com.alibaba:transmittable-thread-local:${ttlVersion}")
+
+    // 反应式流 Reactive Streams
+    api("io.projectreactor:reactor-core")
+
     // JsonPath 工具类
     implementation("org.noear:snack3:3.2.61")
     // Eclipse Compiler for Java(TM)
