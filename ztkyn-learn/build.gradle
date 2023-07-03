@@ -1,0 +1,15 @@
+plugins {
+    id 'java'
+}
+
+
+
+subprojects {
+    dependencies {
+        implementation(project(":ztkyn-core"))
+    }
+}
+
+
+//在build.gradle里引用
+//apply from: "${rootDir}/maven_publish.gradle"

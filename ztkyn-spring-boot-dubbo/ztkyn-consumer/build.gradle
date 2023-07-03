@@ -1,11 +1,14 @@
 plugins {
     id 'java'
+    id("org.springframework.boot") version "${springBootVersion}"
 }
 
 
 dependencies {
     implementation(project(":ztkyn-core"))
     implementation(project(":ztkyn-spring-boot:ztkyn-framework"))
+    implementation(project(":ztkyn-spring-boot-dubbo:ztkyn-interface"))
+    implementation("org.apache.dubbo:dubbo-spring-boot-starter")
 }
 
 test {

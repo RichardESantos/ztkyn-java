@@ -1,0 +1,20 @@
+plugins {
+    id 'java'
+}
+
+ext {
+    dubboProjects = subprojects.findAll { it.name.startsWith("ztkyn-") } - project(":ztkyn-spring-boot-dubbo:ztkyn-embedded-zookeeper")
+}
+
+configure(dubboProjects) {
+
+    dependencies {
+        implementation(project(":ztkyn-core"))
+        implementation(project(":ztkyn-spring-boot:ztkyn-framework"))
+        implementation(platform("org.apache.dubbo:dubbo-bom:3.2.3"))
+        implementation("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        implementation("org.apache.dubbo:dubbo-dependencies-zookeeper-curator5")
+    }
+
+}
+

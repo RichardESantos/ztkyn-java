@@ -4,7 +4,6 @@ plugins {
 
 
 dependencies {
-    implementation(project(":ztkyn-core"))
     // easyexcel 工具类
     implementation("com.alibaba:easyexcel:3.3.1")
     implementation("org.freemarker:freemarker:2.3.32")
