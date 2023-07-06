@@ -1,15 +1,5 @@
 package org.gitee.ztkyn.easyexcel;
 
-import java.math.BigDecimal;
-import java.text.MessageFormat;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.SortedSet;
-import java.util.StringJoiner;
-import java.util.stream.Collectors;
-
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.context.AnalysisContext;
@@ -19,6 +9,12 @@ import org.gitee.ztkyn.core.colleciton.ECollectionUtil;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.math.BigDecimal;
+import java.nio.charset.Charset;
+import java.text.MessageFormat;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author richard
@@ -32,8 +28,8 @@ public class WeChartAliRecordTests {
 
 	@Test
 	public void readRecord() {
-		String path1 = "E:\\账单\\微信支付账单(20230206-20230506).csv";
-		String path2 = "E:\\账单\\微信支付账单(20230506-20230706).csv";
+		String path1 = "F:\\账单\\微信支付账单(20230206-20230506).csv";
+		String path2 = "F:\\账单\\微信支付账单(20230506-20230706).csv";
 		List<WechatRecord> recordList = ECollectionUtil.MutableList.newList();
 		readCSV(path1, recordList);
 		readCSV(path2, recordList);
@@ -47,7 +43,6 @@ public class WeChartAliRecordTests {
 			StringJoiner productStr = new StringJoiner("|");
 			for (WechatRecord record : records) {
 				String amountStr = record.getAmount().replace("￥", "").replace(",", "");
-				System.out.println(amountStr);
 				switch (record.getReceipt()) {
 					case "支出":
 						amount = amount.add(new BigDecimal(amountStr));
@@ -84,7 +79,13 @@ public class WeChartAliRecordTests {
 			public void doAfterAllAnalysed(AnalysisContext context) {
 				System.out.println("数据读取完成");
 			}
-		}).excelType(ExcelTypeEnum.CSV).sheet(0).doRead();
+		})
+			// 设置 CSV 格式
+			.excelType(ExcelTypeEnum.CSV)
+			// 设置 读取编码格式
+			.charset(Charset.forName("GB18030"))
+			.sheet(0)
+			.doRead();
 	}
 
 	public static class WechatRecord {
