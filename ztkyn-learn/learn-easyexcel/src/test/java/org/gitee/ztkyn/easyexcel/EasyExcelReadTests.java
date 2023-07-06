@@ -5,8 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.ExcelReader;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.read.listener.ReadListener;
+import com.alibaba.excel.read.metadata.ReadSheet;
+import com.alibaba.excel.read.metadata.holder.ReadWorkbookHolder;
+import com.alibaba.excel.read.metadata.holder.csv.CsvReadWorkbookHolder;
 import org.gitee.ztkyn.core.colleciton.ECollectionUtil;
 import org.gitee.ztkyn.core.ecj.DynamicJavaCompiler;
 import org.gitee.ztkyn.core.json.JacksonUtil;
@@ -28,7 +32,7 @@ public class EasyExcelReadTests {
 
 	@Test
 	public void testSingleRead() {
-		String filePath = "D:\\各种文档\\项目文档\\四机项目\\数据收集\\存货数据样本（郭瑞）\\存货库龄\\00030 DCM2.XLSX";
+		String filePath = "E:\\账单\\alipay_record_20230706_1219_1.csv";
 		long count = EasyExcelHelper.readFirstSheet(filePath, EasyExcelHelper.singleLineConsumer);
 		System.out.println(count);
 
@@ -65,7 +69,7 @@ public class EasyExcelReadTests {
 		DataDefinition dataDefinition = new DataDefinition().setDescription("DCM2Data")
 			.setClassName("DCMData")
 			.setPackageName("org.gitee.ztkyn.gen");
-		List<DataConfiguration> configurationList = ECollectionUtil.createFastList();
+		List<DataConfiguration> configurationList = ECollectionUtil.MutableList.newList();
 		String[] headerNames = { "工厂", "库存地点", "物料编号", "批号", "特殊库存标识", "特殊库存编号", "分析期间", "月", "仓储地点的描述", "物料描述（短文本）",
 				"物料组", "物料组描述", "基本计量单位", "标准价格", "价格单位", "评估类", "评估类的描述", "期末库存", "合计", "合计-金额", "合计-金额单位", "3个月内(数量)",
 				"3个月内(金额)", "3个月内(金额)单位", "3-6个月(数量", "3-6个月(金额)", "3-6个月(金额)单位", "6个月-1年(数量)", "6个月-1年(金额)",

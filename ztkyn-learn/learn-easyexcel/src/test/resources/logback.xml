@@ -72,6 +72,7 @@
 <!--	<logger name="org.elasticsearch" level="info"/>-->
 <!--	<logger name="com.alibaba" level="warn"/>-->
 	<logger name="ch.qos.logback" level="warn"/>
+	<logger name="com.alibaba.excel" level="debug"/>
 	<!--基础配置-->
 
 	<!-- 显示加载的配置-->
