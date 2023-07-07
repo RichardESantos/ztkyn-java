@@ -35,7 +35,7 @@ public class AliPayAliRecordTests {
 
 	@Test
 	public void read() {
-		String filePath = "E:\\账单\\alipay_record_20230706_1219_1.csv";
+		String filePath = "";
 
 		List<AliRecord> aliRecordList = ECollectionUtil.MutableList.newList();
 		EasyExcel.read(filePath, AliRecord.class, new ReadListener<AliRecord>() {
@@ -65,16 +65,9 @@ public class AliPayAliRecordTests {
 			BigDecimal inPay = new BigDecimal("0.00");
 			for (AliRecord aliRecord : aliRecords) {
 				switch (aliRecord.getReceipt()) {
-					case "支出":
-						outPay = outPay.add(new BigDecimal(aliRecord.getAmount()));
-						break;
-					case "不计收支":
-					case "收入":
-						inPay = inPay.add(new BigDecimal(aliRecord.getAmount()));
-						break;
-					default:
-						System.out.println("数据错误");
-						break;
+					case "支出" -> outPay = outPay.add(new BigDecimal(aliRecord.getAmount()));
+					case "不计收支", "收入" -> inPay = inPay.add(new BigDecimal(aliRecord.getAmount()));
+					default -> System.out.println("数据错误");
 				}
 			}
 			if (inPay.doubleValue() > 0 && outPay.doubleValue() > 0) {
@@ -97,16 +90,9 @@ public class AliPayAliRecordTests {
 			StringJoiner productStr = new StringJoiner("|");
 			for (AliRecord aliRecord : entry.getValue()) {
 				switch (aliRecord.getReceipt()) {
-					case "支出":
-						amount = amount.add(new BigDecimal(aliRecord.getAmount()));
-						break;
-					case "不计收支":
-					case "收入":
-						amount = amount.subtract(new BigDecimal(aliRecord.getAmount()));
-						break;
-					default:
-						System.out.println("数据错误");
-						break;
+					case "支出" -> amount = amount.add(new BigDecimal(aliRecord.getAmount()));
+					case "不计收支", "收入" -> amount = amount.subtract(new BigDecimal(aliRecord.getAmount()));
+					default -> System.out.println("数据错误");
 				}
 				productStr.add(aliRecord.getProductName());
 			}

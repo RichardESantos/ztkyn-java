@@ -28,8 +28,8 @@ public class WeChartAliRecordTests {
 
 	@Test
 	public void readRecord() {
-		String path1 = "F:\\账单\\微信支付账单(20230206-20230506).csv";
-		String path2 = "F:\\账单\\微信支付账单(20230506-20230706).csv";
+		String path1 = "";
+		String path2 = "";
 		List<WechatRecord> recordList = ECollectionUtil.MutableList.newList();
 		readCSV(path1, recordList);
 		readCSV(path2, recordList);
@@ -44,14 +44,10 @@ public class WeChartAliRecordTests {
 			for (WechatRecord record : records) {
 				String amountStr = record.getAmount().replace("￥", "").replace(",", "");
 				switch (record.getReceipt()) {
-					case "支出":
-						amount = amount.add(new BigDecimal(amountStr));
-						break;
-					case "收入":
-						amount = amount.subtract(new BigDecimal(amountStr));
-						break;
-					default:
-						break;
+					case "支出" -> amount = amount.add(new BigDecimal(amountStr));
+					case "收入" -> amount = amount.subtract(new BigDecimal(amountStr));
+					default -> {
+					}
 				}
 				productStr.add(record.getCommodity());
 			}
