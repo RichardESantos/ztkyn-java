@@ -6,8 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
@@ -16,6 +18,7 @@ import lombok.experimental.Accessors;
 import org.eclipse.collections.impl.list.mutable.FastList;
 import org.eclipse.collections.impl.map.mutable.UnifiedMap;
 import org.gitee.ztkyn.core.colleciton.ECollectionUtil;
+import org.gitee.ztkyn.core.function.DataHandler;
 import org.gitee.ztkyn.core.string.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,6 +58,9 @@ public class JacksonUtil {
 
 	public static JavaType stringJavaType = typeFactory.constructType(stringTypeReference);
 
+	/**
+	 * 用来打印所有字段的 ObjectMapper
+	 */
 	private static final ObjectMapper allFieldMapper = new ObjectMapper();
 
 	static {
@@ -62,8 +68,9 @@ public class JacksonUtil {
 		JacksonConfiguration.configuration(objectMapper);
 		JacksonConfiguration.configuration(allFieldMapper);
 		// 对象字段之列入所有字段
-		allFieldMapper.setSerializationInclusion(Include.ALWAYS);
-
+		allFieldMapper.setSerializationInclusion(Include.ALWAYS)
+			// 暂时不知道啥意思
+			.enable(DeserializationFeature.FAIL_ON_TRAILING_TOKENS);
 	}
 
 	/**
@@ -97,22 +104,38 @@ public class JacksonUtil {
 		return toJsonString(obj, allFieldMapper);
 	}
 
+	/**
+	 * 校验内容是否是合法json
+	 * @param json
+	 * @return
+	 */
+	public static boolean isValidJson(String json) {
+		return DataHandler.notNull(json).convert(s -> {
+			try {
+				allFieldMapper.readTree(json);
+			}
+			catch (JacksonException e) {
+				return false;
+			}
+			return true;
+		}, s -> false);
+	}
+
 	private static <T> String toJsonString(T obj, ObjectMapper mapper) {
-		if (obj == null) {
-			return null;
-		}
-		try {
-			if (obj instanceof String str) {
-				return str;
+		return DataHandler.notNull(obj).ifTrueAndConvert(t -> {
+			try {
+				if (obj instanceof String str) {
+					return str;
+				}
+				else {
+					return mapper.writeValueAsString(obj);
+				}
 			}
-			else {
-				return mapper.writeValueAsString(obj);
+			catch (Exception e) {
+				logger.error("Parse object to String error", e);
+				return null;
 			}
-		}
-		catch (Exception e) {
-			logger.error("Parse object to String error", e);
-			return null;
-		}
+		});
 	}
 
 	/**
