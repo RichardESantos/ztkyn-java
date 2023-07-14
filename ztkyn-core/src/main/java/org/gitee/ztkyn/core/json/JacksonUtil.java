@@ -145,21 +145,20 @@ public class JacksonUtil {
 	 * @return
 	 */
 	public static <T> String obj2StringPretty(T obj) {
-		if (obj == null) {
-			return null;
-		}
-		try {
-			if (obj instanceof String str) {
-				return str;
+		return DataHandler.notNull(obj).ifTrueAndConvert(t -> {
+			try {
+				if (obj instanceof String str) {
+					return str;
+				}
+				else {
+					return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
+				}
 			}
-			else {
-				return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
+			catch (Exception e) {
+				logger.error("Parse object to String error", e);
+				return null;
 			}
-		}
-		catch (Exception e) {
-			logger.error("Parse object to String error", e);
-			return null;
-		}
+		});
 	}
 
 	/**
