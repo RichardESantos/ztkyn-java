@@ -1,0 +1,4 @@
+https://archive.apache.org/dist/shenyu/2.5.1/apache-shenyu-2.5.1-bootstrap-bin.tar.gz
+https://github.com/seata/seata/releases/download/v1.7.0/seata-server-1.7.0.zip
+https://github.com/alibaba/Sentinel/releases/download/1.8.6/sentinel-dashboard-1.8.6.jar
+https://github.com/alibaba/nacos/releases/download/2.2.3/nacos-server-2.2.3.zip

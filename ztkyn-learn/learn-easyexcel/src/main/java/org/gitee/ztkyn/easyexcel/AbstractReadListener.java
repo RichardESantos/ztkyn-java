@@ -42,8 +42,7 @@ public abstract class AbstractReadListener<T> implements ReadListener<T> {
 		logger.error("解析失败，但是继续解析下一行:{}", exception.getMessage());
 		// 如果是某一个单元格的转换异常 能获取到具体行号
 		// 如果要获取头的信息 配合invokeHeadMap使用
-		if (exception instanceof ExcelDataConvertException) {
-			ExcelDataConvertException excelDataConvertException = (ExcelDataConvertException) exception;
+		if (exception instanceof ExcelDataConvertException excelDataConvertException) {
 			logger.error("第{}行，第{}列解析异常，数据为:{}", excelDataConvertException.getRowIndex(),
 					excelDataConvertException.getColumnIndex(), excelDataConvertException.getCellData());
 		}

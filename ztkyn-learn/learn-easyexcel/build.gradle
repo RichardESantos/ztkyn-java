@@ -5,6 +5,7 @@ plugins {
 
 dependencies {
     // easyexcel 工具类
+    implementation("org.apache.commons:commons-compress:1.23.0")
     implementation("com.alibaba:easyexcel:3.3.2")
     implementation("org.freemarker:freemarker:2.3.32")
 

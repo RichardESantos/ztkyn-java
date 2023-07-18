@@ -4,11 +4,14 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import com.github.sisyphsu.dateparser.DateParserUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -108,6 +111,22 @@ public class DateUtil {
 
 	public static long getTimeFromDateTimeStr(String dateStr, String dateFormatter) {
 		return getTime(toLocalDateTime(dateStr, dateFormatter));
+	}
+
+	public static Date parseDate(String dateStr) {
+		return DateParserUtils.parseDate(dateStr);
+	}
+
+	public static Calendar parseCalendar(String dateStr) {
+		return DateParserUtils.parseCalendar(dateStr);
+	}
+
+	public static LocalDateTime parseDateTime(String dateStr) {
+		return DateParserUtils.parseDateTime(dateStr);
+	}
+
+	public static OffsetDateTime parseOffsetDateTime(String dateStr) {
+		return DateParserUtils.parseOffsetDateTime(dateStr);
 	}
 
 }
