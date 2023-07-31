@@ -16,51 +16,53 @@ import org.slf4j.LoggerFactory;
  */
 public class RedisDistributedLock extends AbstractDistributedLock implements DistributedLock {
 
-    private static final Logger logger = LoggerFactory.getLogger(RedisDistributedLock.class);
+	private static final Logger logger = LoggerFactory.getLogger(RedisDistributedLock.class);
 
-    private RedissonClient redisson;
+	private RedissonClient redisson;
 
-    public RedisDistributedLock(RedissonClient redisson) {
-        this.redisson = redisson;
-    }
+	public RedisDistributedLock(RedissonClient redisson) {
+		this.redisson = redisson;
+	}
 
-    @Override
-    public boolean lock(String key, long expire, int retryTimes, long sleepMillis) {
-        RLock lock = redisson.getLock(key);
-        try {
-            boolean result = lock.tryLock(expire, sleepMillis, TimeUnit.SECONDS);
-            // 如果获取锁失败，按照传入的重试次数进行重试
-            while ((!result) && retryTimes-- > 0) {
-                try {
-                    logger.debug("lock failed, retrying..." + retryTimes);
-                    Thread.sleep(sleepMillis);
-                } catch (InterruptedException e) {
-                    return false;
-                }
-            }
-            return result;
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-    }
+	@Override
+	public boolean lock(String key, long expire, int retryTimes, long sleepMillis) {
+		RLock lock = redisson.getLock(key);
+		try {
+			boolean result = lock.tryLock(expire, sleepMillis, TimeUnit.SECONDS);
+			// 如果获取锁失败，按照传入的重试次数进行重试
+			while ((!result) && retryTimes-- > 0) {
+				try {
+					logger.debug("lock failed, retrying..." + retryTimes);
+					Thread.sleep(sleepMillis);
+				}
+				catch (InterruptedException e) {
+					return false;
+				}
+			}
+			return result;
+		}
+		catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
-    @Override
-    public boolean releaseLock(String key) {
-        RLock lock = redisson.getLock(key);
-        lock.unlock();
-        return true;
-    }
+	@Override
+	public boolean releaseLock(String key) {
+		RLock lock = redisson.getLock(key);
+		lock.unlock();
+		return true;
+	}
 
-    @Override
-    public boolean isLocked(String lockKey) {
-        RLock lock = redisson.getLock(lockKey);
-        return lock.isLocked();
-    }
+	@Override
+	public boolean isLocked(String lockKey) {
+		RLock lock = redisson.getLock(lockKey);
+		return lock.isLocked();
+	}
 
-    @Override
-    public boolean isHeldByCurrentThread(String lockKey) {
-        RLock lock = redisson.getLock(lockKey);
-        return lock.isHeldByCurrentThread();
-    }
+	@Override
+	public boolean isHeldByCurrentThread(String lockKey) {
+		RLock lock = redisson.getLock(lockKey);
+		return lock.isHeldByCurrentThread();
+	}
 
 }
