@@ -4,9 +4,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.function.Function;
 
-import org.gitee.ztkyn.core.function.DataHandler;
+import org.gitee.ztkyn.core.function.DataFlexHandler;
 import org.gitee.ztkyn.core.string.CharsetUtil;
 import org.junit.jupiter.api.Test;
 
@@ -27,11 +26,11 @@ class FileUtilTest {
 		String content = FileUtil.readContent(Paths.get(path).toFile(), CharsetUtil.GB18030);
 		FileUtil.writeContent(path + "_bak", content, CharsetUtil.GBK, false);
 
-		DataHandler.notBlank(new ArrayList<Integer>()).ifTrue(integers -> System.out.println(integers));
-		DataHandler.notBlank(new HashMap<String, Integer>())
+		DataFlexHandler.notBlank(new ArrayList<Integer>()).ifTrue(integers -> System.out.println(integers));
+		DataFlexHandler.notBlank(new HashMap<String, Integer>())
 			.ifTrue(stringIntegerMap -> System.out.println(stringIntegerMap));
 
-		List<Integer> list = DataHandler.notBlank(new ArrayList<Integer>()).ifTrueAndConvert(integers -> null);
+		List<Integer> list = DataFlexHandler.notBlank(new ArrayList<Integer>()).ifTrueAndConvert(integers -> null);
 	}
 
 }

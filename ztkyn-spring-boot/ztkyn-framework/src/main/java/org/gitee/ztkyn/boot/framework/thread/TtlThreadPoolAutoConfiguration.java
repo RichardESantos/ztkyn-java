@@ -11,7 +11,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import com.alibaba.ttl.threadpool.TtlExecutors;
 import jakarta.annotation.Resource;
-import org.gitee.ztkyn.core.function.DataHandler;
+import org.gitee.ztkyn.core.function.DataFlexHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +39,7 @@ public class TtlThreadPoolAutoConfiguration {
 	 */
 	@Bean
 	public ThreadPoolTaskExecutor threadPoolTaskExecutor() {
-		ThreadPoolConfiguration.ThreadPoolProperties configurationGlobal = DataHandler
+		ThreadPoolConfiguration.ThreadPoolProperties configurationGlobal = DataFlexHandler
 			.notNull(threadPoolConfiguration.getGlobal())
 			.convert(threadPoolProperties -> threadPoolProperties,
 					threadPoolProperties -> ThreadPoolConfiguration.getEmpty());

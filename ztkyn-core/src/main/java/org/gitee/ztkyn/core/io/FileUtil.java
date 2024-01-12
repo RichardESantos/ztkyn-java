@@ -18,7 +18,7 @@ import java.util.StringJoiner;
 import java.util.function.Consumer;
 
 import org.gitee.ztkyn.core.exception.FileOperationException;
-import org.gitee.ztkyn.core.function.DataHandler;
+import org.gitee.ztkyn.core.function.DataFlexHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -83,7 +83,7 @@ public class FileUtil {
 		checkFolderAccessException(oldFolder);
 		try {
 			checkDestPathAccess(newPath, isReplace);
-			DataHandler.of(oldFolder.listFiles(), Objects::nonNull).ifTrue(files -> {
+			DataFlexHandler.of(oldFolder.listFiles(), Objects::nonNull).ifTrue(files -> {
 				for (File file : files) {
 					file.renameTo(Paths.get(newPath, file.getName()).toFile());
 				}

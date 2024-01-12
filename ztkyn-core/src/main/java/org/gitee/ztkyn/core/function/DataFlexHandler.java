@@ -18,15 +18,15 @@ import org.slf4j.LoggerFactory;
  * @author richard
  * @version 1.0
  */
-public final class DataHandler<T> {
+public final class DataFlexHandler<T> {
 
-	private static final Logger logger = LoggerFactory.getLogger(DataHandler.class);
+	private static final Logger logger = LoggerFactory.getLogger(DataFlexHandler.class);
 
 	private final T value;
 
 	private final boolean judgeResult;
 
-	private DataHandler(T value, boolean judgeResult) {
+	private DataFlexHandler(T value, boolean judgeResult) {
 		this.value = value;
 		this.judgeResult = judgeResult;
 	}
@@ -38,8 +38,8 @@ public final class DataHandler<T> {
 	 * @param <T>
 	 * @return
 	 */
-	public static <T> DataHandler<T> of(T t, Predicate<T> predicate) {
-		return new DataHandler<>(t, predicate.test(t));
+	public static <T> DataFlexHandler<T> of(T t, Predicate<T> predicate) {
+		return new DataFlexHandler<>(t, predicate.test(t));
 	}
 
 	/**
@@ -48,8 +48,8 @@ public final class DataHandler<T> {
 	 * @param <T>
 	 * @return
 	 */
-	public static <T> DataHandler<T> notNull(T t) {
-		return new DataHandler<>(t, Objects.nonNull(t));
+	public static <T> DataFlexHandler<T> notNull(T t) {
+		return new DataFlexHandler<>(t, Objects.nonNull(t));
 	}
 
 	/**
@@ -58,8 +58,8 @@ public final class DataHandler<T> {
 	 * @param <T>
 	 * @return
 	 */
-	public static <T> DataHandler<T> isNull(T t) {
-		return new DataHandler<>(t, Objects.isNull(t));
+	public static <T> DataFlexHandler<T> isNull(T t) {
+		return new DataFlexHandler<>(t, Objects.isNull(t));
 	}
 
 	/**
@@ -67,8 +67,8 @@ public final class DataHandler<T> {
 	 * @param content
 	 * @return
 	 */
-	public static DataHandler<String> notBlank(String content) {
-		return new DataHandler<>(content, StringUtil.isNotBlank(content));
+	public static DataFlexHandler<String> notBlank(String content) {
+		return new DataFlexHandler<>(content, StringUtil.isNotBlank(content));
 	}
 
 	/**
@@ -76,8 +76,8 @@ public final class DataHandler<T> {
 	 * @param content
 	 * @return
 	 */
-	public static DataHandler<String> isBlank(String content) {
-		return new DataHandler<>(content, StringUtil.isBlank(content));
+	public static DataFlexHandler<String> isBlank(String content) {
+		return new DataFlexHandler<>(content, StringUtil.isBlank(content));
 	}
 
 	/**
@@ -86,8 +86,8 @@ public final class DataHandler<T> {
 	 * @param <E>
 	 * @return
 	 */
-	public static <E> DataHandler<List<E>> notBlank(List<E> list) {
-		return new DataHandler<>(list, Objects.nonNull(list) && !list.isEmpty());
+	public static <E> DataFlexHandler<List<E>> notBlank(List<E> list) {
+		return new DataFlexHandler<>(list, Objects.nonNull(list) && !list.isEmpty());
 	}
 
 	/**
@@ -96,8 +96,8 @@ public final class DataHandler<T> {
 	 * @param <E>
 	 * @return
 	 */
-	public static <E> DataHandler<List<E>> isBlank(List<E> list) {
-		return new DataHandler<>(list, Objects.isNull(list) || list.isEmpty());
+	public static <E> DataFlexHandler<List<E>> isBlank(List<E> list) {
+		return new DataFlexHandler<>(list, Objects.isNull(list) || list.isEmpty());
 	}
 
 	/**
@@ -106,8 +106,8 @@ public final class DataHandler<T> {
 	 * @param <E>
 	 * @return
 	 */
-	public static <E> DataHandler<Set<E>> notBlank(Set<E> set) {
-		return new DataHandler<>(set, Objects.nonNull(set) && !set.isEmpty());
+	public static <E> DataFlexHandler<Set<E>> notBlank(Set<E> set) {
+		return new DataFlexHandler<>(set, Objects.nonNull(set) && !set.isEmpty());
 	}
 
 	/**
@@ -116,8 +116,8 @@ public final class DataHandler<T> {
 	 * @param <E>
 	 * @return
 	 */
-	public static <E> DataHandler<Set<E>> isBlank(Set<E> set) {
-		return new DataHandler<>(set, Objects.isNull(set) || set.isEmpty());
+	public static <E> DataFlexHandler<Set<E>> isBlank(Set<E> set) {
+		return new DataFlexHandler<>(set, Objects.isNull(set) || set.isEmpty());
 	}
 
 	/**
@@ -127,8 +127,8 @@ public final class DataHandler<T> {
 	 * @param <V>
 	 * @return
 	 */
-	public static <K, V> DataHandler<Map<K, V>> notBlank(Map<K, V> kvMap) {
-		return new DataHandler<>(kvMap, Objects.nonNull(kvMap) && !kvMap.isEmpty());
+	public static <K, V> DataFlexHandler<Map<K, V>> notBlank(Map<K, V> kvMap) {
+		return new DataFlexHandler<>(kvMap, Objects.nonNull(kvMap) && !kvMap.isEmpty());
 	}
 
 	/**
@@ -138,18 +138,18 @@ public final class DataHandler<T> {
 	 * @param <V>
 	 * @return
 	 */
-	public static <K, V> DataHandler<Map<K, V>> isBlank(Map<K, V> kvMap) {
-		return new DataHandler<>(kvMap, Objects.isNull(kvMap) || kvMap.isEmpty());
+	public static <K, V> DataFlexHandler<Map<K, V>> isBlank(Map<K, V> kvMap) {
+		return new DataFlexHandler<>(kvMap, Objects.isNull(kvMap) || kvMap.isEmpty());
 	}
 
-	public DataHandler<T> ifTrue(Consumer<T> consumer) {
+	public DataFlexHandler<T> ifTrue(Consumer<T> consumer) {
 		if (judgeResult) {
 			consumer.accept(value);
 		}
 		return this;
 	}
 
-	public DataHandler<T> ifTrue(Runnable runnable) {
+	public DataFlexHandler<T> ifTrue(Runnable runnable) {
 		if (judgeResult) {
 			runnable.run();
 		}
@@ -176,6 +176,16 @@ public final class DataHandler<T> {
 	 */
 	public <R> R ifTrueAndConvert(Function<T, R> function) {
 		return judgeResult ? function.apply(value) : null;
+	}
+
+	/**
+	 * 对结果进行转换
+	 * @param function
+	 * @param <R>
+	 * @return
+	 */
+	public <R> R ifTrueAndConvert(Function<T, R> function, R defaultResult) {
+		return judgeResult ? function.apply(value) : defaultResult;
 	}
 
 	/**

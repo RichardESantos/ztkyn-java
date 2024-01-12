@@ -18,7 +18,7 @@ import lombok.experimental.Accessors;
 import org.eclipse.collections.impl.list.mutable.FastList;
 import org.eclipse.collections.impl.map.mutable.UnifiedMap;
 import org.gitee.ztkyn.core.colleciton.ECollectionUtil;
-import org.gitee.ztkyn.core.function.DataHandler;
+import org.gitee.ztkyn.core.function.DataFlexHandler;
 import org.gitee.ztkyn.core.string.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -110,7 +110,7 @@ public class JacksonUtil {
 	 * @return
 	 */
 	public static boolean isValidJson(String json) {
-		return DataHandler.notNull(json).convert(s -> {
+		return DataFlexHandler.notNull(json).convert(s -> {
 			try {
 				allFieldMapper.readTree(json);
 			}
@@ -122,7 +122,7 @@ public class JacksonUtil {
 	}
 
 	private static <T> String toJsonString(T obj, ObjectMapper mapper) {
-		return DataHandler.notNull(obj).ifTrueAndConvert(t -> {
+		return DataFlexHandler.notNull(obj).ifTrueAndConvert(t -> {
 			try {
 				if (obj instanceof String str) {
 					return str;
@@ -145,7 +145,7 @@ public class JacksonUtil {
 	 * @return
 	 */
 	public static <T> String obj2StringPretty(T obj) {
-		return DataHandler.notNull(obj).ifTrueAndConvert(t -> {
+		return DataFlexHandler.notNull(obj).ifTrueAndConvert(t -> {
 			try {
 				if (obj instanceof String str) {
 					return str;
