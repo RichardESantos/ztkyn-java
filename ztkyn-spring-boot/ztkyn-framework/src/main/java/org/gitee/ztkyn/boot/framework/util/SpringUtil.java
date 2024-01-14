@@ -1,5 +1,6 @@
 package org.gitee.ztkyn.boot.framework.util;
 
+import lombok.Getter;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -21,6 +22,7 @@ public class SpringUtil implements ApplicationContextAware {
 
 	private static final Logger logger = LoggerFactory.getLogger(SpringUtil.class);
 
+	@Getter
 	private static ApplicationContext applicationContext; // Spring应用上下文环境
 
 	private static DefaultListableBeanFactory beanFactory; // Spring 默认容器
@@ -35,10 +37,6 @@ public class SpringUtil implements ApplicationContextAware {
 
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		SpringUtil.applicationContext = applicationContext;
-	}
-
-	public static ApplicationContext getApplicationContext() {
-		return applicationContext;
 	}
 
 	@SuppressWarnings("unchecked")
