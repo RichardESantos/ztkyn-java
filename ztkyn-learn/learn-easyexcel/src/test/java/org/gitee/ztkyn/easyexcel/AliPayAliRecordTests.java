@@ -1,16 +1,5 @@
 package org.gitee.ztkyn.easyexcel;
 
-import java.math.BigDecimal;
-import java.text.MessageFormat;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.SortedSet;
-import java.util.StringJoiner;
-import java.util.stream.Collectors;
-
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.context.AnalysisContext;
@@ -22,6 +11,12 @@ import org.gitee.ztkyn.core.colleciton.ECollectionUtil;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.math.BigDecimal;
+import java.nio.file.Paths;
+import java.text.MessageFormat;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author richard
@@ -36,6 +31,8 @@ public class AliPayAliRecordTests {
 	@Test
 	public void read() {
 		String filePath = "";
+		if (!Paths.get(filePath).toFile().exists())
+			return;
 
 		List<AliRecord> aliRecordList = ECollectionUtil.MutableList.newList();
 		EasyExcel.read(filePath, AliRecord.class, new ReadListener<AliRecord>() {

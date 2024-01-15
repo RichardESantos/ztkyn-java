@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.nio.charset.Charset;
+import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -30,6 +31,8 @@ public class WeChartAliRecordTests {
 	public void readRecord() {
 		String path1 = "";
 		String path2 = "";
+		if (!Paths.get(path1).toFile().exists())
+			return;
 		List<WechatRecord> recordList = ECollectionUtil.MutableList.newList();
 		readCSV(path1, recordList);
 		readCSV(path2, recordList);

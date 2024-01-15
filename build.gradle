@@ -2,7 +2,7 @@ buildscript {
     //在build.gradle里引用
     apply from: "${rootDir}/repositories.gradle"
     dependencies {
-        classpath("io.spring.javaformat:spring-javaformat-gradle-plugin:0.0.40")
+        classpath("io.spring.javaformat:spring-javaformat-gradle-plugin:0.0.41")
     }
 }
 
@@ -47,8 +47,8 @@ subprojects {
         zookeeperVersion = '3.8.1'
         jettyVersion = '11.0.15'
         metricsVersion = '4.2.19'
-        commonsCliVersion= '1.5.0'
-        commonsIOVersion= '2.13.0'
+        commonsCliVersion = '1.5.0'
+        commonsIOVersion = '2.13.0'
 
         guavaVersion = '32.0.0-jre'
         mapstructVersion = '1.5.3.Final'
@@ -82,9 +82,16 @@ subprojects {
 
     }
 
+    // 以下四句代码 是用来解决任务直接的依赖关系
+    checkFormatMain.dependsOn formatMain
+    checkFormatTest.dependsOn formatTest
+    compileJava.dependsOn formatMain
+    compileTestJava.dependsOn formatTest
+
+    test {
+        useJUnitPlatform()
+    }
+
 }
 
 
-test {
-    useJUnitPlatform()
-}

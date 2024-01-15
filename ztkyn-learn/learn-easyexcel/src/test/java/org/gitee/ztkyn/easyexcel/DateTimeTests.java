@@ -1,5 +1,6 @@
 package org.gitee.ztkyn.easyexcel;
 
+import java.nio.file.Paths;
 import java.util.Map;
 
 import com.alibaba.excel.EasyExcel;
@@ -27,6 +28,8 @@ public class DateTimeTests {
 	@Test
 	public void read() {
 		String filePath = "E:\\日期时间模版处理.xlsx";
+		if (!Paths.get(filePath).toFile().exists())
+			return;
 		EasyExcel.read(filePath, new AnalysisEventListener<Map<Integer, Object>>() {
 			@Override
 			public void invoke(Map<Integer, Object> dateTemplate, AnalysisContext context) {
