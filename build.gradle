@@ -23,6 +23,7 @@ subprojects {
     apply plugin: 'signing'
 
     group 'org.gitee.ztkyn'
+    println(project.name)
     version '1.0-SNAPSHOT'
 
     //指定JDK版本
@@ -53,6 +54,7 @@ subprojects {
         guavaVersion = '32.0.0-jre'
         mapstructVersion = '1.5.3.Final'
         lombokVersion = '1.18.26'
+        projectName = project.name
     }
 
     //配置子模块依赖

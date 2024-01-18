@@ -13,3 +13,7 @@ file("${rootDir}/ztkyn-spring-boot-dubbo").eachDirMatch(~/ztkyn.*/) {
 	include "ztkyn-spring-boot-dubbo:${it.name}"
 }
 
+file("${rootDir}/ztkyn-spring-cloud").eachDirMatch(~/ztkyn.*/) {
+	include "ztkyn-spring-cloud:${it.name}"
+}
+
