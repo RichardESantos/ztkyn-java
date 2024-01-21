@@ -1,0 +1,38 @@
+// 将依赖包复制到lib目录
+tasks.register('copyJar', Copy) {
+    // 清除现有的lib目录
+    delete "build/libs/lib"
+    from configurations.compileClasspath
+    includes = ["*.jar"]
+    into "build/libs/libs"
+}
+
+// 拷贝配置文件
+tasks.register('copyConfigFile', Copy) {
+    // 清除现有的配置目录
+    delete "build/libs/config"
+    from('src/main/resources')
+    into "build/libs/config"
+}
+
+// 配置bootJar进行打包
+bootJar {
+    // jar包名称，默认是settings.gradle下的工程名 rootProject.name = 'alog-server'
+    archiveBaseName = project.name
+    // jar包版本号
+    archiveVersion = project.version.toString()
+    // 排除所有的jar
+    excludes = ["*.jar"]
+    // lib目录的清除和复制任务
+    dependsOn copyJar
+    // 配置目录的清除和复制任务
+    dependsOn copyConfigFile
+
+    // 指定依赖包的路径
+    manifest {
+        attributes "Manifest-Version": 1.0,
+                "Implementation-Title": archiveBaseName,
+                "Implementation-Version": archiveVersion,
+                'Class-Path': configurations.compileClasspath.files.collect { "lib/$it.name" }.join(' ') + " " + configurations.runtimeClasspath.files.collect { "lib/$it.name" }.join(' ')
+    }
+}

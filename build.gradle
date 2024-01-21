@@ -23,7 +23,6 @@ subprojects {
     apply plugin: 'signing'
 
     group 'org.gitee.ztkyn'
-    println(project.name)
     version '1.0-SNAPSHOT'
 
     //指定JDK版本

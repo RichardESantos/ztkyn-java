@@ -2,10 +2,7 @@ package org.gitee.ztkyn.gateway.configuration;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
-import org.gitee.ztkyn.gateway.configuration.filter.FilterChainProxy;
-import org.gitee.ztkyn.gateway.configuration.filter.PreCryptoFilter;
-import org.gitee.ztkyn.gateway.configuration.filter.PreSignatureFilter;
-import org.gitee.ztkyn.gateway.configuration.filter.ZtKynExampleFilter;
+import org.gitee.ztkyn.gateway.configuration.filter.*;
 import org.gitee.ztkyn.gateway.configuration.properties.ZtkynGateWayProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,30 +15,35 @@ import org.springframework.web.reactive.config.WebFluxConfigurer;
 import java.util.Arrays;
 
 @Configuration
-@EnableConfigurationProperties({ ZtkynGateWayProperties.class })
+@EnableConfigurationProperties({ZtkynGateWayProperties.class})
 public class GatewayConfiguration implements WebFluxConfigurer {
 
-	private static final Logger logger = LoggerFactory.getLogger(GatewayConfiguration.class);
+    private static final Logger logger = LoggerFactory.getLogger(GatewayConfiguration.class);
 
-	@Resource
-	private ZtkynGateWayProperties ztkynGateWayProperties;
+    @Resource
+    private ZtkynGateWayProperties ztkynGateWayProperties;
 
-	@Resource
-	private ApplicationContext applicationContext;
+    @Resource
+    private ApplicationContext applicationContext;
 
-	@PostConstruct
-	public void init() {
-	}
+    @PostConstruct
+    public void init() {
+    }
 
-	@Bean
-	public FilterChainProxy filterChainProxy() {
-		return new FilterChainProxy(Arrays.asList(new PreCryptoFilter(ztkynGateWayProperties.getCrypto()),
-				new PreSignatureFilter(ztkynGateWayProperties.getSign())));
-	}
+    @Bean
+    public CacheRequestFilter cacheRequestFilter() {
+        return new CacheRequestFilter();
+    }
 
-	@Bean
-	public ZtKynExampleFilter testFilter() {
-		return new ZtKynExampleFilter();
-	}
+    @Bean
+    public FilterChainProxy filterChainProxy() {
+        return new FilterChainProxy(Arrays.asList(new PreCryptoFilter(ztkynGateWayProperties.getCrypto()),
+                new PreSignatureFilter(ztkynGateWayProperties.getSign())));
+    }
+
+    @Bean
+    public ZtKynExampleFilter testFilter() {
+        return new ZtKynExampleFilter();
+    }
 
 }
