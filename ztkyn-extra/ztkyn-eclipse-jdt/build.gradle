@@ -1,0 +1,13 @@
+plugins {
+    id 'java'
+}
+
+
+dependencies {
+    // Eclipse Compiler for Java(TM)
+    implementation("org.eclipse.jdt:ecj:3.33.0")
+}
+
+test {
+    enabled = false
+}

@@ -1,13 +1,13 @@
 package org.gitee.ztkyn.core.colleciton;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.function.BiPredicate;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.function.Predicate;
 
 /**
  * @author richard
@@ -86,7 +86,7 @@ public class CollectionUtil {
 		if (isBlank(map)) {
 			return map;
 		}
-		return removeValues(map, (k, v) -> Objects.isNull(v));
+		return removeValues(map, kvEntry -> Objects.isNull(kvEntry.getValue()));
 	}
 
 	/**
@@ -97,17 +97,12 @@ public class CollectionUtil {
 	 * @param <V>
 	 * @return
 	 */
-	public static <K, V> Map<K, V> removeValues(Map<K, V> map, BiPredicate<K, V> predicate) {
+	public static <K, V> Map<K, V> removeValues(Map<K, V> map, Predicate<Map.Entry<K, V>> predicate) {
 		if (isBlank(map)) {
 			return map;
 		}
-		Map<K, V> unifiedMap = ECollectionUtil.MutableMap.newMap(map.size());
-		map.forEach((k, v) -> {
-			if (!predicate.test(k, v)) {
-				unifiedMap.put(k, v);
-			}
-		});
-		return unifiedMap;
+		map.entrySet().removeIf(predicate);
+		return map;
 	}
 
 }

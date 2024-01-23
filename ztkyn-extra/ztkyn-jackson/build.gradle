@@ -1,0 +1,16 @@
+plugins {
+    id 'java'
+}
+
+
+dependencies {
+    // jackson
+    api("com.fasterxml.jackson.core:jackson-databind")
+    api("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+    api("com.fasterxml.jackson.datatype:jackson-datatype-eclipse-collections")
+    api("com.fasterxml.jackson.datatype:jackson-datatype-guava")
+}
+
+test {
+    enabled = false
+}

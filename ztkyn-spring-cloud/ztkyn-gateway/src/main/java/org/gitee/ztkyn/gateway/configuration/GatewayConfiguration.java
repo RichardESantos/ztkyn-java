@@ -15,35 +15,35 @@ import org.springframework.web.reactive.config.WebFluxConfigurer;
 import java.util.Arrays;
 
 @Configuration
-@EnableConfigurationProperties({ZtkynGateWayProperties.class})
+@EnableConfigurationProperties({ ZtkynGateWayProperties.class })
 public class GatewayConfiguration implements WebFluxConfigurer {
 
-    private static final Logger logger = LoggerFactory.getLogger(GatewayConfiguration.class);
+	private static final Logger logger = LoggerFactory.getLogger(GatewayConfiguration.class);
 
-    @Resource
-    private ZtkynGateWayProperties ztkynGateWayProperties;
+	@Resource
+	private ZtkynGateWayProperties ztkynGateWayProperties;
 
-    @Resource
-    private ApplicationContext applicationContext;
+	@Resource
+	private ApplicationContext applicationContext;
 
-    @PostConstruct
-    public void init() {
-    }
+	@PostConstruct
+	public void init() {
+	}
 
-    @Bean
-    public CacheRequestFilter cacheRequestFilter() {
-        return new CacheRequestFilter();
-    }
+	// @Bean
+	// public CacheRequestFilter cacheRequestFilter() {
+	// return new CacheRequestFilter();
+	// }
 
-    @Bean
-    public FilterChainProxy filterChainProxy() {
-        return new FilterChainProxy(Arrays.asList(new PreCryptoFilter(ztkynGateWayProperties.getCrypto()),
-                new PreSignatureFilter(ztkynGateWayProperties.getSign())));
-    }
+	@Bean
+	public FilterChainProxy filterChainProxy() {
+		return new FilterChainProxy(Arrays.asList(new PreCryptoFilter(ztkynGateWayProperties.getCrypto()),
+				new PreSignatureFilter(ztkynGateWayProperties.getSign())));
+	}
 
-    @Bean
-    public ZtKynExampleFilter testFilter() {
-        return new ZtKynExampleFilter();
-    }
+	@Bean
+	public ZtKynExampleFilter testFilter() {
+		return new ZtKynExampleFilter();
+	}
 
 }

@@ -5,6 +5,8 @@ plugins {
 
 dependencies {
     implementation(project(":ztkyn-core"))
+    implementation(project(":ztkyn-extra:ztkyn-jackson"))
+    implementation(project(":ztkyn-extra:ztkyn-eclipse-collections"))
     api("org.springframework.boot:spring-boot-starter-web") {
         exclude group: "org.springframework.boot", module: "spring-boot-starter-tomcat"
     }

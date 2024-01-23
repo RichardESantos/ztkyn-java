@@ -1,0 +1,11 @@
+plugins {
+    id 'java'
+}
+
+
+subprojects {
+    dependencies {
+        implementation(project(":ztkyn-core"))
+    }
+}
+

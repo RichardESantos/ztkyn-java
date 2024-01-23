@@ -1,10 +1,5 @@
 package org.gitee.ztkyn.core.json;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -13,15 +8,20 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.google.common.collect.Maps;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.eclipse.collections.impl.list.mutable.FastList;
 import org.eclipse.collections.impl.map.mutable.UnifiedMap;
-import org.gitee.ztkyn.core.colleciton.ECollectionUtil;
 import org.gitee.ztkyn.core.function.DataFlexHandler;
 import org.gitee.ztkyn.core.string.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author richard
@@ -33,7 +33,7 @@ public class JacksonUtil {
 
 	private static final Logger logger = LoggerFactory.getLogger(JacksonUtil.class);
 
-	private static final Map<String, JavaType> javaTypeMap = ECollectionUtil.MutableMap.newMap(64);
+	private static final Map<String, JavaType> javaTypeMap = Maps.newHashMap();
 
 	/**
 	 * 默认使用的 ObjectMapper

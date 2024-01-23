@@ -4,6 +4,7 @@ plugins {
 
 
 dependencies {
+    implementation(project(":ztkyn-extra:ztkyn-eclipse-collections"))
     // easyexcel 工具类
     implementation("org.apache.commons:commons-compress:1.23.0")
     implementation("com.alibaba:easyexcel:3.3.2")

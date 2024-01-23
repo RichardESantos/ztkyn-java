@@ -1,0 +1,13 @@
+plugins {
+    id 'java'
+}
+
+
+dependencies {
+    // 反应式流 Reactive Streams
+    api("io.projectreactor:reactor-core")
+}
+
+test {
+    enabled = false
+}

@@ -1,0 +1,14 @@
+plugins {
+    id 'java'
+}
+
+
+dependencies {
+    // eclipse 封装 集合类
+    implementation 'org.eclipse.collections:eclipse-collections:11.1.0'
+    implementation("org.eclipse.collections:eclipse-collections-api:11.1.0")
+}
+
+test {
+    enabled = false
+}

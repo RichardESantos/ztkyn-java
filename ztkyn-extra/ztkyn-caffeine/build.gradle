@@ -1,0 +1,13 @@
+plugins {
+    id 'java'
+}
+
+
+dependencies {
+    // 新一代内存缓存
+    api("com.github.ben-manes.caffeine:caffeine")
+}
+
+test {
+    enabled = false
+}
