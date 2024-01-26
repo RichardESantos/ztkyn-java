@@ -1,53 +1,38 @@
 package org.gitee.ztkyn.gateway.configuration.filter;
 
-import org.gitee.ztkyn.gateway.configuration.context.GatewayContext;
+import org.springframework.cloud.gateway.filter.GatewayFilterChain;
+import org.springframework.cloud.gateway.filter.GlobalFilter;
+import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;
 import org.springframework.core.Ordered;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.http.HttpMethod;
+import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
-import org.springframework.web.server.WebFilter;
-import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
-public class CacheRequestFilter implements WebFilter, Ordered {
+/**
+ * 设置全局过滤，构建可重复读request body
+ */
+// @Component
+public class CacheRequestFilter implements GlobalFilter, Ordered {
+
+	@Override
+	public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+		// GET DELETE 不过滤
+		HttpMethod method = exchange.getRequest().getMethod();
+		if (method == null || method == HttpMethod.GET || method == HttpMethod.DELETE) {
+			return chain.filter(exchange);
+		}
+		return ServerWebExchangeUtils.cacheRequestBodyAndRequest(exchange, (serverHttpRequest) -> {
+			if (serverHttpRequest == exchange.getRequest()) {
+				return chain.filter(exchange);
+			}
+			return chain.filter(exchange.mutate().request(serverHttpRequest).build());
+		});
+	}
 
 	@Override
 	public int getOrder() {
-		return 0;
-	}
-
-	@Override
-	public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-		ServerHttpRequest request = exchange.getRequest();
-		GatewayContext gatewayContext = new GatewayContext();
-		HttpHeaders headers = request.getHeaders();
-		MediaType contentType = headers.getContentType();
-
-		gatewayContext.setRequestHeaders(headers);
-		gatewayContext.getAllRequestData().addAll(request.getQueryParams());
-
-		if (headers.getContentLength() > 0) {
-			if (MediaType.APPLICATION_JSON.equals(contentType) || MediaType.APPLICATION_JSON_UTF8.equals(contentType)) {
-				return readBody(exchange, chain, gatewayContext);
-			}
-			if (MediaType.APPLICATION_FORM_URLENCODED.equals(contentType)) {
-				return readFormData(exchange, chain, gatewayContext);
-			}
-		}
-		return chain.filter(exchange);
-	}
-
-	private Mono<Void> readFormData(ServerWebExchange exchange, WebFilterChain chain, GatewayContext gatewayContext) {
-		// 保存网关上下文到交换机
-		exchange.getAttributes().put(GatewayContext.CACHE_GATEWAY_CONTEXT, gatewayContext);
-		return chain.filter(exchange);
-	}
-
-	private Mono<Void> readBody(ServerWebExchange exchange, WebFilterChain chain, GatewayContext gatewayContext) {
-		// 保存网关上下文到交换机
-		exchange.getAttributes().put(GatewayContext.CACHE_GATEWAY_CONTEXT, gatewayContext);
-		return chain.filter(exchange);
+		return Ordered.HIGHEST_PRECEDENCE;
 	}
 
 }

@@ -42,4 +42,6 @@ public class GatewayContext {
 	 */
 	private MultiValueMap<String, String> allRequestData = new LinkedMultiValueMap<>(0);
 
+	private Integer contentLength = 0;
+
 }

@@ -5,7 +5,7 @@ plugins {
 
 subprojects {
     dependencies {
-        implementation(project(":ztkyn-core"))
+        api(project(":ztkyn-core"))
     }
 }
 
