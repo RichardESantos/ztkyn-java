@@ -9,6 +9,9 @@ dependencies {
     api("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
     api("com.fasterxml.jackson.datatype:jackson-datatype-eclipse-collections")
     api("com.fasterxml.jackson.datatype:jackson-datatype-guava")
+
+    // 引入 json 工具类,
+    api("cn.hutool:hutool-json:${hutoolVersion}")
 }
 
 test {

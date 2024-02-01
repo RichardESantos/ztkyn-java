@@ -6,8 +6,8 @@ plugins {
 
 dependencies {
     implementation(project(":ztkyn-core"))
-    implementation(project(":ztkyn-spring-boot-starter:ztkyn-common-web"))
-    implementation(project(":ztkyn-spring-boot-starter:ztkyn-common-web-swagger"))
+    implementation(project(":ztkyn-spring-boot-starter:ztkyn-common-webmvc"))
+    implementation(project(":ztkyn-spring-boot-starter:ztkyn-common-webmvc-swagger"))
 }
 
 test {

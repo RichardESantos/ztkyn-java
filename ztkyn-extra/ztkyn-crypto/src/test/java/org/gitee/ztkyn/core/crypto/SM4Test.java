@@ -8,6 +8,7 @@ import cn.hutool.crypto.SecureUtil;
 import cn.hutool.crypto.SmUtil;
 import cn.hutool.crypto.asymmetric.KeyType;
 import cn.hutool.crypto.asymmetric.SM2;
+import cn.hutool.crypto.digest.SM3;
 import cn.hutool.crypto.symmetric.SM4;
 import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPublicKey;
 import org.gitee.ztkyn.core.bytes.BytesUtil;
@@ -17,7 +18,6 @@ import org.slf4j.LoggerFactory;
 
 import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
-import java.util.Arrays;
 
 public class SM4Test {
 
@@ -37,6 +37,15 @@ public class SM4Test {
 		String decryptStr = StrUtil.utf8Str(sm2.decryptFromBcd(encryptStr, KeyType.PrivateKey));
 		System.out.println(decryptStr);
 
+	}
+
+	@Test
+	public void testSM3() {
+		String text = "我是一段测试aaaa";
+		for (int i = 0; i < 100; i++) {
+			SM3 sm3 = SM3.create();
+			System.out.println(sm3.digestHex(text));
+		}
 	}
 
 	@Test

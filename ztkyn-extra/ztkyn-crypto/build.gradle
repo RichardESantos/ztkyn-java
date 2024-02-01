@@ -5,7 +5,7 @@ plugins {
 
 dependencies {
     // 加密组件
-    api 'cn.hutool:hutool-crypto:5.8.25'
+    api("cn.hutool:hutool-crypto:${hutoolVersion}")
     api 'org.bouncycastle:bcpkix-jdk18on:1.77'
 }
 
