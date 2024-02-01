@@ -4,8 +4,11 @@ import com.alibaba.nacos.common.utils.ConcurrentHashSet;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.gitee.ztkyn.gateway.configuration.context.GatewayContext;
 
 import java.util.Set;
+
+import static org.gitee.ztkyn.gateway.configuration.context.GateWayConstants.PATH_MATCH;
 
 @Getter
 @Setter
@@ -28,7 +31,16 @@ public class GateWaySignProperties {
 	 * @return
 	 */
 	public boolean checkSign(String url) {
-		return isEnable() && !ignoreUrls.contains(url);
+		return isEnable() && !isChecked(url);
+	}
+
+	/**
+	 * 校验路径规则
+	 * @param url
+	 * @return
+	 */
+	private boolean isChecked(String url) {
+		return ignoreUrls.stream().anyMatch(s -> PATH_MATCH.match(s, url));
 	}
 
 }

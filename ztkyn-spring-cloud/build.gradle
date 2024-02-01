@@ -14,6 +14,7 @@ subprojects {
         implementation(platform("org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"))
         implementation(platform("com.alibaba.cloud:spring-cloud-alibaba-dependencies:${springCloudAlibabaVersion}"))
         implementation(project(":ztkyn-core"))
+        implementation(project(":ztkyn-extra:ztkyn-jackson"))
         // 适配旧版需要 bootstrap.yml 的问题
         implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
         implementation 'com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery'

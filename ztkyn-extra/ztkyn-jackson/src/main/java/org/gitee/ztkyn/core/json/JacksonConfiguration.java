@@ -1,23 +1,19 @@
 package org.gitee.ztkyn.core.json;
 
-import java.io.IOException;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.datatype.eclipsecollections.EclipseCollectionsModule;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.gitee.ztkyn.core.date.DateStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 /**
  * @author richard
@@ -36,7 +32,8 @@ class JacksonConfiguration {
 		final String JSON_STANDARD_FORMAT = DateStyle.yyyy_MM_dd_HH_mm_ss.getFormatter();
 		// 对象字段之列入非空
 		objectMapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
-
+		// MAP 对象 按照 key 值排序
+		objectMapper.configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true);
 		// 取消默认转换timestamps形式
 		objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 

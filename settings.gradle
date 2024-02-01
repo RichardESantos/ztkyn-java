@@ -9,6 +9,10 @@ file("${rootDir}/ztkyn-spring-boot").eachDirMatch(~/ztkyn.*/) {
 	include "ztkyn-spring-boot:${it.name}"
 }
 
+file("${rootDir}/ztkyn-spring-boot-starter").eachDirMatch(~/ztkyn.*/) {
+	include "ztkyn-spring-boot-starter:${it.name}"
+}
+
 file("${rootDir}/ztkyn-learn").eachDirMatch(~/learn.*/) {
 	include "ztkyn-learn:${it.name}"
 }

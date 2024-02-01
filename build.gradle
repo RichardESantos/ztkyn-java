@@ -42,7 +42,7 @@ subprojects {
         hutoolVersion = '5.8.11'
         springBootVersion = '3.1.1'
         redissonVersion = '3.22.1'
-        knife4jVersion = '4.1.0'
+        knife4jVersion = '4.5.0'
         cosidVersion = '2.1.1'
         zookeeperVersion = '3.8.1'
         jettyVersion = '11.0.15'

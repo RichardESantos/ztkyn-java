@@ -2,7 +2,11 @@ package org.gitee.ztkyn.gateway.configuration;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
+import org.gitee.ztkyn.gateway.configuration.context.GateWayConstants;
 import org.gitee.ztkyn.gateway.configuration.filter.*;
+import org.gitee.ztkyn.gateway.configuration.properties.GateWayCryptoKeyProperties;
+import org.gitee.ztkyn.gateway.configuration.properties.GateWayCryptoProperties;
+import org.gitee.ztkyn.gateway.configuration.properties.GateWaySignProperties;
 import org.gitee.ztkyn.gateway.configuration.properties.ZtkynGateWayProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,15 +34,16 @@ public class GatewayConfiguration implements WebFluxConfigurer {
 	public void init() {
 	}
 
-	// @Bean
-	// public CacheRequestFilter cacheRequestFilter() {
-	// return new CacheRequestFilter();
-	// }
-
 	@Bean
 	public FilterChainProxy filterChainProxy() {
-		return new FilterChainProxy(Arrays.asList(new PreCryptoFilter(ztkynGateWayProperties.getCrypto()),
-				new PreSignatureFilter(ztkynGateWayProperties.getSign())));
+		GateWayCryptoProperties crypto = ztkynGateWayProperties.getCrypto();
+		GateWayCryptoKeyProperties cryptoKey = ztkynGateWayProperties.getCryptoKey();
+		GateWaySignProperties sign = ztkynGateWayProperties.getSign();
+		// 初始化默认不需要进行 加密 + 验签 的接口
+		crypto.getIgnoreUrls().addAll(GateWayConstants.ignoreUrls);
+		sign.getIgnoreUrls().addAll(GateWayConstants.ignoreUrls);
+		return new FilterChainProxy(Arrays.asList(new PreCryptoFilter(crypto, cryptoKey), new CacheRequestFilter(),
+				new PreSignatureFilter(sign)));
 	}
 
 	@Bean

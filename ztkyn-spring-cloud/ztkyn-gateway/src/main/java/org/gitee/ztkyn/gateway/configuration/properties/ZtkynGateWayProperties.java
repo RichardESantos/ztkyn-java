@@ -12,22 +12,22 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 @Accessors(chain = true)
 public class ZtkynGateWayProperties {
 
-    /**
-     * 接口签名配置
-     */
-    @NestedConfigurationProperty
-    private GateWaySignProperties sign = new GateWaySignProperties();
+	/**
+	 * 接口签名配置
+	 */
+	@NestedConfigurationProperty
+	private GateWaySignProperties sign = new GateWaySignProperties();
 
-    /**
-     * 接口加密配置
-     */
-    @NestedConfigurationProperty
-    private GateWayCryptoProperties crypto = new GateWayCryptoProperties();
+	/**
+	 * 接口加密配置
+	 */
+	@NestedConfigurationProperty
+	private GateWayCryptoProperties crypto = new GateWayCryptoProperties();
 
-    /**
-     * 各种用来加密的key 配置
-     */
-    @NestedConfigurationProperty
-    private GateWayCryptoKeyProperties cryptoKey = new GateWayCryptoKeyProperties();
+	/**
+	 * 各种用来加密的key 配置
+	 */
+	@NestedConfigurationProperty
+	private GateWayCryptoKeyProperties cryptoKey = new GateWayCryptoKeyProperties();
 
 }

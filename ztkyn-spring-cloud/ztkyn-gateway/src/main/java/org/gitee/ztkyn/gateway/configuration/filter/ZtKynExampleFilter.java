@@ -17,7 +17,7 @@ public class ZtKynExampleFilter implements WebFilter {
 
 	@Override
 	public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-		logger.info("{} 正常执行", ZtKynExampleFilter.class.getName());
+		// logger.debug("{} 正常执行", ZtKynExampleFilter.class.getName());
 		return chain.filter(exchange);
 	}
 

@@ -1,5 +1,10 @@
 package org.gitee.ztkyn.core.function;
 
+import lombok.Getter;
+import org.gitee.ztkyn.core.string.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -7,10 +12,6 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
-
-import org.gitee.ztkyn.core.string.StringUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * 数据处理工具类
@@ -214,7 +215,7 @@ public final class DataFlexHandler<T> {
 	 * @param exception
 	 */
 	public void ifFalseThrow(RuntimeException exception) {
-		if (judgeResult)
+		if (!judgeResult)
 			throw exception;
 	}
 

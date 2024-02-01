@@ -14,21 +14,22 @@ import java.util.List;
  */
 public class FilterChainProxy implements WebFilter, Ordered {
 
-    private final List<WebFilter> webFilters;
+	private final List<WebFilter> webFilters;
 
-    public FilterChainProxy(List<WebFilter> webFilters) {
-        this.webFilters = webFilters;
-    }
+	public FilterChainProxy(List<WebFilter> webFilters) {
+		this.webFilters = webFilters;
+	}
 
-    @Override
-    public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-        FilteringWebHandler filteringWebHandler = new FilteringWebHandler(chain::filter, this.webFilters);
-        return filteringWebHandler.handle(exchange);
-    }
+	@Override
+	public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
+		FilteringWebHandler filteringWebHandler = new FilteringWebHandler(chain::filter, this.webFilters);
+		return filteringWebHandler.handle(exchange);
+	}
 
-    @Override
-    public int getOrder() {
-        // 保证此filter 优先执行
-        return -100;
-    }
+	@Override
+	public int getOrder() {
+		// 保证此filter 优先执行
+		return -100;
+	}
+
 }

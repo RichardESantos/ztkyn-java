@@ -12,24 +12,14 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class GateWayCryptoKeyProperties {
 
-    /**
-     * 前端 私有key (需要下发到前端)
-     */
-    private String fontPrivateKey;
+	/**
+	 * 服务端 私有key
+	 */
+	private String backendPrivateKey;
 
-    /**
-     * 前端 公有key
-     */
-    private String frontPublicKey;
+	/**
+	 * 服务端 公有key (需要下发到前端)
+	 */
+	private String backendPublicKey;
 
-
-    /**
-     * 服务端 私有key
-     */
-    private String backendPrivateKey;
-
-    /**
-     * 服务端 公有key (需要下发到前端)
-     */
-    private String backendPublicKey;
 }

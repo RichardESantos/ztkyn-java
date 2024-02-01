@@ -1,0 +1,16 @@
+plugins {
+    id 'java'
+}
+
+
+dependencies {
+    // 新一代内存缓存
+    api 'com.squareup.retrofit2:retrofit:2.9.0'
+    api 'com.squareup.retrofit2:converter-jackson:2.9.0'
+    api("com.squareup.retrofit2:converter-scalars:2.9.0")
+    api 'com.squareup.okhttp3:logging-interceptor'
+}
+
+test {
+    enabled = true
+}

@@ -2,6 +2,7 @@ package org.gitee.ztkyn.gateway.configuration.context;
 
 import lombok.Data;
 import org.springframework.http.HttpHeaders;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -16,6 +17,8 @@ import org.springframework.util.MultiValueMap;
 public class GatewayContext {
 
 	public static final String CACHE_GATEWAY_CONTEXT = "cacheGatewayContext";
+
+	public static final String CACHE_GATEWAY_SM4_KEY = "cacheGatewaySM4Key";
 
 	/**
 	 * cache json body
