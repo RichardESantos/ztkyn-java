@@ -6,7 +6,7 @@ plugins {
 dependencies {
     implementation(project(":ztkyn-core"))
     implementation(project(":ztkyn-extra:ztkyn-jackson"))
-    implementation("org.springframework:spring-web")
+    api("org.springframework:spring-web")
     api("org.springdoc:springdoc-openapi-starter-common:${springdocVersion}")
     compileOnly("jakarta.servlet:jakarta.servlet-api:6.0.0")
 }
