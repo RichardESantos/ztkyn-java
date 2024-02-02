@@ -91,14 +91,13 @@ public class PreCryptoFilter implements WebFilter, Ordered {
 	 */
 	private Mono<Void> cacheRequest(ServerWebExchange exchange, WebFilterChain chain, HttpHeaders headers,
 			MediaType contentType, ServerHttpRequest request, boolean isCrypto) {
-		GatewayContext gatewayContext = new GatewayContext();
-		gatewayContext.setRequestHeaders(headers);
 		if (headers.getContentLength() > 0) {
-			if (MediaType.APPLICATION_JSON.equals(contentType) || MediaType.APPLICATION_JSON_UTF8.equals(contentType)) {
+			if (MediaType.APPLICATION_JSON.isCompatibleWith(contentType)
+					|| MediaType.APPLICATION_JSON_UTF8.isCompatibleWith(contentType)) {
 				return readBody(exchange, chain, isCrypto);
 			}
-			if (MediaType.APPLICATION_FORM_URLENCODED.equals(contentType)) {
-				return readFormData(exchange, chain, gatewayContext, request, contentType, isCrypto);
+			if (MediaType.APPLICATION_FORM_URLENCODED.isCompatibleWith(contentType)) {
+				return readFormData(exchange, chain, request, contentType, isCrypto);
 			}
 		}
 		else {
@@ -193,27 +192,36 @@ public class PreCryptoFilter implements WebFilter, Ordered {
 		});
 	}
 
-	private Mono<Void> readFormData(ServerWebExchange exchange, WebFilterChain chain, GatewayContext gatewayContext,
-			ServerHttpRequest request, MediaType contentType, boolean isCrypto) {
-		return exchange.getFormData().doOnNext(multiValueMap -> {
-			// 放入form表单数据
-			gatewayContext.setFormData(multiValueMap);
-			gatewayContext.getAllRequestData().addAll(multiValueMap);
-			logger.debug("[GatewayContext]读取表单数据成功");
-		}).then(Mono.defer((Supplier<Mono<Void>>) () -> {
-			Charset charset = getCharset(contentType);
-			MultiValueMap<String, String> formData = gatewayContext.getAllRequestData();
-			// 表单数据为空直接返回
-			if (CollectionUtils.isEmpty(formData)) {
-				return chain.filter(exchange);
-			}
-			return chain.filter(exchange);
-		}));
-	}
+	private Mono<Void> readFormData(ServerWebExchange exchange, WebFilterChain chain, ServerHttpRequest request,
+			MediaType contentType, boolean isCrypto) {
+		// 当body中没有缓存时，只会执行这一个拦截器， 原因是fileMap中的代码没有执行，所以需要在为空时构建一个空的缓存
+		DefaultDataBufferFactory defaultDataBufferFactory = new DefaultDataBufferFactory();
+		DefaultDataBuffer defaultDataBuffer = defaultDataBufferFactory.allocateBuffer(0);
+		// 构建新数据流， 当body为空时，构建空流
+		Flux<DataBuffer> bodyDataBuffer = exchange.getRequest().getBody().defaultIfEmpty(defaultDataBuffer);
+		return DataBufferUtils.join(bodyDataBuffer).flatMap(dataBuffer -> {
+			byte[] bytes = new byte[dataBuffer.readableByteCount()];
+			dataBuffer.read(bytes);
+			DataBufferUtils.release(dataBuffer);
+			Flux<DataBuffer> cachedFlux = Flux.defer(() -> {
+				DataBuffer buffer = exchange.getResponse()
+					.bufferFactory()
+					.wrap(isCrypto ? decodeBytes(new String(bytes, StandardCharsets.UTF_8), exchange) : bytes);
+				DataBufferUtils.retain(buffer);
+				return Mono.just(buffer);
+			});
 
-	private static Charset getCharset(MediaType contentType) {
-		Charset charset = Objects.isNull(contentType) ? StandardCharsets.UTF_8 : contentType.getCharset();
-		return Objects.isNull(charset) ? StandardCharsets.UTF_8 : charset;
+			/*
+			 * repackage ServerHttpRequest 重新包装请求
+			 */
+			ServerHttpRequest mutatedRequest = new ServerHttpRequestDecorator(exchange.getRequest()) {
+				@Override
+				public Flux<DataBuffer> getBody() {
+					return cachedFlux;
+				}
+			};
+			return chain.filter(exchange.mutate().request(mutatedRequest).build());
+		});
 	}
 
 	@Override

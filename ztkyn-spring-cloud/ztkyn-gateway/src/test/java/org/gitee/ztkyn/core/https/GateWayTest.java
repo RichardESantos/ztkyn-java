@@ -27,8 +27,9 @@ public class GateWayTest {
 
 			// testApi.index().execute();
 			// testApi.cryptoForm("user", "passwd").execute();
-			// testApi.cryptoFormData("user", "passwd").execute();
-			testApi.cryptoJson(new User().setUser("user").setPasswd("passwd")).execute();
+			testApi.cryptoFormData("user", "passwd").execute();
+			// testApi.cryptoJson(new
+			// User().setUser("user").setPasswd("passwd")).execute();
 		}
 	}
 

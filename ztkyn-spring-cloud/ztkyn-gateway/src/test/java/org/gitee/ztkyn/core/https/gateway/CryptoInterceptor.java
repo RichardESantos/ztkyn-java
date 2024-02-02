@@ -1,5 +1,6 @@
 package org.gitee.ztkyn.core.https.gateway;
 
+import cn.hutool.core.lang.UUID;
 import cn.hutool.crypto.asymmetric.SM2;
 import cn.hutool.crypto.digest.DigestUtil;
 import cn.hutool.crypto.digest.Digester;
@@ -64,54 +65,36 @@ public class CryptoInterceptor implements Interceptor {
 				oldRequestBody.writeTo(requestBuffer);
 				String oldBodyStr = requestBuffer.readUtf8();
 				requestBuffer.close();
-				RequestBody newBody = RequestBody.create(mediaType,
-						ZtkynSMUtil.mixEncodeHex(sm2, signJson(oldBodyStr)));
-				// 构造新的request
-				request = request.newBuilder().headers(request.headers()).method(request.method(), newBody).build();
+				if ("application/x-www-form-urlencoded".equals(mediaType.toString())) {
+					RequestBody newBody = RequestBody.create(mediaType,
+							ZtkynSMUtil.mixEncodeHex(sm2, signUrlParams(oldBodyStr)));
+					// 构造新的request
+					request = request.newBuilder().headers(request.headers()).method(request.method(), newBody).build();
+				}
+				else if ("application/json; charset=UTF-8".equals(mediaType.toString())) {
+					RequestBody newBody = RequestBody.create(mediaType,
+							ZtkynSMUtil.mixEncodeHex(sm2, signJson(oldBodyStr)));
+					// 构造新的request
+					request = request.newBuilder().headers(request.headers()).method(request.method(), newBody).build();
+				}
 			}
-		}
-
-		try {
-
-			// 获取未加密数据
-			RequestBody oldRequestBody = request.body();
-			Buffer requestBuffer = new Buffer();
-			oldRequestBody.writeTo(requestBuffer);
-			String oldBodyStr = requestBuffer.readUtf8();
-			requestBuffer.close();
-
-			// //未加密数据用AES秘钥加密
-			// String newBodyStr=
-			// EncryptionManager.getInstance().publicEncryptClient(oldBodyStr);
-			// //AES秘钥用服务端RSA公钥加密
-			// String key=
-			// EncryptionManager.getInstance().publicEncrypt(aesKey);
-			// //构成新的request 并通过请求头发送加密后的AES秘钥
-			// Headers headers = request.headers();
-			// RequestBody newBody = RequestBody.create(mediaType,
-			// newBodyStr);
-			// //构造新的request
-			// request = request.newBuilder()
-			// .headers(headers)
-			// .addHeader("Device-Key", key)
-			// .method(request.method(), newBody)
-			// .build();
-		}
-		catch (Exception e) {
-
 		}
 		return chain.proceed(request);
 	}
 
 	private String signUrlParams(String orgQuery) {
-		String paramJson = sortFullJson(JSONUtil.parseObj(RequestUtil.transfer(orgQuery), jsonConfig)).toString();
+		// 添加随机数
+		orgQuery += "&" + GateWayConstants.SIGN_NONCE_KEY + "=" + UUID.fastUUID();
+		JSONObject jsonObject = JSONUtil.parseObj(RequestUtil.transfer(orgQuery), jsonConfig);
+		String paramJson = sortFullJson(jsonObject).toString();
 		logger.info("请求参数: {}", paramJson);
-		String signKey = digester.digestHex(paramJson);
-		return orgQuery + "&" + GateWayConstants.SIGN_SIGN_KEY + "=" + signKey;
+		return orgQuery + "&" + GateWayConstants.SIGN_SIGN_KEY + "=" + digester.digestHex(paramJson);
 	}
 
 	private String signJson(String jsonStr) {
 		JSONObject jsonObject = JSONUtil.parseObj(jsonStr, jsonConfig);
+		// 添加随机数
+		jsonObject.set(GateWayConstants.SIGN_NONCE_KEY, UUID.fastUUID().toString());
 		String paramJson = sortFullJson(jsonObject).toString();
 		logger.info("请求参数: {}", paramJson);
 		jsonObject.set(GateWayConstants.SIGN_SIGN_KEY, digester.digestHex(paramJson));

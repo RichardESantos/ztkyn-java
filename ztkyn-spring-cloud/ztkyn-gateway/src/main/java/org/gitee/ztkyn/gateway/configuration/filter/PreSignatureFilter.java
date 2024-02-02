@@ -15,6 +15,7 @@ import org.springframework.core.io.buffer.DefaultDataBufferFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
@@ -50,8 +51,11 @@ public class PreSignatureFilter implements WebFilter, Ordered {
 		String reqPath = request.getURI().getPath();
 		HttpHeaders headers = request.getHeaders();
 		MediaType contentType = headers.getContentType();
-		MultiValueMap<String, String> queryParams = request.getQueryParams();
-		if (gateWaySignProperties.checkSign(reqPath)) {
+		MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
+		if (Objects.nonNull(contentType) && MediaType.MULTIPART_FORM_DATA.isCompatibleWith(contentType)) {
+			return chain.filter(exchange);
+		}
+		else if (gateWaySignProperties.checkSign(reqPath)) {
 			logger.debug("进行接口签名处理");
 			if (Objects.nonNull(contentType) && MediaType.APPLICATION_JSON.isCompatibleWith(contentType)) {
 				DataBuffer dataBuffer = exchange.getAttributeOrDefault(CACHED_REQUEST_BODY_ATTR,
@@ -61,10 +65,19 @@ public class PreSignatureFilter implements WebFilter, Ordered {
 			}
 			else if (Objects.nonNull(contentType)
 					&& MediaType.APPLICATION_FORM_URLENCODED.isCompatibleWith(contentType)) {
+				return request.getBody().doOnNext(dataBuffer -> {
+					queryParams.addAll(RequestUtil.parseFromUrl(dataBuffer.toString(StandardCharsets.UTF_8)));
+				})
+					.then(Mono.defer(() -> checkSignKey(exchange, chain,
+							JSONUtil.parseObj(RequestUtil.transferMulti(queryParams), jsonConfig))));
 			}
 			else {
-				return checkSignKey(exchange, chain,
-						JSONUtil.parseObj(RequestUtil.transferMulti(queryParams), jsonConfig));
+				queryParams.addAll(request.getQueryParams());
+				if (!queryParams.isEmpty()) {
+					return checkSignKey(exchange, chain,
+							JSONUtil.parseObj(RequestUtil.transferMulti(queryParams), jsonConfig));
+				}
+
 			}
 		}
 		return chain.filter(exchange);
