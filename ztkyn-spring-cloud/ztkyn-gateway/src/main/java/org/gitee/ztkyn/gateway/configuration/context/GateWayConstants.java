@@ -48,6 +48,7 @@ public class GateWayConstants {
 	public static List<String> ignoreUrls = new ArrayList<>() {
 		{
 			add("/");
+			add("/crypto");
 			add("/error");
 			add("/favicon.ico");
 			add("/actuator/**");

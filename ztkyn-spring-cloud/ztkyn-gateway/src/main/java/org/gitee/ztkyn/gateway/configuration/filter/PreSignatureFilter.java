@@ -2,12 +2,11 @@ package org.gitee.ztkyn.gateway.configuration.filter;
 
 import cn.hutool.crypto.digest.DigestUtil;
 import cn.hutool.crypto.digest.Digester;
-import cn.hutool.json.JSONArray;
-import cn.hutool.json.JSONConfig;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import org.gitee.ztkyn.gateway.configuration.context.GateWayConstants;
 import org.gitee.ztkyn.gateway.configuration.properties.GateWaySignProperties;
+import org.gitee.ztkyn.web.utils.RequestUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.Ordered;
@@ -23,11 +22,10 @@ import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
+import static org.gitee.ztkyn.core.json.JsonObjectUtil.jsonConfig;
+import static org.gitee.ztkyn.core.json.JsonObjectUtil.sortFullJson;
 import static org.gitee.ztkyn.web.exception.RequestDeniedException.PARAM_VERIFY_FAIL;
 import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.CACHED_REQUEST_BODY_ATTR;
 
@@ -41,8 +39,6 @@ public class PreSignatureFilter implements WebFilter, Ordered {
 	private final GateWaySignProperties gateWaySignProperties;
 
 	private static final Digester digester = DigestUtil.digester("sm3");
-
-	private static final JSONConfig jsonConfig = new JSONConfig().setNatureKeyComparator().setIgnoreNullValue(true);
 
 	public PreSignatureFilter(GateWaySignProperties gateWaySignProperties) {
 		this.gateWaySignProperties = gateWaySignProperties;
@@ -67,13 +63,8 @@ public class PreSignatureFilter implements WebFilter, Ordered {
 					&& MediaType.APPLICATION_FORM_URLENCODED.isCompatibleWith(contentType)) {
 			}
 			else {
-				Map<String, List<String>> listMap = queryParams.entrySet()
-					.stream()
-					.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (v1, v2) -> {
-						v1.addAll(v2);
-						return v1;
-					}));
-				return checkSignKey(exchange, chain, JSONUtil.parseObj(listMap, jsonConfig));
+				return checkSignKey(exchange, chain,
+						JSONUtil.parseObj(RequestUtil.transferMulti(queryParams), jsonConfig));
 			}
 		}
 		return chain.filter(exchange);
@@ -83,7 +74,8 @@ public class PreSignatureFilter implements WebFilter, Ordered {
 		Object signKey = jsonObject.remove(GateWayConstants.SIGN_SIGN_KEY);
 		if (Objects.nonNull(signKey)) {
 			JSONObject newJsonObject = sortFullJson(jsonObject);
-			if (Objects.equals(signKey, digester.digestHex(newJsonObject.toString()))) {
+			String paramJson = newJsonObject.toString();
+			if (Objects.equals(signKey, digester.digestHex(paramJson))) {
 				return chain.filter(exchange);
 			}
 		}
@@ -93,41 +85,6 @@ public class PreSignatureFilter implements WebFilter, Ordered {
 	@Override
 	public int getOrder() {
 		return Integer.MAX_VALUE;
-	}
-
-	private static JSONObject sortFullJson(JSONObject jsonObject) {
-		JSONObject newValue = new JSONObject(jsonConfig);
-		jsonObject.entrySet().forEach(stringObjectEntry -> {
-			Object entryValue = stringObjectEntry.getValue();
-			if (entryValue instanceof JSONObject) {
-				stringObjectEntry.setValue(sortFullJson((JSONObject) entryValue));
-			}
-			else if (entryValue instanceof JSONArray) {
-				stringObjectEntry.setValue(sortFullJson((JSONArray) entryValue));
-			}
-		});
-		jsonObject.entrySet()
-			.stream()
-			.sorted((o1, o2) -> o1.getKey().compareToIgnoreCase(o2.getKey()))
-			.toList()
-			.forEach(stringObjectEntry -> newValue.set(stringObjectEntry.getKey(), stringObjectEntry.getValue()));
-		return newValue;
-	}
-
-	private static JSONArray sortFullJson(JSONArray jsonArray) {
-		JSONArray newValue = new JSONArray();
-		jsonArray.forEach(object -> {
-			if (object instanceof JSONObject) {
-				newValue.add(sortFullJson((JSONObject) object));
-			}
-			else if (object instanceof JSONArray) {
-				newValue.add(sortFullJson((JSONArray) object));
-			}
-			else {
-				newValue.add(object);
-			}
-		});
-		return newValue;
 	}
 
 }

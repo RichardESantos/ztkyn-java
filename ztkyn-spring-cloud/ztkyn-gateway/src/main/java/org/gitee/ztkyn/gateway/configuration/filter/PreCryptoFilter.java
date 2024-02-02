@@ -1,12 +1,13 @@
 package org.gitee.ztkyn.gateway.configuration.filter;
 
 import cn.hutool.crypto.asymmetric.SM2;
-import jakarta.validation.constraints.NotNull;
 import org.gitee.ztkyn.core.crypto.ZtkynSMUtil;
 import org.gitee.ztkyn.core.string.StringUtil;
 import org.gitee.ztkyn.gateway.configuration.context.GatewayContext;
 import org.gitee.ztkyn.gateway.configuration.properties.GateWayCryptoKeyProperties;
 import org.gitee.ztkyn.gateway.configuration.properties.GateWayCryptoProperties;
+import org.gitee.ztkyn.web.utils.RequestUtil;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.gateway.filter.factory.rewrite.CachedBodyOutputMessage;
@@ -28,6 +29,7 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
+import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -168,9 +170,10 @@ public class PreCryptoFilter implements WebFilter, Ordered {
 				CachedBodyOutputMessage cachedBodyOutputMessage = new CachedBodyOutputMessage(exchange, httpHeaders);
 				logger.debug("[GatewayContext]Rewrite Form Data :{}", decodeQuery);
 				return bodyInserter.insert(cachedBodyOutputMessage, new BodyInserterContext()).then(Mono.defer(() -> {
+
 					// 重新封装请求
 					ServerHttpRequestDecorator decorator = new ServerHttpRequestDecorator(exchange.getRequest()) {
-						@NotNull
+
 						@Override
 						public HttpHeaders getHeaders() {
 							return httpHeaders;
@@ -178,8 +181,8 @@ public class PreCryptoFilter implements WebFilter, Ordered {
 
 						@NotNull
 						@Override
-						public Flux<DataBuffer> getBody() {
-							return cachedBodyOutputMessage.getBody();
+						public MultiValueMap<String, String> getQueryParams() {
+							return RequestUtil.parseFromUrl(decodeQuery);
 						}
 					};
 					return chain.filter(exchange.mutate().request(decorator).build());

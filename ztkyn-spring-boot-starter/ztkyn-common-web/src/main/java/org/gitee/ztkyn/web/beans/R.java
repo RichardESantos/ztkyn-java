@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.gitee.ztkyn.web.constants.ResultCode;
-import org.springframework.http.HttpStatus;
 
 import java.io.Serializable;
 
@@ -57,6 +56,10 @@ public class R<T> implements Serializable {
 
 	public static <T> R<T> ok(ResultCode resultCode, T data) {
 		return new R<T>().setCode(resultCode.getCode()).setMessage(resultCode.getMessage()).setData(data);
+	}
+
+	public static <T> R<T> success() {
+		return new R<T>().setCode(ResultCode.OK.getCode()).setMessage(ResultCode.OK.getMessage());
 	}
 
 	public static <T> R<T> success(String message) {
