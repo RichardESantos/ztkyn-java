@@ -25,11 +25,10 @@ public class GateWayTest {
 			GateWayTestApi testApi = GateWayServiceGenerator.createService(GateWayTestApi.class,
 					new CryptoInterceptor(stringR.getData()));
 
-			testApi.index().execute();
+			// testApi.index().execute();
 			// testApi.cryptoForm("user", "passwd").execute();
 			// testApi.cryptoFormData("user", "passwd").execute();
-			// testApi.cryptoJson(new
-			// User().setUser("user").setPasswd("passwd")).execute();
+			testApi.cryptoJson(new User().setUser("user").setPasswd("passwd")).execute();
 		}
 	}
 

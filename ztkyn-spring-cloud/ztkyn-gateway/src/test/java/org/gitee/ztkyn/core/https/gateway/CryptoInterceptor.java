@@ -3,6 +3,7 @@ package org.gitee.ztkyn.core.https.gateway;
 import cn.hutool.crypto.asymmetric.SM2;
 import cn.hutool.crypto.digest.DigestUtil;
 import cn.hutool.crypto.digest.Digester;
+import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import lombok.NoArgsConstructor;
 import okhttp3.*;
@@ -16,8 +17,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 import static org.gitee.ztkyn.core.json.JsonObjectUtil.jsonConfig;
@@ -49,7 +48,7 @@ public class CryptoInterceptor implements Interceptor {
 		if (Objects.isNull(requestBody)) {
 			// 优先从 url 中解析参数
 			HttpUrl httpUrl = request.url();
-			String encryptHex = ZtkynSMUtil.mixEncodeHex(sm2, signUrlParams(httpUrl));
+			String encryptHex = ZtkynSMUtil.mixEncodeHex(sm2, signUrlParams(httpUrl.query()));
 			URL url = httpUrl.url();
 			String newUrl = url.getProtocol() + "://" + url.getHost() + ":" + url.getPort() + url.getPath() + "?"
 					+ encryptHex;
@@ -65,7 +64,8 @@ public class CryptoInterceptor implements Interceptor {
 				oldRequestBody.writeTo(requestBuffer);
 				String oldBodyStr = requestBuffer.readUtf8();
 				requestBuffer.close();
-				RequestBody newBody = RequestBody.create(mediaType, ZtkynSMUtil.mixEncodeHex(sm2, oldBodyStr));
+				RequestBody newBody = RequestBody.create(mediaType,
+						ZtkynSMUtil.mixEncodeHex(sm2, signJson(oldBodyStr)));
 				// 构造新的request
 				request = request.newBuilder().headers(request.headers()).method(request.method(), newBody).build();
 			}
@@ -103,12 +103,19 @@ public class CryptoInterceptor implements Interceptor {
 		return chain.proceed(request);
 	}
 
-	private String signUrlParams(HttpUrl httpUrl) {
-		String orgQuery = httpUrl.query();
+	private String signUrlParams(String orgQuery) {
 		String paramJson = sortFullJson(JSONUtil.parseObj(RequestUtil.transfer(orgQuery), jsonConfig)).toString();
 		logger.info("请求参数: {}", paramJson);
 		String signKey = digester.digestHex(paramJson);
 		return orgQuery + "&" + GateWayConstants.SIGN_SIGN_KEY + "=" + signKey;
+	}
+
+	private String signJson(String jsonStr) {
+		JSONObject jsonObject = JSONUtil.parseObj(jsonStr, jsonConfig);
+		String paramJson = sortFullJson(jsonObject).toString();
+		logger.info("请求参数: {}", paramJson);
+		jsonObject.set(GateWayConstants.SIGN_SIGN_KEY, digester.digestHex(paramJson));
+		return jsonObject.toString();
 	}
 
 }
