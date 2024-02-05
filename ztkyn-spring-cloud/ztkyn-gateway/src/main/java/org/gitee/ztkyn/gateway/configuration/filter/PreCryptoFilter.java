@@ -8,33 +8,30 @@ import org.gitee.ztkyn.gateway.configuration.properties.GateWayCryptoKeyProperti
 import org.gitee.ztkyn.gateway.configuration.properties.GateWayCryptoProperties;
 import org.gitee.ztkyn.web.utils.RequestUtil;
 import org.jetbrains.annotations.NotNull;
+import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.gateway.filter.factory.rewrite.CachedBodyOutputMessage;
 import org.springframework.cloud.gateway.support.BodyInserterContext;
 import org.springframework.core.Ordered;
-import org.springframework.core.io.buffer.DataBuffer;
-import org.springframework.core.io.buffer.DataBufferUtils;
-import org.springframework.core.io.buffer.DefaultDataBuffer;
-import org.springframework.core.io.buffer.DefaultDataBufferFactory;
+import org.springframework.core.io.buffer.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ReactiveHttpOutputMessage;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpRequestDecorator;
-import org.springframework.util.CollectionUtils;
+import org.springframework.http.server.reactive.ServerHttpResponse;
+import org.springframework.http.server.reactive.ServerHttpResponseDecorator;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserter;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
-import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -120,13 +117,8 @@ public class PreCryptoFilter implements WebFilter, Ordered {
 			byte[] bytes = new byte[dataBuffer.readableByteCount()];
 			dataBuffer.read(bytes);
 			DataBufferUtils.release(dataBuffer);
-			Flux<DataBuffer> cachedFlux = Flux.defer(() -> {
-				DataBuffer buffer = exchange.getResponse()
-					.bufferFactory()
-					.wrap(isCrypto ? decodeBytes(new String(bytes, StandardCharsets.UTF_8), exchange) : bytes);
-				DataBufferUtils.retain(buffer);
-				return Mono.just(buffer);
-			});
+			byte[] encodeBytes = isCrypto ? decodeBytes(new String(bytes, StandardCharsets.UTF_8), exchange) : bytes;
+			Flux<DataBuffer> cachedFlux = Flux.defer(() -> Mono.just(defaultDataBufferFactory.wrap(encodeBytes)));
 
 			/*
 			 * repackage ServerHttpRequest 重新包装请求
@@ -137,7 +129,8 @@ public class PreCryptoFilter implements WebFilter, Ordered {
 					return cachedFlux;
 				}
 			};
-			return chain.filter(exchange.mutate().request(mutatedRequest).build());
+			ServerHttpResponseDecorator responseDecorator = getServerHttpResponseDecorator(exchange, isCrypto);
+			return chain.filter(exchange.mutate().request(mutatedRequest).response(responseDecorator).build());
 		});
 	}
 
@@ -184,12 +177,70 @@ public class PreCryptoFilter implements WebFilter, Ordered {
 							return RequestUtil.parseFromUrl(decodeQuery);
 						}
 					};
-					return chain.filter(exchange.mutate().request(decorator).build());
+
+					ServerHttpResponseDecorator responseDecorator = getServerHttpResponseDecorator(exchange, isCrypto);
+
+					return chain.filter(exchange.mutate().request(decorator).response(responseDecorator).build());
 				}));
 			}
 			return chain.filter(exchange);
 
 		});
+	}
+
+	@NotNull
+	private ServerHttpResponseDecorator getServerHttpResponseDecorator(ServerWebExchange exchange, boolean isCrypto) {
+		ServerHttpResponse response = exchange.getResponse();
+		HttpHeaders headers = response.getHeaders();
+		DataBufferFactory dataBufferFactory = response.bufferFactory();
+		Object objectKey = exchange.getAttributes().get(GatewayContext.CACHE_GATEWAY_SM4_KEY);
+		ServerHttpResponseDecorator responseDecorator = new ServerHttpResponseDecorator(exchange.getResponse()) {
+
+			@Override
+			public Mono<Void> writeWith(Publisher<? extends DataBuffer> body) {
+				if (isCrypto) {
+					String sm4Key = objectKey.toString();
+					if (body instanceof Flux<? extends DataBuffer> fluxBody) {
+						return super.writeWith(fluxBody.buffer().map(dataBuffers -> {
+							DataBuffer join = dataBufferFactory.join(dataBuffers);
+							return encodeResponse(join, sm4Key, headers, dataBufferFactory);
+						}));
+					}
+					else if (body instanceof Mono<? extends DataBuffer> monoBody) {
+						return super.writeWith(monoBody
+							.map(dataBuffer -> encodeResponse(dataBuffer, sm4Key, headers, dataBufferFactory)));
+					}
+				}
+				return super.writeWith(body);
+			}
+
+			@Override
+			public Mono<Void> writeAndFlushWith(Publisher<? extends Publisher<? extends DataBuffer>> body) {
+				return writeWith(Flux.from(body).flatMapSequential(p -> p));
+			}
+
+			@Override
+			public HttpHeaders getHeaders() {
+				return headers;
+			}
+		};
+		return responseDecorator;
+	}
+
+	@NotNull
+	private DataBuffer encodeResponse(DataBuffer join, String sm4Key, HttpHeaders headers,
+			DataBufferFactory dataBufferFactory) {
+		byte[] byteArray = new byte[join.readableByteCount()];
+		join.read(byteArray);
+		DataBufferUtils.release(join);
+
+		String originalResponseBody = new String(byteArray, StandardCharsets.UTF_8);
+		// 加密（全部内容加密）
+		byte[] encryptedByteArray = ZtkynSMUtil.encodeHex(ZtkynSMUtil.genSM4(sm4Key), originalResponseBody)
+			.getBytes(StandardCharsets.UTF_8);
+		headers.setContentLength(encryptedByteArray.length);
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		return dataBufferFactory.wrap(encryptedByteArray);
 	}
 
 	private Mono<Void> readFormData(ServerWebExchange exchange, WebFilterChain chain, ServerHttpRequest request,
@@ -203,13 +254,8 @@ public class PreCryptoFilter implements WebFilter, Ordered {
 			byte[] bytes = new byte[dataBuffer.readableByteCount()];
 			dataBuffer.read(bytes);
 			DataBufferUtils.release(dataBuffer);
-			Flux<DataBuffer> cachedFlux = Flux.defer(() -> {
-				DataBuffer buffer = exchange.getResponse()
-					.bufferFactory()
-					.wrap(isCrypto ? decodeBytes(new String(bytes, StandardCharsets.UTF_8), exchange) : bytes);
-				DataBufferUtils.retain(buffer);
-				return Mono.just(buffer);
-			});
+			byte[] encodeBytes = isCrypto ? decodeBytes(new String(bytes, StandardCharsets.UTF_8), exchange) : bytes;
+			Flux<DataBuffer> cachedFlux = Flux.defer(() -> Mono.just(defaultDataBufferFactory.wrap(encodeBytes)));
 
 			/*
 			 * repackage ServerHttpRequest 重新包装请求
@@ -220,7 +266,8 @@ public class PreCryptoFilter implements WebFilter, Ordered {
 					return cachedFlux;
 				}
 			};
-			return chain.filter(exchange.mutate().request(mutatedRequest).build());
+			ServerHttpResponseDecorator responseDecorator = getServerHttpResponseDecorator(exchange, isCrypto);
+			return chain.filter(exchange.mutate().request(mutatedRequest).response(responseDecorator).build());
 		});
 	}
 

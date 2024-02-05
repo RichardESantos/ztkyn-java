@@ -4,6 +4,8 @@ import cn.hutool.crypto.digest.DigestUtil;
 import cn.hutool.crypto.digest.Digester;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import org.gitee.ztkyn.core.exception.AssertUtil;
+import org.gitee.ztkyn.core.exception.DataVerifyFailException;
 import org.gitee.ztkyn.gateway.configuration.context.GateWayConstants;
 import org.gitee.ztkyn.gateway.configuration.properties.GateWaySignProperties;
 import org.gitee.ztkyn.web.utils.RequestUtil;
@@ -65,11 +67,11 @@ public class PreSignatureFilter implements WebFilter, Ordered {
 			}
 			else if (Objects.nonNull(contentType)
 					&& MediaType.APPLICATION_FORM_URLENCODED.isCompatibleWith(contentType)) {
-				return request.getBody().doOnNext(dataBuffer -> {
-					queryParams.addAll(RequestUtil.parseFromUrl(dataBuffer.toString(StandardCharsets.UTF_8)));
-				})
-					.then(Mono.defer(() -> checkSignKey(exchange, chain,
-							JSONUtil.parseObj(RequestUtil.transferMulti(queryParams), jsonConfig))));
+				queryParams.addAll(request.getQueryParams());
+				if (!queryParams.isEmpty()) {
+					return checkSignKey(exchange, chain,
+							JSONUtil.parseObj(RequestUtil.transferMulti(queryParams), jsonConfig));
+				}
 			}
 			else {
 				queryParams.addAll(request.getQueryParams());
@@ -83,16 +85,40 @@ public class PreSignatureFilter implements WebFilter, Ordered {
 		return chain.filter(exchange);
 	}
 
-	private static Mono<Void> checkSignKey(ServerWebExchange exchange, WebFilterChain chain, JSONObject jsonObject) {
-		Object signKey = jsonObject.remove(GateWayConstants.SIGN_SIGN_KEY);
-		if (Objects.nonNull(signKey)) {
-			JSONObject newJsonObject = sortFullJson(jsonObject);
-			String paramJson = newJsonObject.toString();
-			if (Objects.equals(signKey, digester.digestHex(paramJson))) {
-				return chain.filter(exchange);
-			}
+	private Mono<Void> checkSignKey(ServerWebExchange exchange, WebFilterChain chain, JSONObject jsonObject) {
+		// 校验参数
+		Object signKey = validateParams(jsonObject);
+		JSONObject newJsonObject = sortFullJson(jsonObject);
+		String paramJson = newJsonObject.toString();
+		if (Objects.equals(signKey, digester.digestHex(paramJson))) {
+			return chain.filter(exchange);
 		}
 		throw PARAM_VERIFY_FAIL;
+	}
+
+	/**
+	 * 校验参数
+	 * @param jsonObject
+	 * @return
+	 */
+	private Object validateParams(JSONObject jsonObject) {
+		Object signKey = jsonObject.remove(GateWayConstants.SIGN_SIGN_KEY);
+		AssertUtil.objectNotNull(signKey, "签名不能为空");
+		AssertUtil.notBlank(jsonObject.get(GateWayConstants.SIGN_NONCE_KEY, String.class, false), "唯一标识不能为空");
+		String timestampStr = jsonObject.get(GateWayConstants.SIGN_TIMESTAMP_KEY, String.class, false);
+		AssertUtil.objectNotNull(timestampStr, "时间戳不能为空");
+		try {
+			long timestamp = Long.parseLong(timestampStr);
+			// 判断timestamp时间戳与当前时间是否超过签名有效时长（过期时间根据业务情况进行配置）,如果超过了就提示签名过期
+			long now = System.currentTimeMillis() / 1000;
+			if (now - timestamp > gateWaySignProperties.getValidTime()) {
+				throw new DataVerifyFailException("签名已过期");
+			}
+		}
+		catch (NumberFormatException e) {
+			throw new DataVerifyFailException("非法的时间戳");
+		}
+		return signKey;
 	}
 
 	@Override

@@ -82,11 +82,11 @@ public class ZtkynSMUtil {
 	/**
 	 * 混合加密SM2+SM4,SM4密钥放置于加密内容前端，密钥密文固定长度226位
 	 * @param sm2
+	 * @param sm4Key
 	 * @param content
 	 * @return
 	 */
-	public static String mixEncodeHex(SM2 sm2, String content) {
-		String sm4Key = genSM4Key();
+	public static String mixEncodeHex(SM2 sm2, String sm4Key, String content) {
 		return encodeHex(sm2, sm4Key) + encodeHex(genSM4(sm4Key), content);
 	}
 

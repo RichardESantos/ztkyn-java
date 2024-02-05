@@ -17,6 +17,13 @@ public interface GateWayTestApi {
 	@POST("/test/cryptoFormData")
 	Call<R<String>> cryptoFormData(@Field("user") String user, @Field("passwd") String passwd);
 
+	@FormUrlEncoded
+	@POST("/test/cryptoFormData2")
+	Call<R<String>> cryptoFormData2(@Field("user") String user, @Field("passwd") String passwd);
+
+	@POST("/test/cryptoFormData3")
+	Call<R<String>> cryptoFormData3(@Query("user") String user, @Query("passwd") String passwd);
+
 	@POST("/test/cryptoJson")
 	Call<R<String>> cryptoJson(@Body GateWayTest.User user);
 

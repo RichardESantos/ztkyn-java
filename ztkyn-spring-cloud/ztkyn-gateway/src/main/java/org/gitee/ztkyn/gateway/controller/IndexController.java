@@ -8,8 +8,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Getter;
 import lombok.Setter;
 import org.gitee.ztkyn.web.beans.R;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import retrofit2.http.POST;
 
 /**
  * 测试接口（非正式接口）
@@ -44,14 +44,36 @@ public class IndexController {
 	}
 
 	/**
-	 * 测试表单
+	 * 测试表单（POST+pojo）
 	 * @param user
-	 * @param passwd
 	 * @return
 	 */
-	@Operation(summary = "测试表单", description = "测试表单")
-	@POST("/cryptoFormData")
-	public R<String> cryptoFormData(@RequestParam("user") String user, @RequestParam("passwd") String passwd) {
+	@Operation(summary = "测试表单（POST+pojo）", description = "测试表单（POST+pojo）")
+	@PostMapping(value = "/cryptoFormData", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public R<String> cryptoFormData(UserEntity user) {
+		return R.ok("Hello world");
+	}
+
+	/**
+	 * 测试表单（POST）
+	 * @param user
+	 * @return
+	 */
+	@Operation(summary = "测试表单（POST）", description = "测试表单（POST）")
+	@PostMapping(value = "/cryptoFormData2", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public R<String> cryptoFormData2(String user, String passwd) {
+		return R.ok("Hello world");
+	}
+
+	/**
+	 * 测试表单（POST） 可以解析到 /test/cryptoFormData3?user=string&passwd=string 这种url 里面的参数，无法解析
+	 * 在body中的参数
+	 * @param user
+	 * @return
+	 */
+	@Operation(summary = "测试表单（POST）", description = "测试表单（POST）")
+	@PostMapping(value = "/cryptoFormData3")
+	public R<String> cryptoFormData3(@RequestParam("user") String user, @RequestParam("passwd") String passwd) {
 		return R.ok("Hello world");
 	}
 
