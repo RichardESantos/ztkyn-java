@@ -54,7 +54,7 @@ public class CryptoInterceptor implements Interceptor {
 		Request request = chain.request();
 		RequestBody requestBody = request.body();
 		String sm4Key = ZtkynSMUtil.genSM4Key();
-		if (Objects.isNull(requestBody) && isCrypto) {
+		if ((Objects.isNull(requestBody) || requestBody.contentLength() == 0) && isCrypto) {
 			// 优先从 url 中解析参数
 			HttpUrl httpUrl = request.url();
 			String encryptHex = ZtkynSMUtil.mixEncodeHex(sm2, sm4Key, signUrlParams(httpUrl.query()));
