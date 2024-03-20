@@ -10,7 +10,8 @@ dependencies {
 
     // InheritableThreadLocal 替代品，解决在线程池失效的问题
     api("com.alibaba:transmittable-thread-local:${ttlVersion}")
-
+    // 小而全的Java工具类库
+    api("cn.hutool:hutool-all:${hutoolVersion}")
 
 
     // JsonPath 工具类
@@ -19,9 +20,6 @@ dependencies {
     implementation("org.eclipse.jdt:ecj:3.33.0")
     // 日期解析库
     implementation("com.github.sisyphsu:dateparser:1.0.11")
-
-
-
 }
 
 test {
